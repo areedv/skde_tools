@@ -74,7 +74,6 @@ public class ProcessSweave extends JRDefaultScriptlet {
 		try {
 			rconn = new RConnection();
 			
-			log.info("Start to generate report" + ProcessSweave.class.getName());
 			log.info("Report requested by " + hregUser.getQregUserFirstName()
 					+ " " + hregUser.getQregUserLastName());
 			
@@ -82,6 +81,11 @@ public class ProcessSweave extends JRDefaultScriptlet {
 			String reportFileName = (String) ((JRFillParameter) parametersMap.get("reportFileName")).getValue();
 			if (reportFileName == "") {
 				log.warn("reportFileName is empty. Eventually, processing an undfined report will fail");
+			}
+			else {
+				// cannot get the name of the report as it is stated in jrxml definition
+				// thus, file name will have to do, at least the report can be identified from the log entry
+				log.info("Start to generate report " + reportFileName);
 			}
 			
 			Integer doSendEmail = (Integer) ((JRFillParameter) parametersMap.get("doSendEmail")).getValue();
@@ -117,13 +121,11 @@ public class ProcessSweave extends JRDefaultScriptlet {
 			// copy report to temp file
 			log.debug("Rserve assignment: reportFileNamePath<-" + getAttachmentPathFileName());
 			rconn.assign("reportFileNamePath", getAttachmentPathFileName());
-			log.debug("Rserve assignment: reportTmpFileName <- " + reportFileName);
-			
 			log.debug("Rserve file copy from: " + reportFileName + ".pdf to " + getAttachmentPathFileName());
-			
 			rconn.voidEval("file.copy(paste(reportTmpFileName, '.pdf', sep=''), reportFileNamePath, overwrite=T)");
-			log.debug("Report is ready to be shipped by email");
+			log.debug("Report is prepared and ready to be shipped by email");
 			
+			// start process for email shipment
 			sendEmail(emailSubject, dryRun);
 			
 			rconn.close();
@@ -141,7 +143,7 @@ public class ProcessSweave extends JRDefaultScriptlet {
 	}
 	
 	private void sendEmail(String emailSubject, boolean dryRun) {
-		log.debug("Report is to be shipped by email");
+		log.debug("Report being shipped by email...");
 		try {
 			SendReportByEmail sender = new SendReportByEmail();
 			String userEmailAddress = hregUser.getHregUserEmail();

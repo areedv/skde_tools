@@ -14,6 +14,8 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
+//import java.io.BufferedReader;
+import java.io.FileReader;
 import org.apache.log4j.Logger;
 
 public class SendReportByEmail {
@@ -23,6 +25,7 @@ public class SendReportByEmail {
 	
 	private static final String  MAIL_SERVER_CONFIG_PATH_FILE = 
 		"/opt/jasper/mail/conf/MailServerReport.conf";
+	
 	
 	public void sendEmail (String toAddress, String subject,
 			String attachmentFile, boolean dryRun) {
@@ -46,6 +49,7 @@ public class SendReportByEmail {
 	         // set the actual message, a general from file
 	         String emailMessage = fileToString("/opt/jasper/mail/message/general.txt");
 	         messageBodyPart.setText(emailMessage);
+	         
 	         
 	         // create a multipart message
 	         Multipart multipart = new MimeMultipart();
@@ -85,12 +89,13 @@ public class SendReportByEmail {
 	   public static String fileToString(String fileName) {
 		   File file = new File(fileName);
 		   StringBuilder contents = new StringBuilder();
+		   String separator = System.getProperty("line.separator");
 		   BufferedReader input = null;
 		   try {
 			   input = new BufferedReader(new FileReader(file));
 			   String line = null;
 			   while ((line = input.readLine()) != null)
-				   contents.append(line);
+				   contents.append(line).append(separator);
 		   }
 		   catch (Exception ex) {
 			   ex.printStackTrace();
