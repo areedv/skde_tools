@@ -159,16 +159,16 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 			}
 			
 			
-			Integer vitalStatus;
+			String isTrauma;
 			try {
-				vitalStatus = (Integer) ((JRFillParameter) parametersMap.get("vitalStatus")).getValue();
-				if (vitalStatus == null) {
-					vitalStatus = 99;
+				isTrauma = (String) ((JRFillParameter) parametersMap.get("isTrauma")).getValue();
+				if (isTrauma == null) {
+					isTrauma = "na";
 				}
 
-				rconn.voidEval("dodInt=" + "'" + vitalStatus.toString() + "'");
+				rconn.voidEval("traume=" + "'" + isTrauma.toString() + "'");
 			} catch (Exception e) {
-				log.debug("Parameter vitalStatus is not defined: " + e.getMessage());
+				log.debug("Parameter isTrauma is not defined: " + e.getMessage());
 			}
 			
 			Integer erMann;
