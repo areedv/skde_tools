@@ -14,6 +14,9 @@ import java.util.Date;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.fill.*;
 import org.apache.log4j.Logger;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 import no.helseregister.tools.security.*;
 import org.rosuda.REngine.*;
 import org.rosuda.REngine.Rserve.*;
@@ -62,16 +65,16 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 			String rFunctionCallString = (String) ((JRFillParameter) parametersMap.get("rFunctionCallString")).getValue();
 			
 			// the rest of parameters are optional, but must match whatever needed by R
-			String varNam;
+			String varName;
 			try {
 				log.debug("Getting parameter values");
-				varNam = (String) ((JRFillParameter) parametersMap.get("MeanMedVarName")).getValue();
-				if (varNam == null) {
-					varNam = "nada";
+				varName = (String) ((JRFillParameter) parametersMap.get("varName")).getValue();
+				if (varName == null) {
+					varName = "nada";
 				}
-				rconn.voidEval("valgtVar=" + "'" + varNam + "'");
+				rconn.voidEval("valgtVar=" + "'" + varName + "'");
 			} catch (Exception e) {
-				log.debug("Parameter MeanMedVarName is not defined: " + e.getMessage());
+				log.debug("Parameter varName is not defined: " + e.getMessage());
 			}
 			
 			String statMeasureMethod;
@@ -180,6 +183,28 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 				rconn.voidEval("erMann=" + erMann.toString());
 			} catch (Exception e) {
 				log.debug("Parameter erMann is not defined: " + e.getMessage());
+			}
+			
+			// AIS; multi select list of values
+			List<String> aisList = new ArrayList<String>();
+			String ais;
+			try {
+				aisList = (ArrayList<String>) ((JRFillParameter) parametersMap.get("ais")).getValue();
+				ais = "c(";
+				if (aisList.contains("all")) {
+					ais = ais + "'')";
+				} else {
+					Iterator<String> iterator = aisList.iterator();
+					while (iterator.hasNext()) {
+						ais = ais + "'" + iterator.next() + "',";
+					}
+					ais = ais.substring(0, ais.length()-1);
+					ais = ais + ")";
+				}
+				log.debug("R concat for AIS vector is " + ais);
+				rconn.voidEval("AIS=" + ais);
+			} catch (Exception e) {
+				log.debug("Parameter ais is not defined: " + e.getMessage());
 			}
 			
 			
