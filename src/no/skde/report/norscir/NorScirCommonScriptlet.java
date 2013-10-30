@@ -1,6 +1,6 @@
 /**
  * no.skde.report.norscir
- * ProcessSweave.java Apr 14 2013 Are Edvardsen
+ * NorScirCommonScriptlet.java Apr 14 2013 Are Edvardsen
  * 
  * 
  *  Copyleft 2013, SKDE
@@ -17,7 +17,6 @@ import org.apache.log4j.Logger;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import no.helseregister.tools.security.*;
 import org.rosuda.REngine.*;
 import org.rosuda.REngine.Rserve.*;
 
@@ -50,7 +49,7 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 	// report actions
 	private void generateReport() {
 		try {
-			log.info("Start generating report " + NorScirCommonScriptlet.class.getName());
+			log.info("Start generating R report using " + NorScirCommonScriptlet.class.getName());
 			
 			// Create the connection
 			log.debug("Getting R connection...");
@@ -63,6 +62,9 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 			String reportName = (String) ((JRFillParameter) parametersMap.get("reportName")).getValue();
 			String rScriptName = (String) ((JRFillParameter) parametersMap.get("rScriptName")).getValue();
 			String rFunctionCallString = (String) ((JRFillParameter) parametersMap.get("rFunctionCallString")).getValue();
+			log.info("Report to be run: " + reportName);
+			log.debug("R script to be called: " + rScriptName);
+			log.debug("R function call string: " + rFunctionCallString);
 			
 			// the rest of parameters are optional, but must match whatever needed by R
 			String varName;
@@ -208,8 +210,9 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 			}
 			
 			
-			// set path to library
-			String libkat = "'/opt/jasper/lib/r/'";
+			// set path to library, to be removed since Rapporteket uses same directory for all R files (noweb, libs and report funs)
+			//String libkat = "'/opt/jasper/lib/r/'";
+			String libkat = "'/opt/jasper/r/'";
 			rconn.voidEval("libkat=" + libkat);
 			
 			// Load up primitive arrays with query data
@@ -595,7 +598,7 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 			}
 
 			
-			log.debug("Loading the dataframe in R...");
+			log.debug("Creating the R dataframe");
 
 			// Create and Load the data frame in R
 			RList l = new RList();
@@ -646,38 +649,42 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 			l.put("NevrNivaaUt", new REXPDouble(NevrNivaaUt));
 
 			REXP df = REXP.createDataFrame(l);
+			log.debug("Assigning data frame to R instance");
 			rconn.assign("RegData", df);
 			
 			
 			// Set up the tmp directory, file names and reportUserInfo
 			String tmpdir = "";
 			String p_filename = "";
-			log.debug("setting image filepath and name");
+			log.debug("In R instance: setting image filepath and name");
 			tmpdir = "/opt/jasper/img/";
 			File dirFile = new File(tmpdir);
 			String fileBaseName = "norScir_" + reportName + "-";
 			String file = (File.createTempFile(fileBaseName, ".png", dirFile)).getName();
 			p_filename = tmpdir + file;
-			log.debug("Image to be stored as: " + p_filename);
+			log.debug("In R instance: image to be stored as: " + p_filename);
 			setFileName(p_filename);
 	
-			log.debug("Filename: " + p_filename);
+			log.debug("In R instance: assigning Filename: " + p_filename);
 			rconn.assign("outfile", p_filename);
 			
 			String rcmd = rFunctionCallString;
 			
 			// Source the function
-			rconn.assign("source_file", "/opt/jasper/rscripts/NorScir/" + rScriptName);
+			//rconn.assign("source_file", "/opt/jasper/rscripts/NorScir/" + rScriptName);
+			rconn.assign("source_file", "/opt/jasper/r/" + rScriptName);
+			log.debug("In R instance: sourcing R code...");
 			rconn.voidEval("source(source_file)");
-			log.debug("Sourced sourcefile");
 
 			// Call the function to generate the report
+			log.debug("In R instance: calling function");
 			rconn.voidEval(rcmd);
 			
 			// Close RServ connection, ensure garbage collection removes pointer too!
+			log.debug("Closing connection to R instance and removing pointer");
 			rconn.close();
 			rconn = null;
-			log.info("Finished report");
+			log.info("In R instance: finished report");
 
 		} catch (RserveException rse) {
 			log.error("Rserve exception: " + rse.getMessage());
