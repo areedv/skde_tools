@@ -52,19 +52,31 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 			log.info("Start generating R report using " + NorScirCommonScriptlet.class.getName());
 			
 			// Create the connection
-			log.debug("Getting R connection...");
+			log.debug("Getting connection to R instance...");
 			rconn = new RConnection();
-			log.debug("R connection: " + rconn.toString());
+			log.debug("R connection provided: " + rconn.toString());
 
 
 			// Get parameters
 			// these must always be provided when this scriptlet class is used
-			String reportName = (String) ((JRFillParameter) parametersMap.get("reportName")).getValue();
-			String rScriptName = (String) ((JRFillParameter) parametersMap.get("rScriptName")).getValue();
-			String rFunctionCallString = (String) ((JRFillParameter) parametersMap.get("rFunctionCallString")).getValue();
-			log.info("Report to be run: " + reportName);
-			log.debug("R script to be called: " + rScriptName);
-			log.debug("R function call string: " + rFunctionCallString);
+			String loggedInUserFullName = "";
+			String loggedInUserAVD_RESH = "";
+			String reportName = "";
+			String rScriptName = "";
+			String rFunctionCallString = "";
+			try {
+				loggedInUserFullName = (String) ((JRFillParameter) parametersMap.get("LoggedInUserFullName")).getValue();
+				loggedInUserAVD_RESH = (String) ((JRFillParameter) parametersMap.get("LoggedInUserAVD_RESH")).getValue();
+				reportName = (String) ((JRFillParameter) parametersMap.get("reportName")).getValue();
+				rScriptName = (String) ((JRFillParameter) parametersMap.get("rScriptName")).getValue();
+				rFunctionCallString = (String) ((JRFillParameter) parametersMap.get("rFunctionCallString")).getValue();
+				log.info("Report to be run: " + reportName);
+				log.info("Report requested by JRS user " + loggedInUserFullName + ", AVD_RESH " + loggedInUserAVD_RESH);
+				log.debug("R script to be called: " + rScriptName);
+				log.debug("R function call string: " + rFunctionCallString);
+			} catch (Exception e) {
+				log.error("Mandatory parameters in the report definition calling this scriptlet were not defined: " + e.getMessage());
+			}
 			
 			// the rest of parameters are optional, but must match whatever needed by R
 			String varName;
@@ -211,7 +223,6 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 			
 			
 			// set path to library, to be removed since Rapporteket uses same directory for all R files (noweb, libs and report funs)
-			//String libkat = "'/opt/jasper/lib/r/'";
 			String libkat = "'/opt/jasper/r/'";
 			rconn.voidEval("libkat=" + libkat);
 			
@@ -264,7 +275,7 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 			JRField NevrNivaaInnField = (JRField) fieldsMap.get("NevrNivaaInn");
 			JRField NevrNivaaUtField = (JRField) fieldsMap.get("NevrNivaaUt");
 			
-			log.debug("arrays of primitive data loaded");
+			log.debug("Arrays of primitive data loaded");
 			
 			
 			// Create "slug arrays" with very big sizes (default limit to
@@ -600,7 +611,6 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 			
 			log.debug("Creating the R dataframe");
 
-			// Create and Load the data frame in R
 			RList l = new RList();
 
 			l.put("KontaktFraDato", new REXPString(KontaktFraDato));
@@ -656,7 +666,7 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 			// Set up the tmp directory, file names and reportUserInfo
 			String tmpdir = "";
 			String p_filename = "";
-			log.debug("In R instance: setting image filepath and name");
+			log.debug("Setting report image filepath and name");
 			tmpdir = "/opt/jasper/img/";
 			File dirFile = new File(tmpdir);
 			String fileBaseName = "norScir_" + reportName + "-";
@@ -671,7 +681,6 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 			String rcmd = rFunctionCallString;
 			
 			// Source the function
-			//rconn.assign("source_file", "/opt/jasper/rscripts/NorScir/" + rScriptName);
 			rconn.assign("source_file", "/opt/jasper/r/" + rScriptName);
 			log.debug("In R instance: sourcing R code...");
 			rconn.voidEval("source(source_file)");
@@ -684,10 +693,11 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 			log.debug("Closing connection to R instance and removing pointer");
 			rconn.close();
 			rconn = null;
-			log.info("In R instance: finished report");
+			log.info("Finished report");
 
 		} catch (RserveException rse) {
 			log.error("Rserve exception: " + rse.getMessage());
+			log.error("Gory details in Rserve.log");
 			rconn.close();
 			rconn = null;
 		} catch (Exception e) {
