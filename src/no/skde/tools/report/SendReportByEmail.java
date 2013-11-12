@@ -1,8 +1,7 @@
 /**
- * no.helsenord.tools.report
+ * no.skde.tools.report
  * SendReportByEmail.java Jul 6 2011 Are Edvardsen
  * 
- * This file is (so far the only) part of the skde.no libraries
  * 
  *  Copyleft 2011 SKDE
  */
