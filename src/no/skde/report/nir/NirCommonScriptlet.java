@@ -1,4 +1,13 @@
+/**
+ * no.skde.tools.report
+ * NirCommonScriptlet.java Aug 8 2012 Are Edvardsen
+ * 
+ * 
+ *  Copyleft 2011, 2012 SKDE
+ */
+
 package no.skde.report.nir;
+
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
