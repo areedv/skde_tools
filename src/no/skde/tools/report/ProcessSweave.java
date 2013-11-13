@@ -3,7 +3,7 @@
  * ProcessSweave.java Aug 8 2012 Are Edvardsen
  * 
  * 
- *  Copyleft 2011, 2012 SKDE
+ *  Copyleft 2012, 2013 SKDE
  */
 
 package no.skde.tools.report;
@@ -27,6 +27,9 @@ public class ProcessSweave extends JRDefaultScriptlet {
 	private String attachmentPathFileName;
 	
 	static Logger log = Logger.getLogger("report");
+	
+	// since at Rapporteket, hardcode the reply-to email address
+	private static final String REPLY_TO_EMAIL_ADDRESS = "noreply@helseregiste.no";
 	
 	
 	// getters and setters
@@ -126,7 +129,7 @@ public class ProcessSweave extends JRDefaultScriptlet {
 			log.debug("Report is prepared and ready to be shipped by email");
 			
 			// start process for email shipment
-			sendEmail(emailSubject, dryRun);
+			sendEmail(emailSubject, REPLY_TO_EMAIL_ADDRESS, dryRun);
 			
 			rconn.close();
 			rconn = null;
@@ -142,12 +145,12 @@ public class ProcessSweave extends JRDefaultScriptlet {
 		
 	}
 	
-	private void sendEmail(String emailSubject, boolean dryRun) {
+	private void sendEmail(String emailSubject, String replyToEmailAddress, boolean dryRun) {
 		log.debug("Report being shipped by email...");
 		try {
 			SendReportByEmail sender = new SendReportByEmail();
 			String userEmailAddress = hregUser.getHregUserEmail();
-			sender.sendEmail(userEmailAddress, emailSubject, getAttachmentPathFileName(), dryRun);
+			sender.sendEmail(userEmailAddress, emailSubject, getAttachmentPathFileName(), replyToEmailAddress, dryRun);
 			log.info("Report sent to " + userEmailAddress);
 			setJasperReportFeedback("Epost sendt til " + userEmailAddress);
 		} catch (Exception e) {

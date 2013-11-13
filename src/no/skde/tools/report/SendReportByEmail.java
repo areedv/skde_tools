@@ -3,7 +3,7 @@
  * SendReportByEmail.java Jul 6 2011 Are Edvardsen
  * 
  * 
- *  Copyleft 2011 SKDE
+ *  Copyleft 2011, 2013 SKDE
  */
 
 package no.skde.tools.report;
@@ -13,7 +13,6 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
-//import java.io.BufferedReader;
 import java.io.FileReader;
 import org.apache.log4j.Logger;
 
@@ -27,7 +26,7 @@ public class SendReportByEmail {
 	
 	
 	public void sendEmail (String toAddress, String subject,
-			String attachmentFile, boolean dryRun) {
+			String attachmentFile, String replyToEmailAddress, boolean dryRun) {
 	      // Get the default Session object.
 	      Session session = Session.getDefaultInstance(fMailServerConfig, null);
 
@@ -35,10 +34,16 @@ public class SendReportByEmail {
 	         // Create a default MimeMessage object.
 	         MimeMessage message = new MimeMessage(session);
 
+	         
 	         // Set To: header field of the header.
 	         message.addRecipient(Message.RecipientType.TO,
 	                                  new InternetAddress(toAddress));
 
+	         
+	         
+	         // do we have to use this in order for postfix smtp not to complain about 'user unknown in local recipient table'?
+	         message.setReplyTo(InternetAddress.parse(replyToEmailAddress));
+	         
 	         // Set Subject: header field
 	         message.setSubject(subject);
 	         
@@ -58,7 +63,6 @@ public class SendReportByEmail {
 	         
 	         // second part is attachment
 	         messageBodyPart = new MimeBodyPart();
-//	         String fileName = "attachment.txt";
 	         String[] attachment = attachmentFile.split("/");
 	         String attachmentFileName = attachment[attachment.length-1];
 	         DataSource source = new FileDataSource(attachmentFile);

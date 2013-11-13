@@ -26,6 +26,8 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 	
 	static Logger log = Logger.getLogger("report");
 	
+	// since at Rapporteket, hardcode the reply-to email address
+	private static final String REPLY_TO_EMAIL_ADDRESS = "noreply@helseregiste.no";
 	
 	// getters and setters
 	public void setJasperReportFeedback(String jasperReportFeedback) {
@@ -52,7 +54,8 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 		this.loggedInUserEmailAddress = loggedInUserEmailAddress;
 	}
 	
-	// override empty method of JRDefaultScriptlet
+	
+		// override empty method of JRDefaultScriptlet
 	public void afterReportInit() throws JRScriptletException {
 		
 		generateReport();
@@ -64,6 +67,7 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 	// report actions
 	private void generateReport() {
 		try {
+			
 			rconn = new RConnection();
 			log.debug("R connection provided: " + rconn.toString());
 			
@@ -160,7 +164,7 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 			log.debug("Report is prepared and ready to be shipped by email");
 			
 			// start process for email shipment
-			sendEmail(emailSubject, dryRun);
+			sendEmail(emailSubject, REPLY_TO_EMAIL_ADDRESS, dryRun);
 			
 			// Clean up by removing Rserve workdir ever created
 			log.debug("Cleaning up and closing down Rserve leftovers...");
@@ -185,11 +189,11 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 		
 	}
 	
-	private void sendEmail(String emailSubject, boolean dryRun) {
+	private void sendEmail(String emailSubject, String replyToEmailAddress, boolean dryRun) {
 		log.debug("Report being shipped by email...");
 		try {
 			SendReportByEmail sender = new SendReportByEmail();
-			sender.sendEmail(getLoggedInUserEmailAddress(), emailSubject, getAttachmentPathFileName(), dryRun);
+			sender.sendEmail(getLoggedInUserEmailAddress(), emailSubject, getAttachmentPathFileName(), replyToEmailAddress, dryRun);
 			log.info("Report sent to " + getLoggedInUserEmailAddress());
 			setJasperReportFeedback("Epost sendt til " + getLoggedInUserEmailAddress());
 		} catch (Exception e) {
@@ -197,5 +201,4 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 			log.error("Could not send email: " + e.getMessage());
 		}
 	}
-	
 }
