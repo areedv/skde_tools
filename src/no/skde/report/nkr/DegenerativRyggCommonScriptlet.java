@@ -6,7 +6,8 @@
  *  Copyleft 2013, SKDE
  */
 
-package no.skde.report.nkr;
+
+//package no.skde.report.nkr;
 
 import java.io.*;
 //import java.text.SimpleDateFormat;
@@ -92,13 +93,13 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			}
 			
 			try {
-				Integer mydept = (Integer) ((JRFillParameter) parametersMap.get("mydept"))
+				Integer myDept = (Integer) ((JRFillParameter) parametersMap.get("myDept"))
 						.getValue();
-				if (mydept == null) {
-					mydept = 1;
+				if (myDept == null) {
+					myDept = 1;
 				}
-				log.debug("Parameter 'mydept' mapped to value: " + mydept.toString());
-				rconn.voidEval("egenavd=" + mydept.toString());
+				log.debug("Parameter 'myDept' mapped to value: " + myDept.toString());
+				rconn.voidEval("egenavd=" + myDept.toString());
 			} catch (Exception e) {
 				log.debug("Parameter 'mydept' is not provided: " + e.getMessage());
 			}
@@ -140,6 +141,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			log.debug("Getting Jasper Report Fields from report data source...");
 			
 			JRField UtdField = (JRField) fieldsMap.get("Utd");
+			JRField BMIField = (JRField) fieldsMap.get("BMI");
 			JRField KjonnField = (JRField) fieldsMap.get("Kjonn");
 			JRField HovedInngrepField = (JRField) fieldsMap.get("HovedInngrep");
 			JRField HovedInngreptxtField = (JRField) fieldsMap.get("HovedInngreptxt");
@@ -164,6 +166,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			log.debug("Making empty slug array...");
 
 			Double[] sUtd = new Double[1000000];
+			Double[] sBMI = new Double[1000000];
 			Integer[] sKjonn = new Integer[1000000];
 			Integer[] sHovedInngrep = new Integer[1000000];
 			String[] sHovedInngreptxt = new String[1000000];
@@ -181,6 +184,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			boolean getRow = true;
 			while (getRow) {
 				sUtd[rowidx] = (Double) ds.getFieldValue(UtdField);
+				sBMI[rowidx] = (Double) ds.getFieldValue(BMIField);
 				sKjonn[rowidx] = (Integer) ds.getFieldValue(KjonnField);
 				sHovedInngrep[rowidx] = (Integer) ds.getFieldValue(HovedInngrepField);
 				sHovedInngreptxt[rowidx] = (String) ds.getFieldValue(HovedInngreptxtField);
@@ -200,6 +204,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			log.debug("Creating proper sized array...");
 			
 			double[] Utd = new double[rowidx + 1];
+			double[] BMI = new double[rowidx + 1];
 			int[] Kjonn = new int[rowidx + 1];
 			int[] HovedInngrep = new int[rowidx + 1];
 			String[] HovedInngreptxt = new String[rowidx + 1];
@@ -221,6 +226,12 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 				else {
 					Utd[i] = sUtd[i];
 				}
+				if (sBMI[i] == null) {
+					BMI[i] = java.lang.Double.NaN;
+				}
+				else {
+					BMI[i] = sBMI[i];
+				}
 				Kjonn[i] = sKjonn[i];
 				HovedInngrep[i] = sHovedInngrep[i];
 				HovedInngreptxt[i] = sHovedInngreptxt[i];
@@ -237,6 +248,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			log.debug("Creating the R dataframe...");
 			RList l = new RList();
 			l.put("Utd", new REXPDouble(Utd));
+			l.put("BMI", new REXPDouble(BMI));
 			l.put("Kjonn", new REXPInteger(Kjonn));
 			l.put("HovedInngrep", new REXPInteger(HovedInngrep));
 			l.put("HovedInngreptxt", new REXPString(HovedInngreptxt));
