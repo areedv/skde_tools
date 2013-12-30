@@ -140,6 +140,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 						
 			log.debug("Getting Jasper Report Fields from report data source...");
 			
+			JRField AlderField = (JRField) fieldsMap.get("Alder");
 			JRField UtdField = (JRField) fieldsMap.get("Utd");
 			JRField BMIField = (JRField) fieldsMap.get("BMI");
 			JRField KjonnField = (JRField) fieldsMap.get("Kjonn");
@@ -165,6 +166,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			
 			log.debug("Making empty slug array...");
 
+			Double[] sAlder = new Double[1000000];
 			Double[] sUtd = new Double[1000000];
 			Double[] sBMI = new Double[1000000];
 			Integer[] sKjonn = new Integer[1000000];
@@ -183,6 +185,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			// Assume we get 1 row
 			boolean getRow = true;
 			while (getRow) {
+				sAlder[rowidx] = (Double) ds.getFieldValue(AlderField);
 				sUtd[rowidx] = (Double) ds.getFieldValue(UtdField);
 				sBMI[rowidx] = (Double) ds.getFieldValue(BMIField);
 				sKjonn[rowidx] = (Integer) ds.getFieldValue(KjonnField);
@@ -203,6 +206,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			
 			log.debug("Creating proper sized array...");
 			
+			double[] Alder = new double[rowidx + 1];
 			double[] Utd = new double[rowidx + 1];
 			double[] BMI = new double[rowidx + 1];
 			int[] Kjonn = new int[rowidx + 1];
@@ -220,6 +224,12 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			log.debug("Populating proper sized array with data from slug array, also checking for NULLs...");
 			int i = 0;
 			while (i <= rowidx) {
+				if (sAlder[i] == null) {
+					Alder[i] = java.lang.Double.NaN;
+				}
+				else {
+					Alder[i] = sAlder[i];
+				}
 				if (sUtd[i] == null) {
 					Utd[i] = java.lang.Double.NaN;
 				}
@@ -247,6 +257,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			
 			log.debug("Creating the R dataframe...");
 			RList l = new RList();
+			l.put("Alder", new REXPDouble(Alder));
 			l.put("Utd", new REXPDouble(Utd));
 			l.put("BMI", new REXPDouble(BMI));
 			l.put("Kjonn", new REXPInteger(Kjonn));
