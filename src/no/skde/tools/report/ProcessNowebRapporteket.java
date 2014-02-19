@@ -135,7 +135,7 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 			rconn.assign("workfile", "../" + reportFileName);
 			rconn.assign("reportTmpFileName", reportFileName);
 			log.debug("Making loggedInUserAVD_RESH available to current R session");
-			rconn.assign("ReshID", loggedInUserAVD_RESH);
+			rconn.assign("reshID", loggedInUserAVD_RESH);
 			REXP workfilename = rconn.eval("paste(workfile, '.Rnw', sep='')");
 			log.debug("Rserve current workfile is: " + workfilename.asString());
 			if (knitr) {
