@@ -3,11 +3,11 @@
  * DegenerativRyggCommonScriptlet.java Dec 19 2013 Are Edvardsen
  * 
  * 
- *  Copyleft 2013, SKDE
+ *  Copyleft 2013, 2014 SKDE
  */
 
 
-//package no.skde.report.nkr;
+package no.skde.report.nkr;
 
 import java.io.*;
 //import java.text.SimpleDateFormat;
@@ -81,6 +81,17 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			
 			// the rest of parameters are optional, but must match whatever needed by R
 			try {
+				String varName = (String) ((JRFillParameter) parametersMap.get("varName")).getValue();
+				if (varName == "") {
+					varName = "EMPTY";
+				}
+				log.debug("Prameter 'varName' mapped to value: " + varName);
+				rconn.voidEval("variabel=" + "'" + varName + "'");
+			} catch (Exception e) {
+				log.debug("Parameter 'varName' is not provided: " + e.getMessage());
+			}
+			
+			try {
 				Integer gender = (Integer) ((JRFillParameter) parametersMap.get("gender"))
 						.getValue();
 				if (gender == null) {
@@ -127,6 +138,51 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 				log.debug("Parameter 'qYearNkr' is not provided: " + e.getMessage());
 			}
 			
+			 try {
+				 Integer dispNumberInfo = (Integer) ((JRFillParameter) parametersMap.get("dispNumberInfo")).getValue();
+				 if (dispNumberInfo == null) {
+					 dispNumberInfo = 0;
+				 }
+				 log.debug("Parameter 'dispNumberInfo mapped to value: " + dispNumberInfo.toString());
+				 rconn.voidEval("medTall=" + dispNumberInfo.toString());
+			 } catch (Exception e) {
+				 log.debug("Parameter 'dispNumberInfo' is not provided: " + e.getMessage());
+			 }
+			 
+			try {
+				Integer surgHistory = (Integer) ((JRFillParameter) parametersMap.get("surgHistory")).getValue();
+				if (surgHistory == null) {
+					surgHistory = 0;
+				}
+				log.debug("Parameter 'surgHistory' mapped to value: " + surgHistory.toString());
+				rconn.voidEval("tidlOp=" + surgHistory.toString());
+			} catch (Exception e) {
+				log.debug("Parameter 'surgHistory' is not provided: " + e.getMessage());
+			}
+			
+			try {
+				Integer postControl = (Integer) ((JRFillParameter) parametersMap.get("postControl")).getValue();
+				if (postControl == null) {
+					postControl = 1;
+				}
+				log.debug("Parameter 'postControl' mapped to value: " + postControl.toString());
+				rconn.voidEval("ktr=" + postControl.toString());
+			} catch (Exception e) {
+				log.debug("Parameter 'postControl' is not proivided: " + e.getMessage());
+			}
+			
+			try {
+				String plotType = (String) ((JRFillParameter) parametersMap.get("plotType")).getValue();
+				if (plotType == "") {
+					plotType = "S";
+				}
+				log.debug("Parameter 'plotType' mapped to value: " + plotType);
+				String test = "plotType=" + "'" + plotType + "'";
+				log.debug("String to evaluated by R session: " + test);
+				rconn.voidEval("plotType=" + "'" + plotType + "'");
+			} catch (Exception e) {
+				log.debug("Parameter 'plotType' is not provided: " + e.getMessage());
+			}
 			
 			// set path to library, to be removed since Rapporteket uses same directory for all R files (noweb, libs and report funs)
 			String libkat = "'/opt/jasper/r/'";
