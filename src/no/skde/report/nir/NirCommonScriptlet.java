@@ -59,9 +59,25 @@ public class NirCommonScriptlet extends JRDefaultScriptlet
 
 			// Get parameters
 			// these must always be provided when this scriptlet class is used
-			String reportName = (String) ((JRFillParameter) parametersMap.get("reportName")).getValue();
-			String rScriptName = (String) ((JRFillParameter) parametersMap.get("rScriptName")).getValue();
-			String rFunctionCallString = (String) ((JRFillParameter) parametersMap.get("rFunctionCallString")).getValue();
+			String loggedInUserFullName = "";
+			String loggedInUserAVD_RESH = "";
+			String reportName = "";
+			String rScriptName = "";
+			String rFunctionCallString = "";
+
+			try {
+				loggedInUserFullName = (String) ((JRFillParameter) parametersMap.get("LoggedInUserFullName")).getValue();
+				loggedInUserAVD_RESH = (String) ((JRFillParameter) parametersMap.get("LoggedInUserAVD_RESH")).getValue();
+				reportName = (String) ((JRFillParameter) parametersMap.get("reportName")).getValue();
+				rScriptName = (String) ((JRFillParameter) parametersMap.get("rScriptName")).getValue();
+				rFunctionCallString = (String) ((JRFillParameter) parametersMap.get("rFunctionCallString")).getValue();
+				log.info("Report to be run: " + reportName);
+				log.info("Report requested by JRS user " + loggedInUserFullName + ", AVD_RESH " + loggedInUserAVD_RESH);
+				log.debug("R script to be called: " + rScriptName);
+				log.debug("R function call string: " + rFunctionCallString);
+			} catch (Exception e) {
+				log.error("Mandatory parameters in the report definition calling this scriptlet were not defined: " + e.getMessage());
+			}
 			
 			// the rest of parameters are optional, but must match whatever needed by R
 			String varNam;
@@ -194,7 +210,7 @@ public class NirCommonScriptlet extends JRDefaultScriptlet
 			
 			
 			// set path to library
-			String libkat = "'/opt/jasper/lib/r/'";
+			String libkat = "'/opt/jasper/r/'";
 			rconn.voidEval("libkat=" + libkat);
 			
 			// Load up primitive arrays with query data
@@ -672,7 +688,7 @@ public class NirCommonScriptlet extends JRDefaultScriptlet
 			String rcmd = rFunctionCallString;
 			
 			// Source the function
-			rconn.assign("source_file", "/opt/jasper/rscripts/nir/" + rScriptName);
+			rconn.assign("source_file", "/opt/jasper/r/" + rScriptName);
 			rconn.voidEval("source(source_file)");
 			log.debug("Sourced sourcefile");
 
