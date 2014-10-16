@@ -8,15 +8,13 @@
 
 package no.skde.report.norgast;
 
+
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.fill.*;
 import org.apache.log4j.Logger;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
 import org.rosuda.REngine.*;
 import org.rosuda.REngine.Rserve.*;
 
@@ -74,6 +72,7 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 				log.info("Report requested by JRS user " + loggedInUserFullName + ", AVD_RESH " + loggedInUserAVD_RESH);
 				log.debug("R script to be called: " + rScriptName);
 				log.debug("R function call string: " + rFunctionCallString);
+				rconn.voidEval("reshID=" + loggedInUserAVD_RESH);
 			} catch (Exception e) {
 				log.error("Mandatory parameters in the report definition calling this scriptlet were not defined: " + e.getMessage());
 			}
@@ -128,16 +127,16 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 			// convert dates to something that can be understood by R
 			SimpleDateFormat rFormat = new SimpleDateFormat("yyyy-MM-dd");
 			
-			Date startDate;
+			Date beginDate;
 			try {
-				startDate = (Date) ((JRFillParameter) parametersMap.get("startDate")).getValue();
-				if (startDate == null) {
-					startDate = new SimpleDateFormat("yyyy-MM-dd").parse("2010-01-01");
+				beginDate = (Date) ((JRFillParameter) parametersMap.get("beginDate")).getValue();
+				if (beginDate == null) {
+					beginDate = new SimpleDateFormat("yyyy-MM-dd").parse("2010-01-01");
 				}
-				StringBuilder startDateString = new StringBuilder(rFormat.format(startDate));
-				rconn.voidEval("datoFra=" + "'" + startDateString + "'");
+				StringBuilder beginDateString = new StringBuilder(rFormat.format(beginDate));
+				rconn.voidEval("datoFra=" + "'" + beginDateString + "'");
 			} catch (Exception e) {
-				log.debug("Parameter startDate is not defined: " + e.getMessage());
+				log.debug("Parameter beginDate is not defined: " + e.getMessage());
 			}
 
 			Date endDate;
@@ -152,41 +151,41 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 				log.debug("Parameter endDate is not defined: " + e.getMessage());
 			}
 			
-			String hospitalsLevel;
-			try {
-				hospitalsLevel = (String) ((JRFillParameter) parametersMap.get("hospitalsLevel")).getValue();
-				if (hospitalsLevel == null) {
-					hospitalsLevel = "region";
-				}
-				rconn.voidEval("ShType=" + "'" + hospitalsLevel.toString() + "'");
-			} catch (Exception e) {
-				log.debug("Parameter hospitalsLevel is not defined: " + e.getMessage());
-			}			
-			
-			Integer inFromSituation;
-			try {
-				inFromSituation = (Integer) ((JRFillParameter) parametersMap.get("inFromSituation")).getValue();
-				if (inFromSituation == null) {
-					inFromSituation = 99;
-				}
-
-				rconn.voidEval("InnMaate=" + inFromSituation.toString());
-			} catch (Exception e) {
-				log.debug("Parameter inFromSituation is not defined: " + e.getMessage());
-			}
-			
-			
-			String isTrauma;
-			try {
-				isTrauma = (String) ((JRFillParameter) parametersMap.get("isTrauma")).getValue();
-				if (isTrauma == null) {
-					isTrauma = "na";
-				}
-
-				rconn.voidEval("traume=" + "'" + isTrauma.toString() + "'");
-			} catch (Exception e) {
-				log.debug("Parameter isTrauma is not defined: " + e.getMessage());
-			}
+//			String hospitalsLevel;
+//			try {
+//				hospitalsLevel = (String) ((JRFillParameter) parametersMap.get("hospitalsLevel")).getValue();
+//				if (hospitalsLevel == null) {
+//					hospitalsLevel = "region";
+//				}
+//				rconn.voidEval("ShType=" + "'" + hospitalsLevel.toString() + "'");
+//			} catch (Exception e) {
+//				log.debug("Parameter hospitalsLevel is not defined: " + e.getMessage());
+//			}			
+//			
+//			Integer inFromSituation;
+//			try {
+//				inFromSituation = (Integer) ((JRFillParameter) parametersMap.get("inFromSituation")).getValue();
+//				if (inFromSituation == null) {
+//					inFromSituation = 99;
+//				}
+//
+//				rconn.voidEval("InnMaate=" + inFromSituation.toString());
+//			} catch (Exception e) {
+//				log.debug("Parameter inFromSituation is not defined: " + e.getMessage());
+//			}
+//			
+//			
+//			String isTrauma;
+//			try {
+//				isTrauma = (String) ((JRFillParameter) parametersMap.get("isTrauma")).getValue();
+//				if (isTrauma == null) {
+//					isTrauma = "na";
+//				}
+//
+//				rconn.voidEval("traume=" + "'" + isTrauma.toString() + "'");
+//			} catch (Exception e) {
+//				log.debug("Parameter isTrauma is not defined: " + e.getMessage());
+//			}
 			
 			Integer erMann;
 			try {
@@ -210,28 +209,49 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 				log.debug("Parameter myDept is not defined: " + e.getMessage());
 			}
 			
-			// AIS; multi select list of values
-			List<String> aisList = new ArrayList<String>();
-			String ais;
+			Integer opGroup;
 			try {
-				aisList = (ArrayList<String>) ((JRFillParameter) parametersMap.get("ais")).getValue();
-				ais = "c(";
-				if (aisList.contains("all")) {
-					ais = ais + "'')";
-				} else {
-					Iterator<String> iterator = aisList.iterator();
-					while (iterator.hasNext()) {
-						ais = ais + "'" + iterator.next() + "',";
-					}
-					ais = ais.substring(0, ais.length()-1);
-					ais = ais + ")";
+				opGroup = (Integer) ((JRFillParameter) parametersMap.get("opGroup")).getValue();
+				if (opGroup == null) {
+					opGroup = 0;
 				}
-				log.debug("R concat for AIS vector is " + ais);
-				rconn.voidEval("AIS=" + ais);
+				rconn.voidEval("op_gruppe=" + opGroup.toString());
 			} catch (Exception e) {
-				log.debug("Parameter ais is not defined: " + e.getMessage());
+				log.debug("Parameter opGroup is not defined: " + e.getMessage());
 			}
 			
+			String stack;
+			try {
+				stack = (String) ((JRFillParameter) parametersMap.get("stack")).getValue();
+				if (stack == "") {
+					stack = "T";
+				}
+				rconn.voidEval("stabel=" + stack);
+			} catch (Exception e) {
+				log.debug("Parameter stack is not defined: " + e.getMessage());
+			}
+			
+			String ratio;
+			try {
+				ratio = (String) ((JRFillParameter) parametersMap.get("ratio")).getValue();
+				if (ratio == "") {
+					ratio = "F";
+				}
+				rconn.voidEval("andel=" + ratio);
+			} catch (Exception e) {
+				log.debug("Parameter ratio is not defined: " + e.getMessage());
+			}
+			
+			Integer orgUnitSelection;
+			try {
+				orgUnitSelection =  (Integer) ((JRFillParameter) parametersMap.get("orgUnitSelection")).getValue();
+				if (orgUnitSelection == null) {
+					orgUnitSelection = 1;
+				}
+				rconn.voidEval("enhetsUtvalg=" + orgUnitSelection.toString());
+			} catch (Exception e) {
+				log.debug("Parameter orgUnitSelection is not defined: " + e.getMessage());
+			}
 			
 			// set path to library, to be removed since Rapporteket uses same directory for all R files (noweb, libs and report funs)
 			String libkat = "'/opt/jasper/r/'";
@@ -264,6 +284,7 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 			JRField ACCORDION_SCOREField = (JRField) fieldsMap.get("ACCORDION_SCORE");
 			JRField isMaleField = (JRField) fieldsMap.get("isMale");
 			JRField decimalAgeField = (JRField) fieldsMap.get("decimalAge");
+			JRField PRS_SCOREField = (JRField) fieldsMap.get("PRS_SCORE");
 			
 			log.debug("Arrays of primitive data loaded");
 			
@@ -299,6 +320,7 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 			String[] sACCORDION_SCORE = new String[1000000];
 			Double[] sisMale = new Double[1000000];
 			Double[] sdecimalAge = new Double[1000000];
+			Double[] sPRS_SCORE = new Double[1000000];
 			
 			
 			int rowidx = 0;
@@ -332,6 +354,7 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 				sACCORDION_SCORE[rowidx] = (String) ds.getFieldValue(ACCORDION_SCOREField);
 				sisMale[rowidx] = (Double) ds.getFieldValue(isMaleField);
 				sdecimalAge[rowidx] = (Double) ds.getFieldValue(decimalAgeField);
+				sPRS_SCORE[rowidx] = (Double) ds.getFieldValue(PRS_SCOREField);
 				getRow = ds.next();
 				rowidx++;
 			}
@@ -364,7 +387,7 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 			String[] ACCORDION_SCORE = new String[rowidx + 1];
 			double[] isMale = new double[rowidx + 1];
 			double[] decimalAge = new double[rowidx + 1];
-
+			double[] PRS_SCORE = new double[rowidx + 1];
 			
 			// ifs are needed because underlying query returns null. Since ints
 			// cannot be null, these are returned as type double by the query
@@ -494,7 +517,13 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 				else {
 					decimalAge[i] = sdecimalAge[i];
 				}
-
+				if (sPRS_SCORE[i] == null) {
+					PRS_SCORE[i] = java.lang.Double.NaN;
+				}
+				else {
+					PRS_SCORE[i] = sPRS_SCORE[i];
+				}
+				
 				i++;
 			}
 
@@ -525,6 +554,7 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 			l.put("ACCORDION_SCORE", new REXPString(ACCORDION_SCORE));
 			l.put("isMale", new REXPDouble(isMale));
 			l.put("decimalAge", new REXPDouble(decimalAge));
+			l.put("PRS_SCORE", new REXPDouble(PRS_SCORE));
 			REXP df = REXP.createDataFrame(l);
 			log.debug("Assigning data frame to R instance");
 			rconn.assign("RegData", df);

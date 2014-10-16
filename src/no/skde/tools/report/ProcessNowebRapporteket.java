@@ -127,6 +127,24 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 				log.warn("No email subject provided, might confuse the recipient...");
 			}
 			
+			Integer usePdfAnnotation;
+			try {
+				usePdfAnnotation = (Integer) ((JRFillParameter) parametersMap.get("usePdfAnnotation")).getValue();
+				if (usePdfAnnotation == null) {
+					usePdfAnnotation = 0;
+				}
+				if (usePdfAnnotation == 0) {
+					rconn.voidEval("usePdfAnnotation=F");
+					log.info("PDF annotations were not requested in this report");
+				} else {
+					rconn.voidEval("usePdfAnnotation=T");
+					log.info("PDF annotations are requested in this report");
+				}
+			} catch (Exception e) {
+				log.debug("Parameter usePdfAnnotations is not defined: " + e.getMessage());
+			}
+					
+			
 			// process noweb files 
 			log.debug("noweb processing...");
 			REXP rWorkdir = rconn.eval("getwd()");
@@ -145,7 +163,8 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 			}
 			else {
 				log.debug("Continue processing using Sweave. If this is not what you want, edit jrxml report definition accordingly");
-				rconn.voidEval("Sweave(paste(workfile, '.Rnw', sep=''))");
+				//rconn.voidEval("Sweave(paste(workfile, '.Rnw', ', encoding=\'utf8\'', sep=''))");
+				rconn.voidEval("Sweave(paste(workfile, '.Rnw', sep='')" + ", encoding=" + "'" + "utf8" + "'" + ")");
 			}
 			rconn.voidEval("tools::texi2dvi(paste(reportTmpFileName, '.tex', sep=''), pdf=T, clean=T)");
 			
