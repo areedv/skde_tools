@@ -143,6 +143,17 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 			} catch (Exception e) {
 				log.debug("Parameter usePdfAnnotations is not defined: " + e.getMessage());
 			}
+			
+			Integer reportYear;
+			try {
+				reportYear = (Integer) ((JRFillParameter) parametersMap.get("reportYear")).getValue();
+				if (reportYear == null) {
+					reportYear = 2013;
+				}
+				log.debug("Prameter 'reportYear' set to " + reportYear.toString());
+			} catch (Exception e) {
+				log.debug("Parameter 'reportYear' is not defined: " + e.getMessage());
+			}
 					
 			
 			// process noweb files 
