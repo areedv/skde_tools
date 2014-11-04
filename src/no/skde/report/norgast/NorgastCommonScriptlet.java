@@ -285,6 +285,8 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 			JRField isMaleField = (JRField) fieldsMap.get("isMale");
 			JRField decimalAgeField = (JRField) fieldsMap.get("decimalAge");
 			JRField PRS_SCOREField = (JRField) fieldsMap.get("PRS_SCORE");
+			JRField READMISSION_STATUSField = (JRField) fieldsMap.get("READMISSION_STATUS");
+			JRField STATUSField = (JRField) fieldsMap.get("STATUS");
 			
 			log.debug("Arrays of primitive data loaded");
 			
@@ -321,6 +323,8 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 			Double[] sisMale = new Double[1000000];
 			Double[] sdecimalAge = new Double[1000000];
 			Double[] sPRS_SCORE = new Double[1000000];
+			Double[] sREADMISSION_STATUS = new Double[1000000];
+			Double[] sSTATUS = new Double[1000000];
 			
 			
 			int rowidx = 0;
@@ -355,6 +359,8 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 				sisMale[rowidx] = (Double) ds.getFieldValue(isMaleField);
 				sdecimalAge[rowidx] = (Double) ds.getFieldValue(decimalAgeField);
 				sPRS_SCORE[rowidx] = (Double) ds.getFieldValue(PRS_SCOREField);
+				sREADMISSION_STATUS[rowidx] = (Double) ds.getFieldValue(READMISSION_STATUSField);
+				sSTATUS[rowidx] = (Double) ds.getFieldValue(STATUSField);
 				getRow = ds.next();
 				rowidx++;
 			}
@@ -388,6 +394,8 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 			double[] isMale = new double[rowidx + 1];
 			double[] decimalAge = new double[rowidx + 1];
 			double[] PRS_SCORE = new double[rowidx + 1];
+			double[] READMISSION_STATUS = new double[rowidx + 1];
+			double[] STATUS = new double[rowidx + 1];
 			
 			// ifs are needed because underlying query returns null. Since ints
 			// cannot be null, these are returned as type double by the query
@@ -523,7 +531,18 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 				else {
 					PRS_SCORE[i] = sPRS_SCORE[i];
 				}
-				
+				if (sREADMISSION_STATUS[i] == null) {
+					READMISSION_STATUS[i] = java.lang.Double.NaN;
+				}
+				else {
+					READMISSION_STATUS[i] = sREADMISSION_STATUS[i];
+				}
+				if (sSTATUS[i] == null) {
+					STATUS[i] = java.lang.Double.NaN;
+				}
+				else {
+					STATUS[i] = sSTATUS[i];
+				}
 				i++;
 			}
 
@@ -555,6 +574,8 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 			l.put("isMale", new REXPDouble(isMale));
 			l.put("decimalAge", new REXPDouble(decimalAge));
 			l.put("PRS_SCORE", new REXPDouble(PRS_SCORE));
+			l.put("READMISSION_STATUS", new REXPDouble(READMISSION_STATUS));
+			l.put("STATUS", new REXPDouble(STATUS));
 			REXP df = REXP.createDataFrame(l);
 			log.debug("Assigning data frame to R instance");
 			rconn.assign("RegData", df);
