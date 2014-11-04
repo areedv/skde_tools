@@ -9,6 +9,7 @@
 package no.skde.tools.report;
 
 import java.io.*;
+import java.util.Calendar;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.fill.*;
@@ -148,7 +149,7 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 			try {
 				reportYear = (Integer) ((JRFillParameter) parametersMap.get("reportYear")).getValue();
 				if (reportYear == null) {
-					reportYear = 2013;
+					reportYear = Calendar.getInstance().get(Calendar.YEAR) - 1;
 				}
 				log.debug("Prameter 'reportYear' set to " + reportYear.toString());
 			} catch (Exception e) {
