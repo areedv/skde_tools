@@ -151,6 +151,7 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 				if (reportYear == null) {
 					reportYear = Calendar.getInstance().get(Calendar.YEAR) - 1;
 				}
+				rconn.voidEval("reportYear=" + reportYear.toString());
 				log.debug("Prameter 'reportYear' set to " + reportYear.toString());
 			} catch (Exception e) {
 				log.debug("Parameter 'reportYear' is not defined: " + e.getMessage());
