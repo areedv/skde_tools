@@ -197,16 +197,17 @@ public class HjerneslagCommonScriptletMinimal extends JRDefaultScriptlet {
 				log.debug("Parameter NIHSSinn is not defined: " + e.getMessage());
 			}
 			
-			Integer orgUnitSelection;
+			Integer myDept;
 			try {
-				orgUnitSelection = (Integer) ((JRFillParameter) parametersMap.get("orgUnitSelection")).getValue();
-				if (orgUnitSelection == null) {
-					orgUnitSelection = 1;
+				myDept = (Integer) ((JRFillParameter) parametersMap.get("myDept")).getValue();
+				if (myDept == null) {
+					myDept = 1;
 				}
-				rconn.voidEval("enhetsUtvalg=" + orgUnitSelection.toString());
+				rconn.voidEval("egenavd=" + myDept.toString());
 			} catch (Exception e) {
-				log.debug("Parameter orgUnitSelection is not defined: " + e.getMessage());
+				log.debug("Parameter myDept is not defined: " + e.getMessage());
 			}
+			
 			
 			
 			// set path to library, to be removed since Rapporteket uses same directory for all R files (noweb, libs and report funs)
