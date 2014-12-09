@@ -172,7 +172,8 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 			if (knitr) {
 				log.debug("Continue processing using Knitr...");
 				rconn.voidEval("library(knitr)");
-				rconn.voidEval("knit(paste(workfile, '.Rnw', sep=''))");
+				rconn.voidEval("file.copy(paste0(workfile, '.Rnw'), '.')");
+				rconn.voidEval("knit(basename(paste(workfile, '.Rnw', sep='')))");
 			}
 			else {
 				log.debug("Continue processing using Sweave. If this is not what you want, edit jrxml report definition accordingly");
@@ -200,7 +201,7 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 			
 			// Clean up by removing Rserve workdir ever created
 			log.debug("Cleaning up and closing down Rserve leftovers...");
-			rconn.voidEval("file.remove(dir(pattern='pdf$|tex$'))");
+			rconn.voidEval("file.remove(dir(pattern='pdf$|tex$|Rnw$'))");
 			rconn.voidEval("setwd('../')");
 			REXP rWorkdirNow = rconn.eval("getwd()");
 			String workdirNow = rWorkdirNow.asString();
