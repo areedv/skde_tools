@@ -80,15 +80,15 @@ public class NirCommonScriptlet extends JRDefaultScriptlet
 			}
 			
 			// the rest of parameters are optional, but must match whatever needed by R
-			String varNam;
+			String varName;
 			try {
 				log.debug("Getting parameter values");
-				varNam = (String) ((JRFillParameter) parametersMap.get("MeanMedVarName")).getValue();
-				if (varNam == null) {
-					varNam = "nada";
+				varName = (String) ((JRFillParameter) parametersMap.get("varName")).getValue();
+				if (varName == null) {
+					varName = "nada";
 				}
-				log.debug("'valgVar' set to: " + varNam);
-				rconn.voidEval("valgtVar=" + "'" + varNam + "'");
+				log.debug("'valgVar' set to: " + varName);
+				rconn.voidEval("valgtVar=" + "'" + varName + "'");
 			} catch (Exception e) {
 				log.debug("Parameter MeanMedVarName is not defined: " + e.getMessage());
 			}
