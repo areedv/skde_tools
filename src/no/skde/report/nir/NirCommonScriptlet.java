@@ -75,6 +75,8 @@ public class NirCommonScriptlet extends JRDefaultScriptlet
 				log.info("Report requested by JRS user " + loggedInUserFullName + ", AVD_RESH " + loggedInUserAVD_RESH);
 				log.debug("R script to be called: " + rScriptName);
 				log.debug("R function call string: " + rFunctionCallString);
+				
+				rconn.voidEval("reshID=" + loggedInUserAVD_RESH);
 			} catch (Exception e) {
 				log.error("Mandatory parameters in the report definition calling this scriptlet were not defined: " + e.getMessage());
 			}
