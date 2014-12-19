@@ -89,10 +89,10 @@ public class NirCommonScriptlet extends JRDefaultScriptlet
 				if (varName == null) {
 					varName = "nada";
 				}
-				log.debug("'valgVar' set to: " + varName);
+				log.debug("'valgtVar' set to: " + varName);
 				rconn.voidEval("valgtVar=" + "'" + varName + "'");
 			} catch (Exception e) {
-				log.debug("Parameter MeanMedVarName is not defined: " + e.getMessage());
+				log.debug("Parameter 'varName' is not defined: " + e.getMessage());
 			}
 			
 			String statMeasureMethod;
