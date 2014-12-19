@@ -210,6 +210,16 @@ public class NirCommonScriptlet extends JRDefaultScriptlet
 				log.debug("Parameter erMann is not defined: " + e.getMessage());
 			}
 			
+			Integer orgUnitSelection;
+			try {
+				orgUnitSelection =  (Integer) ((JRFillParameter) parametersMap.get("orgUnitSelection")).getValue();
+				if (orgUnitSelection == null) {
+					orgUnitSelection = 1;
+				}
+				rconn.voidEval("enhetsUtvalg=" + orgUnitSelection.toString());
+			} catch (Exception e) {
+				log.debug("Parameter orgUnitSelection is not defined: " + e.getMessage());
+			}
 			
 			// set path to library
 			String libkat = "'/opt/jasper/r/'";
