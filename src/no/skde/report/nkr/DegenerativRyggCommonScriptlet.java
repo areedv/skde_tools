@@ -981,7 +981,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			l.put("Aar", new REXPString(Aar));
 			REXP df = REXP.createDataFrame(l);
 			log.debug("Assigning data frame to R instance");
-			rconn.assign("opdata", df);
+			rconn.assign("RegData", df);
 
 
 			
