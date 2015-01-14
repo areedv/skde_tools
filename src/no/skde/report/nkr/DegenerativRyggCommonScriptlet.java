@@ -10,8 +10,8 @@
 package no.skde.report.nkr;
 
 import java.io.*;
-//import java.text.SimpleDateFormat;
-//import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.fill.*;
 import org.apache.log4j.Logger;
@@ -86,11 +86,15 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 					varName = "EMPTY";
 				}
 				log.debug("Prameter 'varName' mapped to value: " + varName);
+				// kept for compatibility of older R-code
 				rconn.voidEval("variabel=" + "'" + varName + "'");
+				// same, according to current standard
+				rconn.voidEval("valgtVar=" + "'" + varName + "'");
 			} catch (Exception e) {
 				log.debug("Parameter 'varName' is not provided: " + e.getMessage());
 			}
 			
+			// Deprecated. Should be removed
 			try {
 				Integer gender = (Integer) ((JRFillParameter) parametersMap.get("gender"))
 						.getValue();
@@ -98,11 +102,24 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 					gender = 0;
 				}
 				log.debug("Parameter 'gender' mapped to value: " + gender.toString());
+				log.warn("Use of parameter 'gender' is deprecated. Please use 'erMann'");
 				rconn.voidEval("kjonn=" + gender.toString());
 			} catch (Exception e) {
 				log.debug("Parameter 'gender' is not provided: " + e.getMessage());
 			}
 			
+			Integer erMann;
+			try {
+				erMann = (Integer) ((JRFillParameter) parametersMap.get("erMann")).getValue();
+				if (erMann == null) {
+					erMann = 99;
+				}
+				rconn.voidEval("erMann=" + erMann.toString());
+			} catch (Exception e) {
+				log.debug("Parameter erMann is not defined: " + e.getMessage());
+			}
+			
+			// Deprecated. Should be removed
 			try {
 				Integer myDept = (Integer) ((JRFillParameter) parametersMap.get("myDept"))
 						.getValue();
@@ -110,9 +127,21 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 					myDept = 1;
 				}
 				log.debug("Parameter 'myDept' mapped to value: " + myDept.toString());
+				log.warn("Use of parameter 'myDept' is deprecated. Please use 'orgUnitSelection'");
 				rconn.voidEval("egenavd=" + myDept.toString());
 			} catch (Exception e) {
 				log.debug("Parameter 'mydept' is not provided: " + e.getMessage());
+			}
+			
+			Integer orgUnitSelection;
+			try {
+				orgUnitSelection =  (Integer) ((JRFillParameter) parametersMap.get("orgUnitSelection")).getValue();
+				if (orgUnitSelection == null) {
+					orgUnitSelection = 1;
+				}
+				rconn.voidEval("enhetsUtvalg=" + orgUnitSelection.toString());
+			} catch (Exception e) {
+				log.debug("Parameter orgUnitSelection is not defined: " + e.getMessage());
 			}
 			
 			try {
@@ -136,6 +165,55 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 				rconn.voidEval("aar=" + year.toString());
 			} catch (Exception e) {
 				log.debug("Parameter 'qYearNkr' is not provided: " + e.getMessage());
+			}
+			
+			Integer minAge;
+			try {
+				minAge = (Integer) ((JRFillParameter) parametersMap.get("minAge")).getValue();
+				if (minAge == null) {
+					minAge = 0;
+				}
+				rconn.voidEval("minald=" + minAge.toString());
+			} catch (Exception e) {
+				log.debug("Parameter minAge is not defined: " + e.getMessage());
+			}
+
+			Integer maxAge;
+			try {
+				maxAge = (Integer) ((JRFillParameter) parametersMap.get("maxAge")).getValue();
+				if (maxAge == null) {
+					maxAge = 130;
+				}
+				rconn.voidEval("maxald=" + maxAge.toString());
+			} catch (Exception e) {
+				log.debug("Parameter maxAge is not defined: " + e.getMessage());
+			}
+			
+			// convert dates to something that can be understood by R
+			SimpleDateFormat rFormat = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Date beginDate;
+			try {
+				beginDate = (Date) ((JRFillParameter) parametersMap.get("beginDate")).getValue();
+				if (beginDate == null) {
+					beginDate = new SimpleDateFormat("yyyy-MM-dd").parse("2007-01-01");
+				}
+				StringBuilder beginDateString = new StringBuilder(rFormat.format(beginDate));
+				rconn.voidEval("datoFra=" + "'" + beginDateString + "'");
+			} catch (Exception e) {
+				log.debug("Parameter beginDate is not defined: " + e.getMessage());
+			}
+
+			Date endDate;
+			try {
+				endDate = (Date) ((JRFillParameter) parametersMap.get("endDate")).getValue();
+				if (endDate == null) {
+					endDate = new Date();
+				}
+				StringBuilder endDateString = new StringBuilder(rFormat.format(endDate));
+				rconn.voidEval("datoTil=" + "'" + endDateString + "'");
+			} catch (Exception e) {
+				log.debug("Parameter endDate is not defined: " + e.getMessage());
 			}
 			
 			 try {
