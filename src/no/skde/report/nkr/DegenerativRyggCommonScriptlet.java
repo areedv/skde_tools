@@ -268,7 +268,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 					hospitalType = 1;
 				}
 				log.debug("Parameter 'hospitalType' mapped to value: " + hospitalType.toString());
-				rconn.voidEval("sykehustype=" + hospitalType.toString());
+				rconn.voidEval("shtype=" + hospitalType.toString());
 			} catch (Exception e) {
 				log.debug("Parameter 'hospitalType' is not proivided: " + e.getMessage());
 			}
