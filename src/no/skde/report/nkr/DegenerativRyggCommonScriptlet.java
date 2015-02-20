@@ -343,6 +343,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			JRField AvdNavnField = (JRField) fieldsMap.get("AvdNavn");
 			JRField OpDatoField = (JRField) fieldsMap.get("OpDato");
 			JRField AarField = (JRField) fieldsMap.get("Aar");
+			JRField SykehustypeField = (JRField) fieldsMap.get("Sykehustype");
 
 			
 			log.debug("Primitive arrays loaded with query data");
@@ -417,6 +418,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			String[] sAvdNavn = new String[100000];
 			String[] sOpDato = new String[100000];
 			String[] sAar = new String[100000];
+			Double[] sSykehustype = new Double[100000];
 
 		
 			
@@ -484,6 +486,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 				sAvdNavn[rowidx] = (String) ds.getFieldValue(AvdNavnField);
 				sOpDato[rowidx] = (String) ds.getFieldValue(OpDatoField);
 				sAar[rowidx] = (String) ds.getFieldValue(AarField);
+				sSykehustype[rowidx] = (Double) ds.getFieldValue(SykehustypeField);
 				getRow = ds.next();
 				rowidx++;
 			}
@@ -553,7 +556,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			String[] AvdNavn = new String[rowidx + 1];
 			String[] OpDato = new String[rowidx + 1];
 			String[] Aar = new String[rowidx + 1];
-
+			double[] Sykehustype = new double[rowidx + 1];
 
 			
 			
@@ -926,6 +929,14 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 				AvdNavn[i] = sAvdNavn[i];
 				OpDato[i] = sOpDato[i];
 				Aar[i] = sAar[i];
+				
+				if (sSykehustype[i] == null) {
+					Sykehustype[i] = java.lang.Double.NaN;
+				}
+				else {
+					Sykehustype[i] = sSykehustype[i];
+				}
+				
 				i++;
 			}
 			
@@ -990,6 +1001,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			l.put("AvdNavn", new REXPString(AvdNavn));
 			l.put("OpDato", new REXPString(OpDato));
 			l.put("Aar", new REXPString(Aar));
+			l.put("Sykehustype", new REXPDouble(Sykehustype));
 			REXP df = REXP.createDataFrame(l);
 			log.debug("Assigning data frame to R instance");
 			rconn.assign("RegData", df);
