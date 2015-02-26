@@ -6,7 +6,7 @@
  *  Copyleft 2014, SKDE
  */
 
-//package no.skde.report.hjerteinfarkt;
+package no.skde.report.hjerteinfarkt;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
