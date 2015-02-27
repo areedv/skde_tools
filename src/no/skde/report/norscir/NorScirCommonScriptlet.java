@@ -11,12 +11,16 @@ package no.skde.report.norscir;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.fill.*;
+
 import org.apache.log4j.Logger;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import org.rosuda.REngine.*;
 import org.rosuda.REngine.Rserve.*;
 
@@ -205,9 +209,21 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 				if (myDept == null) {
 					myDept = 1;
 				}
+				log.warn("Parameter 'myDept' is deprecated and may be removed in future versions. Replaced by 'orgUnitSelection'");
 				rconn.voidEval("egenavd=" + myDept.toString());
 			} catch (Exception e) {
 				log.debug("Parameter myDept is not defined: " + e.getMessage());
+			}
+			
+			Integer orgUnitSelection;
+			try {
+				orgUnitSelection =  (Integer) ((JRFillParameter) parametersMap.get("orgUnitSelection")).getValue();
+				if (orgUnitSelection == null) {
+					orgUnitSelection = 1;
+				}
+				rconn.voidEval("enhetsUtvalg=" + orgUnitSelection.toString());
+			} catch (Exception e) {
+				log.debug("Parameter orgUnitSelection is not defined: " + e.getMessage());
 			}
 			
 			// AIS; multi select list of values
