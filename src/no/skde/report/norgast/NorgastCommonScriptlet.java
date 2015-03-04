@@ -6,8 +6,7 @@
  *  Copyleft 2014, 2015 SKDE
  */
 
-package no.skde.report.norgast;
-
+//package no.skde.report.norgast;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
