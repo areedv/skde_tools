@@ -250,7 +250,6 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 			JRField PRS_SCOREField = (JRField) fieldsMap.get("PRS_SCORE");
 			JRField READMISSION_STATUSField = (JRField) fieldsMap.get("READMISSION_STATUS");
 			JRField STATUSField = (JRField) fieldsMap.get("STATUS");
-			
 			JRField RELAPAROTOMY_YESField = (JRField) fieldsMap.get("RELAPAROTOMY_YES");
 			JRField READMISSION_ACCORDION_SCOREField = (JRField) fieldsMap.get("READMISSION_ACCORDION_SCORE");
 			JRField READMISSION_RELAPAROTOMYField = (JRField) fieldsMap.get("READMISSION_RELAPAROTOMY");
@@ -294,7 +293,6 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 			Double[] sPRS_SCORE = new Double[1000000];
 			Double[] sREADMISSION_STATUS = new Double[1000000];
 			Double[] sSTATUS = new Double[1000000];
-			
 			Double[] sRELAPAROTOMY_YES = new Double[1000000];
 			String[] sREADMISSION_ACCORDION_SCORE = new String[1000000];
 			Double[] sREADMISSION_RELAPAROTOMY = new Double[1000000];
@@ -334,7 +332,6 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 				sPRS_SCORE[rowidx] = (Double) ds.getFieldValue(PRS_SCOREField);
 				sREADMISSION_STATUS[rowidx] = (Double) ds.getFieldValue(READMISSION_STATUSField);
 				sSTATUS[rowidx] = (Double) ds.getFieldValue(STATUSField);
-				
 				sRELAPAROTOMY_YES[rowidx] = (Double) ds.getFieldValue(RELAPAROTOMY_YESField);
 				sREADMISSION_ACCORDION_SCORE[rowidx] = (String) ds.getFieldValue(READMISSION_ACCORDION_SCOREField);
 				sREADMISSION_RELAPAROTOMY[rowidx] = (Double) ds.getFieldValue(READMISSION_RELAPAROTOMYField);
@@ -375,7 +372,6 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 			double[] PRS_SCORE = new double[rowidx + 1];
 			double[] READMISSION_STATUS = new double[rowidx + 1];
 			double[] STATUS = new double[rowidx + 1];
-			
 			double[] RELAPAROTOMY_YES = new double[rowidx + 1];
 			String[] READMISSION_ACCORDION_SCORE = new String[rowidx + 1];
 			double[] READMISSION_RELAPAROTOMY = new double[rowidx + 1];
@@ -527,7 +523,6 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 				else {
 					STATUS[i] = sSTATUS[i];
 				}
-				
 				if (sRELAPAROTOMY_YES[i] == null) {
 					RELAPAROTOMY_YES[i] = java.lang.Double.NaN;
 				}
@@ -580,7 +575,6 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 			l.put("PRS_SCORE", new REXPDouble(PRS_SCORE));
 			l.put("READMISSION_STATUS", new REXPDouble(READMISSION_STATUS));
 			l.put("STATUS", new REXPDouble(STATUS));
-			
 			l.put("RELAPAROTOMY_YES", new REXPDouble(RELAPAROTOMY_YES));
 			l.put("READMISSION_ACCORDION_SCORE", new REXPString(READMISSION_ACCORDION_SCORE));
 			l.put("READMISSION_RELAPAROTOMY", new REXPDouble(READMISSION_RELAPAROTOMY));
