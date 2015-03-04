@@ -3,7 +3,7 @@
  * NorgastCommonScriptlet.java Sep 14 2014 Are Edvardsen
  * 
  * 
- *  Copyleft 2014, SKDE
+ *  Copyleft 2014, 2015 SKDE
  */
 
 package no.skde.report.norgast;
@@ -149,43 +149,7 @@ public class NorgastCommonScriptlet extends JRDefaultScriptlet {
 				rconn.voidEval("datoTil=" + "'" + endDateString + "'");
 			} catch (Exception e) {
 				log.debug("Parameter endDate is not defined: " + e.getMessage());
-			}
-			
-//			String hospitalsLevel;
-//			try {
-//				hospitalsLevel = (String) ((JRFillParameter) parametersMap.get("hospitalsLevel")).getValue();
-//				if (hospitalsLevel == null) {
-//					hospitalsLevel = "region";
-//				}
-//				rconn.voidEval("ShType=" + "'" + hospitalsLevel.toString() + "'");
-//			} catch (Exception e) {
-//				log.debug("Parameter hospitalsLevel is not defined: " + e.getMessage());
-//			}			
-//			
-//			Integer inFromSituation;
-//			try {
-//				inFromSituation = (Integer) ((JRFillParameter) parametersMap.get("inFromSituation")).getValue();
-//				if (inFromSituation == null) {
-//					inFromSituation = 99;
-//				}
-//
-//				rconn.voidEval("InnMaate=" + inFromSituation.toString());
-//			} catch (Exception e) {
-//				log.debug("Parameter inFromSituation is not defined: " + e.getMessage());
-//			}
-//			
-//			
-//			String isTrauma;
-//			try {
-//				isTrauma = (String) ((JRFillParameter) parametersMap.get("isTrauma")).getValue();
-//				if (isTrauma == null) {
-//					isTrauma = "na";
-//				}
-//
-//				rconn.voidEval("traume=" + "'" + isTrauma.toString() + "'");
-//			} catch (Exception e) {
-//				log.debug("Parameter isTrauma is not defined: " + e.getMessage());
-//			}
+			}			
 			
 			Integer erMann;
 			try {
