@@ -273,6 +273,18 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 				log.debug("Parameter 'hospitalType' is not proivided: " + e.getMessage());
 			}
 			
+			String statMeasureMethod;
+			try {
+				statMeasureMethod = (String) ((JRFillParameter) parametersMap.get("statMeasureMethod")).getValue();
+				if (statMeasureMethod == null) {
+					statMeasureMethod = "Gjsn";
+				}
+				log.debug("'Gjsn' set to: " + statMeasureMethod);
+				rconn.voidEval("valgtMaal=" + "'" + statMeasureMethod.toString() + "'");
+			} catch (Exception e) {
+				log.debug("Parameter statMeasureMethod is not defined: " + e.getMessage());
+			}
+			
 			// set path to library, to be removed since Rapporteket uses same directory for all R files (noweb, libs and report funs)
 			String libkat = "'/opt/jasper/r/'";
 			rconn.voidEval("libkat=" + libkat);
