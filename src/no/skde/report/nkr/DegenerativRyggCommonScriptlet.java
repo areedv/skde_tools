@@ -356,7 +356,8 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			JRField OpDatoField = (JRField) fieldsMap.get("OpDato");
 			JRField AarField = (JRField) fieldsMap.get("Aar");
 			JRField SykehustypeField = (JRField) fieldsMap.get("Sykehustype");
-
+			JRField OpAarField = (JRField) fieldsMap.get("OpAar");
+			JRField RegionField = (JRField) fieldsMap.get("Region");
 			
 			log.debug("Primitive arrays loaded with query data");
 			
@@ -431,7 +432,8 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			String[] sOpDato = new String[100000];
 			String[] sAar = new String[100000];
 			Double[] sSykehustype = new Double[100000];
-
+			Double[] sOpAar = new Double[100000];
+			Double[] sRegion = new Double[100000];
 		
 			
 			log.debug("populating slug array with report data...");			
@@ -499,6 +501,8 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 				sOpDato[rowidx] = (String) ds.getFieldValue(OpDatoField);
 				sAar[rowidx] = (String) ds.getFieldValue(AarField);
 				sSykehustype[rowidx] = (Double) ds.getFieldValue(SykehustypeField);
+				sOpAar[rowidx] = (Double) ds.getFieldValue(OpAarField);
+				sRegion[rowidx] = (Double) ds.getFieldValue(RegionField);
 				getRow = ds.next();
 				rowidx++;
 			}
@@ -569,7 +573,8 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			String[] OpDato = new String[rowidx + 1];
 			String[] Aar = new String[rowidx + 1];
 			double[] Sykehustype = new double[rowidx + 1];
-
+			double[] OpAar = new double[rowidx + 1];
+			double[] Region = new double[rowidx + 1];
 			
 			
 			// ifs are needed because underlying query returns null. Since ints
@@ -949,6 +954,20 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 					Sykehustype[i] = sSykehustype[i];
 				}
 				
+				if (sOpAar[i] == null) {
+					OpAar[i] = java.lang.Double.NaN;
+				}
+				else {
+					OpAar[i] = sOpAar[i];
+				}
+	
+				if (sRegion[i] == null) {
+					Region[i] = java.lang.Double.NaN;
+				}
+				else {
+					Region[i] = sRegion[i];
+				}
+				
 				i++;
 			}
 			
@@ -1014,6 +1033,9 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			l.put("OpDato", new REXPString(OpDato));
 			l.put("Aar", new REXPString(Aar));
 			l.put("Sykehustype", new REXPDouble(Sykehustype));
+			l.put("OpAar", new REXPDouble(OpAar));
+			l.put("Region", new REXPDouble(Region));
+			
 			REXP df = REXP.createDataFrame(l);
 			log.debug("Assigning data frame to R instance");
 			rconn.assign("RegData", df);
