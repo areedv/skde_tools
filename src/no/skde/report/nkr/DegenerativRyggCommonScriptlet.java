@@ -358,6 +358,48 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			JRField SykehustypeField = (JRField) fieldsMap.get("Sykehustype");
 			JRField OpAarField = (JRField) fieldsMap.get("OpAar");
 			JRField RegionField = (JRField) fieldsMap.get("Region");
+			JRField EqangstPreField = (JRField) fieldsMap.get("EqangstPre");
+			JRField ErstatningPreField = (JRField) fieldsMap.get("ErstatningPre");
+			JRField SykdField = (JRField) fieldsMap.get("Sykd");
+			JRField SykdAndreRelevanteSykdBechtrewField = (JRField) fieldsMap.get("SykdAndreRelevanteSykdBechtrew");
+			JRField SykdAnnenendokrinField = (JRField) fieldsMap.get("SykdAnnenendokrin");
+			JRField SykdAnnenreumatiskField = (JRField) fieldsMap.get("SykdAnnenreumatisk");
+			JRField SykdCerebrovaskularField = (JRField) fieldsMap.get("SykdCerebrovaskular");
+			JRField SykdDepresjonAngstField = (JRField) fieldsMap.get("SykdDepresjonAngst");
+			JRField SykdHjertekarField = (JRField) fieldsMap.get("SykdHjertekar");
+			JRField SykdHoftekneartoseField = (JRField) fieldsMap.get("SykdHoftekneartose");
+			JRField SykdHypertensjonField = (JRField) fieldsMap.get("SykdHypertensjon");
+			JRField SykdKreftField = (JRField) fieldsMap.get("SykdKreft");
+			JRField SykdKroniskLungeField = (JRField) fieldsMap.get("SykdKroniskLunge");
+			JRField SykdKroniskNevrologiskField = (JRField) fieldsMap.get("SykdKroniskNevrologisk");
+			JRField SykdKroniskSmerterMuskelSkjelettsystField = (JRField) fieldsMap.get("SykdKroniskSmerterMuskelSkjelettsyst");
+			JRField SykdOsteoporoseField = (JRField) fieldsMap.get("SykdOsteoporose");
+			JRField SykDprebetesMellitusField = (JRField) fieldsMap.get("SykDprebetesMellitus");
+			JRField SykdReumatoidartrittField = (JRField) fieldsMap.get("SykdReumatoidartritt");
+			JRField SykdVaskulærClaudicatioField = (JRField) fieldsMap.get("SykdVaskulærClaudicatio");
+			JRField Kp3MndField = (JRField) fieldsMap.get("Kp3Mnd");
+			JRField MorsmalField = (JRField) fieldsMap.get("Morsmal");
+			JRField OpIndCaudaField = (JRField) fieldsMap.get("OpIndCauda");
+			JRField OpIndPareseField = (JRField) fieldsMap.get("OpIndParese");
+			JRField OpIndSmeField = (JRField) fieldsMap.get("OpIndSme");
+			JRField OpIndPareseGradField = (JRField) fieldsMap.get("OpIndPareseGrad");
+			JRField OpIndSmeTypeField = (JRField) fieldsMap.get("OpIndSmeType");
+			JRField RvCtField = (JRField) fieldsMap.get("RvCt");
+			JRField RvDiscogrField = (JRField) fieldsMap.get("RvDiscogr");
+			JRField RvDpregblokField = (JRField) fieldsMap.get("RvDpregblok");
+			JRField RvFunksjoField = (JRField) fieldsMap.get("RvFunksjo");
+			JRField RvMrField = (JRField) fieldsMap.get("RvMr");
+			JRField RvRadigrField = (JRField) fieldsMap.get("RvRadigr");
+			JRField RvRtgLscolField = (JRField) fieldsMap.get("RvRtgLscol");
+			JRField RokerField = (JRField) fieldsMap.get("Roker");
+			JRField SaardrenField = (JRField) fieldsMap.get("Saardren");
+			JRField SivilStatusField = (JRField) fieldsMap.get("SivilStatus");
+			JRField SmHyppPreField = (JRField) fieldsMap.get("SmHyppPre");
+			JRField SmStiPreField = (JRField) fieldsMap.get("SmStiPre");
+			JRField SymptVarighRyggHofField = (JRField) fieldsMap.get("SymptVarighRyggHof");
+			JRField SympVarighUtstrField = (JRField) fieldsMap.get("SympVarighUtstr");
+			JRField TidlOprAntallField = (JRField) fieldsMap.get("TidlOprAntall");
+			JRField UforetrygdPreField = (JRField) fieldsMap.get("UforetrygdPre");
 			
 			log.debug("Primitive arrays loaded with query data");
 			
@@ -434,7 +476,48 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			Double[] sSykehustype = new Double[100000];
 			Double[] sOpAar = new Double[100000];
 			String[] sRegion = new String[100000];
-		
+			Double[] sEqangstPre = new Double[1000000];
+			Double[] sErstatningPre = new Double[1000000];
+			String[] sSykd = new String[1000000];
+			String[] sSykdAndreRelevanteSykdBechtrew = new String[1000000];
+			String[] sSykdAnnenendokrin = new String[1000000];
+			String[] sSykdAnnenreumatisk = new String[1000000];
+			String[] sSykdCerebrovaskular = new String[1000000];
+			String[] sSykdDepresjonAngst = new String[1000000];
+			String[] sSykdHjertekar = new String[1000000];
+			String[] sSykdHoftekneartose = new String[1000000];
+			String[] sSykdHypertensjon = new String[1000000];
+			String[] sSykdKreft = new String[1000000];
+			String[] sSykdKroniskLunge = new String[1000000];
+			String[] sSykdKroniskNevrologisk = new String[1000000];
+			String[] sSykdKroniskSmerterMuskelSkjelettsyst = new String[1000000];
+			String[] sSykdOsteoporose = new String[1000000];
+			String[] sSykDprebetesMellitus = new String[1000000];
+			String[] sSykdReumatoidartritt = new String[1000000];
+			String[] sSykdVaskulærClaudicatio = new String[1000000];
+			Double[] sKp3Mnd = new Double[1000000];
+			Double[] sMorsmal = new Double[1000000];
+			Double[] sOpIndCauda = new Double[1000000];
+			Double[] sOpIndParese = new Double[1000000];
+			Double[] sOpIndSme = new Double[1000000];
+			Double[] sOpIndPareseGrad = new Double[1000000];
+			Double[] sOpIndSmeType = new Double[1000000];
+			Double[] sRvCt = new Double[1000000];
+			Double[] sRvDiscogr = new Double[1000000];
+			Double[] sRvDpregblok = new Double[1000000];
+			Double[] sRvFunksjo = new Double[1000000];
+			Double[] sRvMr = new Double[1000000];
+			Double[] sRvRadigr = new Double[1000000];
+			Double[] sRvRtgLscol = new Double[1000000];
+			Double[] sRoker = new Double[1000000];
+			Double[] sSaardren = new Double[1000000];
+			Double[] sSivilStatus = new Double[1000000];
+			Double[] sSmHyppPre = new Double[1000000];
+			Double[] sSmStiPre = new Double[1000000];
+			Double[] sSymptVarighRyggHof = new Double[1000000];
+			Double[] sSympVarighUtstr = new Double[1000000];
+			Double[] sTidlOprAntall = new Double[1000000];
+			Double[] sUforetrygdPre = new Double[1000000];
 			
 			log.debug("populating slug array with report data...");			
 			
@@ -503,6 +586,48 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 				sSykehustype[rowidx] = (Double) ds.getFieldValue(SykehustypeField);
 				sOpAar[rowidx] = (Double) ds.getFieldValue(OpAarField);
 				sRegion[rowidx] = (String) ds.getFieldValue(RegionField);
+				sEqangstPre[rowidx] = (Double) ds.getFieldValue(EqangstPreField);
+				sErstatningPre[rowidx] = (Double) ds.getFieldValue(ErstatningPreField);
+				sSykd[rowidx] = (String) ds.getFieldValue(SykdField);
+				sSykdAndreRelevanteSykdBechtrew[rowidx] = (String) ds.getFieldValue(SykdAndreRelevanteSykdBechtrewField);
+				sSykdAnnenendokrin[rowidx] = (String) ds.getFieldValue(SykdAnnenendokrinField);
+				sSykdAnnenreumatisk[rowidx] = (String) ds.getFieldValue(SykdAnnenreumatiskField);
+				sSykdCerebrovaskular[rowidx] = (String) ds.getFieldValue(SykdCerebrovaskularField);
+				sSykdDepresjonAngst[rowidx] = (String) ds.getFieldValue(SykdDepresjonAngstField);
+				sSykdHjertekar[rowidx] = (String) ds.getFieldValue(SykdHjertekarField);
+				sSykdHoftekneartose[rowidx] = (String) ds.getFieldValue(SykdHoftekneartoseField);
+				sSykdHypertensjon[rowidx] = (String) ds.getFieldValue(SykdHypertensjonField);
+				sSykdKreft[rowidx] = (String) ds.getFieldValue(SykdKreftField);
+				sSykdKroniskLunge[rowidx] = (String) ds.getFieldValue(SykdKroniskLungeField);
+				sSykdKroniskNevrologisk[rowidx] = (String) ds.getFieldValue(SykdKroniskNevrologiskField);
+				sSykdKroniskSmerterMuskelSkjelettsyst[rowidx] = (String) ds.getFieldValue(SykdKroniskSmerterMuskelSkjelettsystField);
+				sSykdOsteoporose[rowidx] = (String) ds.getFieldValue(SykdOsteoporoseField);
+				sSykDprebetesMellitus[rowidx] = (String) ds.getFieldValue(SykDprebetesMellitusField);
+				sSykdReumatoidartritt[rowidx] = (String) ds.getFieldValue(SykdReumatoidartrittField);
+				sSykdVaskulærClaudicatio[rowidx] = (String) ds.getFieldValue(SykdVaskulærClaudicatioField);
+				sKp3Mnd[rowidx] = (Double) ds.getFieldValue(Kp3MndField);
+				sMorsmal[rowidx] = (Double) ds.getFieldValue(MorsmalField);
+				sOpIndCauda[rowidx] = (Double) ds.getFieldValue(OpIndCaudaField);
+				sOpIndParese[rowidx] = (Double) ds.getFieldValue(OpIndPareseField);
+				sOpIndSme[rowidx] = (Double) ds.getFieldValue(OpIndSmeField);
+				sOpIndPareseGrad[rowidx] = (Double) ds.getFieldValue(OpIndPareseGradField);
+				sOpIndSmeType[rowidx] = (Double) ds.getFieldValue(OpIndSmeTypeField);
+				sRvCt[rowidx] = (Double) ds.getFieldValue(RvCtField);
+				sRvDiscogr[rowidx] = (Double) ds.getFieldValue(RvDiscogrField);
+				sRvDpregblok[rowidx] = (Double) ds.getFieldValue(RvDpregblokField);
+				sRvFunksjo[rowidx] = (Double) ds.getFieldValue(RvFunksjoField);
+				sRvMr[rowidx] = (Double) ds.getFieldValue(RvMrField);
+				sRvRadigr[rowidx] = (Double) ds.getFieldValue(RvRadigrField);
+				sRvRtgLscol[rowidx] = (Double) ds.getFieldValue(RvRtgLscolField);
+				sRoker[rowidx] = (Double) ds.getFieldValue(RokerField);
+				sSaardren[rowidx] = (Double) ds.getFieldValue(SaardrenField);
+				sSivilStatus[rowidx] = (Double) ds.getFieldValue(SivilStatusField);
+				sSmHyppPre[rowidx] = (Double) ds.getFieldValue(SmHyppPreField);
+				sSmStiPre[rowidx] = (Double) ds.getFieldValue(SmStiPreField);
+				sSymptVarighRyggHof[rowidx] = (Double) ds.getFieldValue(SymptVarighRyggHofField);
+				sSympVarighUtstr[rowidx] = (Double) ds.getFieldValue(SympVarighUtstrField);
+				sTidlOprAntall[rowidx] = (Double) ds.getFieldValue(TidlOprAntallField);
+				sUforetrygdPre[rowidx] = (Double) ds.getFieldValue(UforetrygdPreField);
 				getRow = ds.next();
 				rowidx++;
 			}
@@ -575,7 +700,48 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			double[] Sykehustype = new double[rowidx + 1];
 			double[] OpAar = new double[rowidx + 1];
 			String[] Region = new String[rowidx + 1];
-			
+			double[] EqangstPre = new double[rowidx + 1];
+			double[] ErstatningPre = new double[rowidx + 1];
+			String[] Sykd = new String[rowidx + 1];
+			String[] SykdAndreRelevanteSykdBechtrew = new String[rowidx + 1];
+			String[] SykdAnnenendokrin = new String[rowidx + 1];
+			String[] SykdAnnenreumatisk = new String[rowidx + 1];
+			String[] SykdCerebrovaskular = new String[rowidx + 1];
+			String[] SykdDepresjonAngst = new String[rowidx + 1];
+			String[] SykdHjertekar = new String[rowidx + 1];
+			String[] SykdHoftekneartose = new String[rowidx + 1];
+			String[] SykdHypertensjon = new String[rowidx + 1];
+			String[] SykdKreft = new String[rowidx + 1];
+			String[] SykdKroniskLunge = new String[rowidx + 1];
+			String[] SykdKroniskNevrologisk = new String[rowidx + 1];
+			String[] SykdKroniskSmerterMuskelSkjelettsyst = new String[rowidx + 1];
+			String[] SykdOsteoporose = new String[rowidx + 1];
+			String[] SykDprebetesMellitus = new String[rowidx + 1];
+			String[] SykdReumatoidartritt = new String[rowidx + 1];
+			String[] SykdVaskulærClaudicatio = new String[rowidx + 1];
+			double[] Kp3Mnd = new double[rowidx + 1];
+			double[] Morsmal = new double[rowidx + 1];
+			double[] OpIndCauda = new double[rowidx + 1];
+			double[] OpIndParese = new double[rowidx + 1];
+			double[] OpIndSme = new double[rowidx + 1];
+			double[] OpIndPareseGrad = new double[rowidx + 1];
+			double[] OpIndSmeType = new double[rowidx + 1];
+			double[] RvCt = new double[rowidx + 1];
+			double[] RvDiscogr = new double[rowidx + 1];
+			double[] RvDpregblok = new double[rowidx + 1];
+			double[] RvFunksjo = new double[rowidx + 1];
+			double[] RvMr = new double[rowidx + 1];
+			double[] RvRadigr = new double[rowidx + 1];
+			double[] RvRtgLscol = new double[rowidx + 1];
+			double[] Roker = new double[rowidx + 1];
+			double[] Saardren = new double[rowidx + 1];
+			double[] SivilStatus = new double[rowidx + 1];
+			double[] SmHyppPre = new double[rowidx + 1];
+			double[] SmStiPre = new double[rowidx + 1];
+			double[] SymptVarighRyggHof = new double[rowidx + 1];
+			double[] SympVarighUtstr = new double[rowidx + 1];
+			double[] TidlOprAntall = new double[rowidx + 1];
+			double[] UforetrygdPre = new double[rowidx + 1];
 			
 			// ifs are needed because underlying query returns null. Since ints
 			// cannot be null, these are returned as type double by the query
@@ -963,6 +1129,198 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 	
 				Region[i] = sRegion[i];
 				
+				if (sEqangstPre[i] == null) {
+					EqangstPre[i] = java.lang.Double.NaN;
+				}
+				else {
+					EqangstPre[i] = sEqangstPre[i];
+				}
+
+				if (sErstatningPre[i] == null) {
+					ErstatningPre[i] = java.lang.Double.NaN;
+				}
+				else {
+					ErstatningPre[i] = sErstatningPre[i];
+				}
+
+				Sykd[i] = sSykd[i];
+				SykdAndreRelevanteSykdBechtrew[i] = sSykdAndreRelevanteSykdBechtrew[i];
+				SykdAnnenendokrin[i] = sSykdAnnenendokrin[i];
+				SykdAnnenreumatisk[i] = sSykdAnnenreumatisk[i];
+				SykdCerebrovaskular[i] = sSykdCerebrovaskular[i];
+				SykdDepresjonAngst[i] = sSykdDepresjonAngst[i];
+				SykdHjertekar[i] = sSykdHjertekar[i];
+				SykdHoftekneartose[i] = sSykdHoftekneartose[i];
+				SykdHypertensjon[i] = sSykdHypertensjon[i];
+				SykdKreft[i] = sSykdKreft[i];
+				SykdKroniskLunge[i] = sSykdKroniskLunge[i];
+				SykdKroniskNevrologisk[i] = sSykdKroniskNevrologisk[i];
+				SykdKroniskSmerterMuskelSkjelettsyst[i] = sSykdKroniskSmerterMuskelSkjelettsyst[i];
+				SykdOsteoporose[i] = sSykdOsteoporose[i];
+				SykDprebetesMellitus[i] = sSykDprebetesMellitus[i];
+				SykdReumatoidartritt[i] = sSykdReumatoidartritt[i];
+				SykdVaskulærClaudicatio[i] = sSykdVaskulærClaudicatio[i];
+				if (sKp3Mnd[i] == null) {
+					Kp3Mnd[i] = java.lang.Double.NaN;
+				}
+				else {
+					Kp3Mnd[i] = sKp3Mnd[i];
+				}
+
+				if (sMorsmal[i] == null) {
+					Morsmal[i] = java.lang.Double.NaN;
+				}
+				else {
+					Morsmal[i] = sMorsmal[i];
+				}
+
+				if (sOpIndCauda[i] == null) {
+					OpIndCauda[i] = java.lang.Double.NaN;
+				}
+				else {
+					OpIndCauda[i] = sOpIndCauda[i];
+				}
+
+				if (sOpIndParese[i] == null) {
+					OpIndParese[i] = java.lang.Double.NaN;
+				}
+				else {
+					OpIndParese[i] = sOpIndParese[i];
+				}
+
+				if (sOpIndSme[i] == null) {
+					OpIndSme[i] = java.lang.Double.NaN;
+				}
+				else {
+					OpIndSme[i] = sOpIndSme[i];
+				}
+
+				if (sOpIndPareseGrad[i] == null) {
+					OpIndPareseGrad[i] = java.lang.Double.NaN;
+				}
+				else {
+					OpIndPareseGrad[i] = sOpIndPareseGrad[i];
+				}
+
+				if (sOpIndSmeType[i] == null) {
+					OpIndSmeType[i] = java.lang.Double.NaN;
+				}
+				else {
+					OpIndSmeType[i] = sOpIndSmeType[i];
+				}
+
+				if (sRvCt[i] == null) {
+					RvCt[i] = java.lang.Double.NaN;
+				}
+				else {
+					RvCt[i] = sRvCt[i];
+				}
+
+				if (sRvDiscogr[i] == null) {
+					RvDiscogr[i] = java.lang.Double.NaN;
+				}
+				else {
+					RvDiscogr[i] = sRvDiscogr[i];
+				}
+
+				if (sRvDpregblok[i] == null) {
+					RvDpregblok[i] = java.lang.Double.NaN;
+				}
+				else {
+					RvDpregblok[i] = sRvDpregblok[i];
+				}
+
+				if (sRvFunksjo[i] == null) {
+					RvFunksjo[i] = java.lang.Double.NaN;
+				}
+				else {
+					RvFunksjo[i] = sRvFunksjo[i];
+				}
+
+				if (sRvMr[i] == null) {
+					RvMr[i] = java.lang.Double.NaN;
+				}
+				else {
+					RvMr[i] = sRvMr[i];
+				}
+
+				if (sRvRadigr[i] == null) {
+					RvRadigr[i] = java.lang.Double.NaN;
+				}
+				else {
+					RvRadigr[i] = sRvRadigr[i];
+				}
+
+				if (sRvRtgLscol[i] == null) {
+					RvRtgLscol[i] = java.lang.Double.NaN;
+				}
+				else {
+					RvRtgLscol[i] = sRvRtgLscol[i];
+				}
+
+				if (sRoker[i] == null) {
+					Roker[i] = java.lang.Double.NaN;
+				}
+				else {
+					Roker[i] = sRoker[i];
+				}
+
+				if (sSaardren[i] == null) {
+					Saardren[i] = java.lang.Double.NaN;
+				}
+				else {
+					Saardren[i] = sSaardren[i];
+				}
+
+				if (sSivilStatus[i] == null) {
+					SivilStatus[i] = java.lang.Double.NaN;
+				}
+				else {
+					SivilStatus[i] = sSivilStatus[i];
+				}
+
+				if (sSmHyppPre[i] == null) {
+					SmHyppPre[i] = java.lang.Double.NaN;
+				}
+				else {
+					SmHyppPre[i] = sSmHyppPre[i];
+				}
+
+				if (sSmStiPre[i] == null) {
+					SmStiPre[i] = java.lang.Double.NaN;
+				}
+				else {
+					SmStiPre[i] = sSmStiPre[i];
+				}
+
+				if (sSymptVarighRyggHof[i] == null) {
+					SymptVarighRyggHof[i] = java.lang.Double.NaN;
+				}
+				else {
+					SymptVarighRyggHof[i] = sSymptVarighRyggHof[i];
+				}
+
+				if (sSympVarighUtstr[i] == null) {
+					SympVarighUtstr[i] = java.lang.Double.NaN;
+				}
+				else {
+					SympVarighUtstr[i] = sSympVarighUtstr[i];
+				}
+
+				if (sTidlOprAntall[i] == null) {
+					TidlOprAntall[i] = java.lang.Double.NaN;
+				}
+				else {
+					TidlOprAntall[i] = sTidlOprAntall[i];
+				}
+
+				if (sUforetrygdPre[i] == null) {
+					UforetrygdPre[i] = java.lang.Double.NaN;
+				}
+				else {
+					UforetrygdPre[i] = sUforetrygdPre[i];
+				}
+				
 				i++;
 			}
 			
@@ -1030,6 +1388,48 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			l.put("Sykehustype", new REXPDouble(Sykehustype));
 			l.put("OpAar", new REXPDouble(OpAar));
 			l.put("Region", new REXPString(Region));
+			l.put("EqangstPre", new REXPDouble(EqangstPre));
+			l.put("ErstatningPre", new REXPDouble(ErstatningPre));
+			l.put("Sykd", new REXPString(Sykd));
+			l.put("SykdAndreRelevanteSykdBechtrew", new REXPString(SykdAndreRelevanteSykdBechtrew));
+			l.put("SykdAnnenendokrin", new REXPString(SykdAnnenendokrin));
+			l.put("SykdAnnenreumatisk", new REXPString(SykdAnnenreumatisk));
+			l.put("SykdCerebrovaskular", new REXPString(SykdCerebrovaskular));
+			l.put("SykdDepresjonAngst", new REXPString(SykdDepresjonAngst));
+			l.put("SykdHjertekar", new REXPString(SykdHjertekar));
+			l.put("SykdHoftekneartose", new REXPString(SykdHoftekneartose));
+			l.put("SykdHypertensjon", new REXPString(SykdHypertensjon));
+			l.put("SykdKreft", new REXPString(SykdKreft));
+			l.put("SykdKroniskLunge", new REXPString(SykdKroniskLunge));
+			l.put("SykdKroniskNevrologisk", new REXPString(SykdKroniskNevrologisk));
+			l.put("SykdKroniskSmerterMuskelSkjelettsyst", new REXPString(SykdKroniskSmerterMuskelSkjelettsyst));
+			l.put("SykdOsteoporose", new REXPString(SykdOsteoporose));
+			l.put("SykDprebetesMellitus", new REXPString(SykDprebetesMellitus));
+			l.put("SykdReumatoidartritt", new REXPString(SykdReumatoidartritt));
+			l.put("SykdVaskulærClaudicatio", new REXPString(SykdVaskulærClaudicatio));
+			l.put("Kp3Mnd", new REXPDouble(Kp3Mnd));
+			l.put("Morsmal", new REXPDouble(Morsmal));
+			l.put("OpIndCauda", new REXPDouble(OpIndCauda));
+			l.put("OpIndParese", new REXPDouble(OpIndParese));
+			l.put("OpIndSme", new REXPDouble(OpIndSme));
+			l.put("OpIndPareseGrad", new REXPDouble(OpIndPareseGrad));
+			l.put("OpIndSmeType", new REXPDouble(OpIndSmeType));
+			l.put("RvCt", new REXPDouble(RvCt));
+			l.put("RvDiscogr", new REXPDouble(RvDiscogr));
+			l.put("RvDpregblok", new REXPDouble(RvDpregblok));
+			l.put("RvFunksjo", new REXPDouble(RvFunksjo));
+			l.put("RvMr", new REXPDouble(RvMr));
+			l.put("RvRadigr", new REXPDouble(RvRadigr));
+			l.put("RvRtgLscol", new REXPDouble(RvRtgLscol));
+			l.put("Roker", new REXPDouble(Roker));
+			l.put("Saardren", new REXPDouble(Saardren));
+			l.put("SivilStatus", new REXPDouble(SivilStatus));
+			l.put("SmHyppPre", new REXPDouble(SmHyppPre));
+			l.put("SmStiPre", new REXPDouble(SmStiPre));
+			l.put("SymptVarighRyggHof", new REXPDouble(SymptVarighRyggHof));
+			l.put("SympVarighUtstr", new REXPDouble(SympVarighUtstr));
+			l.put("TidlOprAntall", new REXPDouble(TidlOprAntall));
+			l.put("UforetrygdPre", new REXPDouble(UforetrygdPre));
 			
 			REXP df = REXP.createDataFrame(l);
 			log.debug("Assigning data frame to R instance");
