@@ -29,7 +29,7 @@ public class ProcessSweave extends JRDefaultScriptlet {
 	static Logger log = Logger.getLogger("report");
 	
 	// since at Rapporteket, hardcode the reply-to email address
-	private static final String REPLY_TO_EMAIL_ADDRESS = "noreply@helseregiste.no";
+	private static final String REPLY_TO_EMAIL_ADDRESS = "noreply@helseregister.no";
 	
 	
 	// getters and setters
