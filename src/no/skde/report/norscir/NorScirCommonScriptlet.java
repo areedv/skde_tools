@@ -51,6 +51,7 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 	
 	
 	// report actions
+	@SuppressWarnings("unchecked")
 	private void generateReport() {
 		try {
 			log.info("Start generating R report using " + NorScirCommonScriptlet.class.getName());
