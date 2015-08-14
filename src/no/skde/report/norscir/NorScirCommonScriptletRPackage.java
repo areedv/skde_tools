@@ -86,7 +86,7 @@ public class NorScirCommonScriptletRPackage extends JRDefaultScriptlet {
 				rPackageName = (String) ((JRFillParameter) parametersMap.get("rPackageName")).getValue();
 				if (rPackageName == null || rPackageName == "") {
 					rPackageName = "";
-					log.info("Parameter rPackageName is empty. No R package will be loaded");
+					log.warn("Parameter rPackageName is empty. No R package will be loaded");
 				} else {
 					log.info("Package to be loaded in the R session: " + rPackageName);
 					rconn.voidEval("require(" + rPackageName + ")");
