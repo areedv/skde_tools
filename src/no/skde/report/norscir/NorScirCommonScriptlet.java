@@ -256,7 +256,7 @@ public class NorScirCommonScriptlet extends JRDefaultScriptlet {
 			
 			
 			// Now, removed loading of data through this scriptlet. Revert to previous rev to recreate
-			log.info("RegData no is no longer provided by the NorScir scriptlet");
+			log.info("RegData is no longer provided by NorScir scriptlets");
 			
 			
 			log.debug("Creating dummy R dataframe to ensure compatibility with existing R scripts");
