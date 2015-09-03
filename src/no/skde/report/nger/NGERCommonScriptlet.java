@@ -184,6 +184,72 @@ public class NGERCommonScriptlet extends JRDefaultScriptlet {
 				log.debug("Parameter opGroup is not defined: " + e.getMessage());
 			}
 			
+			Integer minASA;
+			try {
+				minASA = (Integer) ((JRFillParameter) parametersMap.get("minASA")).getValue();
+				if (minASA == null) {
+					minASA = 1;
+				}
+				rconn.voidEval("minASA=" + minASA.toString());
+			} catch (Exception e) {
+				log.debug("Parameter minASA is not defined: " + e.getMessage());
+			}
+			
+			Integer maxASA;
+			try {
+				maxASA = (Integer) ((JRFillParameter) parametersMap.get("maxASA")).getValue();
+				if (maxASA == null) {
+					maxASA = 5;
+				}
+				rconn.voidEval("maxASA=" + maxASA.toString());
+			} catch (Exception e) {
+				log.debug("Parameter maxASA is not defined: " + e.getMessage());
+			}
+			
+			Integer minCom;
+			try {
+				minCom = (Integer) ((JRFillParameter) parametersMap.get("minCom")).getValue();
+				if (minCom == null) {
+					minCom = 1;
+				}
+				rconn.voidEval("minCom=" + minCom.toString());
+			} catch (Exception e) {
+				log.debug("Parameter minCom is not defined: " + e.getMessage());
+			}
+			
+			Integer maxCom;
+			try {
+				maxCom = (Integer) ((JRFillParameter) parametersMap.get("maxCom")).getValue();
+				if (maxCom == null) {
+					maxCom = 4;
+				}
+				rconn.voidEval("maxCom=" + maxCom.toString());
+			} catch (Exception e) {
+				log.debug("Parameter maxCom is not defined: " + e.getMessage());
+			}
+			
+			Integer minBMI;
+			try {
+				minBMI = (Integer) ((JRFillParameter) parametersMap.get("minBMI")).getValue();
+				if (minBMI == null) {
+					minBMI = 0;
+				}
+				rconn.voidEval("minBMI=" + minBMI.toString());
+			} catch (Exception e) {
+				log.debug("Parameter minBMI is not defined: " + e.getMessage());
+			}
+			
+			Integer maxBMI;
+			try {
+				maxBMI = (Integer) ((JRFillParameter) parametersMap.get("maxBMI")).getValue();
+				if (maxBMI == null) {
+					maxBMI = 100;
+				}
+				rconn.voidEval("maxBMI=" + maxBMI.toString());
+			} catch (Exception e) {
+				log.debug("Parameter maxBMI is not defined: " + e.getMessage());
+			}
+			
 			String stack;
 			try {
 				stack = (String) ((JRFillParameter) parametersMap.get("stack")).getValue();
