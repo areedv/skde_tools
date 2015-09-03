@@ -1,9 +1,9 @@
 /**
  * no.skde.report.nger
- * NorgastCommonScriptlet.java Sep 14 2014 Are Edvardsen
+ * NorgastCommonScriptlet.java March 4 2015 Are Edvardsen
  * 
  * 
- *  Copyleft 2014, 2015 SKDE
+ *  Copyleft 2015 SKDE
  */
 
 package no.skde.report.nger;
@@ -222,7 +222,7 @@ public class NGERCommonScriptlet extends JRDefaultScriptlet {
 			rconn.voidEval("libkat=" + libkat);
 			
 			
-			//TODO Add data fields, arrays, checking and loding into R session
+			//TODO Add data fields, arrays, checking and loading into R session
 						
 			
 			// Set up the tmp directory, file names and reportUserInfo
