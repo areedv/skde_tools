@@ -1,6 +1,6 @@
 /**
  * no.skde.report.nger
- * NorgastCommonScriptlet.java March 4 2015 Are Edvardsen
+ * NGERCommonScriptlet.java March 4 2015 Are Edvardsen
  * 
  * 
  *  Copyleft 2015 SKDE
