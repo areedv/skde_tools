@@ -111,6 +111,22 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 				log.info("Start to generate report " + reportFileName);
 			}
 			
+			boolean useRPackage = false;
+			String rPackage;
+			try {
+				rPackage = (String) ((JRFillParameter) parametersMap.get("rPackage")).getValue();
+				if (rPackage == null) {
+					rPackage = "";
+					log.debug("Parameter rPackage is not defined");
+				} else {
+					useRPackage = true;
+					rconn.voidEval("library(" + rPackage + ")");
+					log.debug("Library " + rPackage + " is loaded in the R session");
+				}
+			} catch (Exception e) {
+				log.warn("Could not get parameter rPackage from report definition: " + e.getMessage());
+			}
+			
 			Integer useKnitr = (Integer) ((JRFillParameter) parametersMap.get("useKnitr")).getValue();
 			boolean knitr = false;
 			if (useKnitr == 1) {
