@@ -283,6 +283,17 @@ public class NGERCommonScriptlet extends JRDefaultScriptlet {
 				log.debug("Parameter orgUnitSelection is not defined: " + e.getMessage());
 			}
 			
+			Integer MCEType;
+			try {
+				MCEType = (Integer) ((JRFillParameter) parametersMap.get("MCEType")).getValue();
+				if (MCEType == null) {
+					maxBMI = 99;
+				}
+				rconn.voidEval("MCEType=" + MCEType.toString());
+			} catch (Exception e) {
+				log.debug("Parameter MCEType is not defined: " + e.getMessage());
+			}
+			
 			// set path to library, to be removed since Rapporteket uses same directory for all R files (noweb, libs and report funs)
 			String libkat = "'/opt/jasper/r/'";
 			rconn.voidEval("libkat=" + libkat);
