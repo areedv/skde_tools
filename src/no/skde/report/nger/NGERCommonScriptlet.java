@@ -49,6 +49,14 @@ public class NGERCommonScriptlet extends JRDefaultScriptlet {
 		try {
 			log.info("Start generating R report using " + NGERCommonScriptlet.class.getName());
 			
+			//TODO
+			// Make log entry if class is built as a snapshot. SET MANUALLY!
+			boolean classIsSnapshot = true;
+			if (classIsSnapshot) {
+				log.warn(NGERCommonScriptlet.class.getName() + " is a snapshot. Not to be used in production environment");
+			}
+			
+			
 			// Create the connection
 			log.debug("Getting connection to R instance...");
 			rconn = new RConnection();
@@ -289,6 +297,7 @@ public class NGERCommonScriptlet extends JRDefaultScriptlet {
 				if (MCEType == null) {
 					maxBMI = 99;
 				}
+				log.debug("Parameter MCEType, value to be set in R session: " + MCEType.toString());
 				rconn.voidEval("MCEType=" + MCEType.toString());
 			} catch (Exception e) {
 				log.debug("Parameter MCEType is not defined: " + e.getMessage());
