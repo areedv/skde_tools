@@ -47,7 +47,7 @@ public class HjerneslagCommonScriptletMinimal extends JRDefaultScriptlet {
 	// report actions
 	private void generateReport() {
 		try {
-			log.info("Start generating R report using " + HjerneslagCommonScriptlet.class.getName());
+			log.info("Start generating R report using " + HjerneslagCommonScriptletMinimal.class.getName());
 			
 			// Create the connection
 			log.debug("Getting connection to R instance...");
