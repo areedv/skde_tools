@@ -295,7 +295,7 @@ public class NGERCommonScriptlet extends JRDefaultScriptlet {
 			try {
 				MCEType = (Integer) ((JRFillParameter) parametersMap.get("MCEType")).getValue();
 				if (MCEType == null) {
-					maxBMI = 99;
+					MCEType = 99;
 				}
 				log.debug("Parameter MCEType, value to be set in R session: " + MCEType.toString());
 				rconn.voidEval("MCEType=" + MCEType.toString());
