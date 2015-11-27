@@ -49,6 +49,14 @@ public class NGERCommonScriptlet extends JRDefaultScriptlet {
 		try {
 			log.info("Start generating R report using " + NGERCommonScriptlet.class.getName());
 			
+			//TODO
+			// Make log entry if class is built as a snapshot. SET MANUALLY!
+			boolean classIsSnapshot = false;
+			if (classIsSnapshot) {
+				log.warn(NGERCommonScriptlet.class.getName() + " is a snapshot. Not to be used in production environment");
+			}
+			
+			
 			// Create the connection
 			log.debug("Getting connection to R instance...");
 			rconn = new RConnection();
@@ -281,6 +289,18 @@ public class NGERCommonScriptlet extends JRDefaultScriptlet {
 				rconn.voidEval("enhetsUtvalg=" + orgUnitSelection.toString());
 			} catch (Exception e) {
 				log.debug("Parameter orgUnitSelection is not defined: " + e.getMessage());
+			}
+			
+			Integer MCEType;
+			try {
+				MCEType = (Integer) ((JRFillParameter) parametersMap.get("MCEType")).getValue();
+				if (MCEType == null) {
+					maxBMI = 99;
+				}
+				log.debug("Parameter MCEType, value to be set in R session: " + MCEType.toString());
+				rconn.voidEval("MCEType=" + MCEType.toString());
+			} catch (Exception e) {
+				log.debug("Parameter MCEType is not defined: " + e.getMessage());
 			}
 			
 			// set path to library, to be removed since Rapporteket uses same directory for all R files (noweb, libs and report funs)
