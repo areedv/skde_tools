@@ -112,7 +112,7 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 			}
 			
 			boolean useRPackage = false;
-			String rPackage;
+			String rPackage = "";
 			try {
 				rPackage = (String) ((JRFillParameter) parametersMap.get("rPackage")).getValue();
 				if (rPackage == null) {
@@ -179,23 +179,40 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 			REXP rWorkdir = rconn.eval("getwd()");
 			String workdir = rWorkdir.asString();
 			log.debug("The Rserve session's current working directry is: " + workdir);
-			rconn.assign("workfile", "../" + reportFileName);
-			rconn.assign("reportTmpFileName", reportFileName);
 			log.debug("Making loggedInUserAVD_RESH available to current R session");
 			rconn.assign("reshID", loggedInUserAVD_RESH);
-			REXP workfilename = rconn.eval("paste(workfile, '.Rnw', sep='')");
-			log.debug("Rserve current workfile is: " + workfilename.asString());
-			if (knitr) {
-				log.debug("Continue processing using Knitr...");
-				rconn.voidEval("library(knitr)");
-				rconn.voidEval("file.copy(paste0(workfile, '.Rnw'), '.')");
-				rconn.voidEval("knit(basename(paste(workfile, '.Rnw', sep='')))");
+			rconn.assign("reportTmpFileName", reportFileName);
+			
+			if (useRPackage) {
+				log.debug("R-stuff to be taken from package");
+				rconn.assign("workfile", "system.file('" + reportFileName + ".Rnw', package='" + rPackage + "')");
+				if (knitr) {
+					log.debug("Continue processing using Knitr...");
+					rconn.voidEval("knitr::knit(workfile)");
+				}
+				else {
+					log.debug("Continue processing using Sweave. If this is not what you want, edit jrxml report definition accordingly");
+					rconn.voidEval("Sweave(workfile, encoding='utf8')");
+				}
+			
 			}
 			else {
-				log.debug("Continue processing using Sweave. If this is not what you want, edit jrxml report definition accordingly");
-				//rconn.voidEval("Sweave(paste(workfile, '.Rnw', ', encoding=\'utf8\'', sep=''))");
-				rconn.voidEval("Sweave(paste(workfile, '.Rnw', sep='')" + ", encoding=" + "'" + "utf8" + "'" + ")");
+				rconn.assign("workfile", "../" + reportFileName);
+				REXP workfilename = rconn.eval("paste(workfile, '.Rnw', sep='')");
+				log.debug("Rserve current workfile is: " + workfilename.asString());
+				if (knitr) {
+					log.debug("Continue processing using Knitr...");
+					rconn.voidEval("library(knitr)");
+					rconn.voidEval("file.copy(paste0(workfile, '.Rnw'), '.')");
+					rconn.voidEval("knit(basename(paste(workfile, '.Rnw', sep='')))");
+				}
+				else {
+					log.debug("Continue processing using Sweave. If this is not what you want, edit jrxml report definition accordingly");
+					//rconn.voidEval("Sweave(paste(workfile, '.Rnw', ', encoding=\'utf8\'', sep=''))");
+					rconn.voidEval("Sweave(paste(workfile, '.Rnw', sep='')" + ", encoding=" + "'" + "utf8" + "'" + ")");
+				}
 			}
+			log.debug("Running texi2dvi on resulting LaTeX file...");
 			rconn.voidEval("tools::texi2dvi(paste(reportTmpFileName, '.tex', sep=''), pdf=T, clean=T)");
 			
 			// make a temporary file name for attachment
