@@ -185,7 +185,10 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 			
 			if (useRPackage) {
 				log.debug("R-stuff to be taken from package");
-				rconn.assign("workfile", "system.file('" + reportFileName + ".Rnw', package='" + rPackage + "')");
+				String Rcmd = "system.file('" + reportFileName + ".Rnw', package='" + rPackage + "')";
+				REXP packageNowebFile = rconn.eval(Rcmd);
+				log.debug("Path and name of noweb file: " + packageNowebFile.asString());
+				rconn.assign("workfile", packageNowebFile.asString());
 				if (knitr) {
 					log.debug("Continue processing using Knitr...");
 					rconn.voidEval("knitr::knit(workfile)");
@@ -208,7 +211,6 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 				}
 				else {
 					log.debug("Continue processing using Sweave. If this is not what you want, edit jrxml report definition accordingly");
-					//rconn.voidEval("Sweave(paste(workfile, '.Rnw', ', encoding=\'utf8\'', sep=''))");
 					rconn.voidEval("Sweave(paste(workfile, '.Rnw', sep='')" + ", encoding=" + "'" + "utf8" + "'" + ")");
 				}
 			}
