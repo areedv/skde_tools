@@ -89,12 +89,13 @@ public class RunRFunction extends JRDefaultScriptlet {
 			}
 								
 			// make the R function call
-			String functionCall = rFunctionName + "(" + rFunctionParams + ")";
+			String functionCall = "message <- " + rFunctionName + "(" + rFunctionParams + ")";
 			log.debug("R function call: " + functionCall);
 			
 			// run function
 			log.debug("Running function and assigning output to 'message'");
-			rconn.assign("message", functionCall);
+			// rconn.assign("message", functionCall);
+			rconn.voidEval(functionCall);
 			log.debug("Fetching 'message' to scriptlet");
 			REXP functionMessage = rconn.eval("message");
 			log.debug("Setting message in scriptlet");
