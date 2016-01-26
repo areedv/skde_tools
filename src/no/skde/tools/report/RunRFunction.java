@@ -94,7 +94,6 @@ public class RunRFunction extends JRDefaultScriptlet {
 			
 			// run function
 			log.debug("Running function and assigning output to 'message'");
-			// rconn.assign("message", functionCall);
 			rconn.voidEval(functionCall);
 			log.debug("Fetching 'message' to scriptlet");
 			REXP functionMessage = rconn.eval("message");
