@@ -232,7 +232,7 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 			List<String> bmiList = new ArrayList<String>();
 			String bmi;
 			try {
-				bmiList = (ArrayList<String>) ((JRFillParameter) parametersMap.get("bmi")).getValue();
+				bmiList = (List<String>) ((JRFillParameter) parametersMap.get("bmi")).getValue();
 				bmi = "c(";
 				// if (bmiList.contains("all")) {
 				if (bmiList.isEmpty()) {
