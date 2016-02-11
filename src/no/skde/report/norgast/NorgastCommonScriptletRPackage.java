@@ -234,7 +234,8 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 			try {
 				bmiList = (ArrayList<String>) ((JRFillParameter) parametersMap.get("bmi")).getValue();
 				bmi = "c(";
-				if (bmiList.contains("all")) {
+				// if (bmiList.contains("all")) {
+				if (bmiList.size() == 0) {
 					bmi = bmi + "'')";
 				} else {
 					Iterator<String> iterator = bmiList.iterator();
