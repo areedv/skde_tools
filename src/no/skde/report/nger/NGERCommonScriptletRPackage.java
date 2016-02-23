@@ -73,7 +73,6 @@ public class NGERCommonScriptletRPackage extends JRDefaultScriptlet {
 			String loggedInUserFullName = "";
 			String loggedInUserAVD_RESH = "";
 			String reportName = "";
-			String rScriptName = "";
 			String rFunctionCallString = "";
 			try {
 				loggedInUserFullName = (String) ((JRFillParameter) parametersMap.get("LoggedInUserFullName")).getValue();
@@ -82,7 +81,6 @@ public class NGERCommonScriptletRPackage extends JRDefaultScriptlet {
 				rFunctionCallString = (String) ((JRFillParameter) parametersMap.get("rFunctionCallString")).getValue();
 				log.info("Report to be run: " + reportName);
 				log.info("Report requested by JRS user " + loggedInUserFullName + ", AVD_RESH " + loggedInUserAVD_RESH);
-				log.debug("R script to be called: " + rScriptName);
 				log.debug("R function call string: " + rFunctionCallString);
 				rconn.voidEval("reshID=" + loggedInUserAVD_RESH);
 			} catch (Exception e) {
