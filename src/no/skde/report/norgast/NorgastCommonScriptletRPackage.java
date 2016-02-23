@@ -19,6 +19,10 @@ import org.apache.log4j.Logger;
 import org.rosuda.REngine.*;
 import org.rosuda.REngine.Rserve.*;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 
 	protected RConnection rconn;
@@ -46,6 +50,8 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 	
 	
 	// report actions
+	// Probably because List array of type string cannot know what will be returned by the JRFillParameter
+	@SuppressWarnings("unchecked")
 	private void generateReport() {
 		try {
 			log.info("Start generating R report using " + NorgastCommonScriptlet.class.getName());
@@ -217,6 +223,60 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 			} catch (Exception e) {
 				log.debug("Parameter ratio is not defined: " + e.getMessage());
 			}
+			
+			
+			
+
+
+			// bmi; multi select list of values
+			List<String> bmiList = new ArrayList<String>();
+			String bmi;
+			try {
+				bmiList = (List<String>) ((JRFillParameter) parametersMap.get("bmi")).getValue();
+				bmi = "c(";
+				// if (bmiList.contains("all")) {
+				if (bmiList.isEmpty()) {
+					bmi = bmi + "'')";
+				} else {
+					Iterator<String> iterator = bmiList.iterator();
+					while (iterator.hasNext()) {
+						bmi = bmi + "'" + iterator.next() + "',";
+					}
+					bmi = bmi.substring(0, bmi.length()-1);
+					bmi = bmi + ")";
+				}
+				log.debug("R concat for BMI vector is " + bmi);
+				rconn.voidEval("BMI=" + bmi);
+			} catch (Exception e) {
+				log.debug("Parameter bmi is not defined: " + e.getMessage());
+			}
+
+			// preTreat; multi select list of values
+			List<String> preTreatList = new ArrayList<String>();
+			String preTreat;
+			try {
+				preTreatList = (ArrayList<String>) ((JRFillParameter) parametersMap.get("preTreat")).getValue();
+				preTreat = "c(";
+				if (preTreatList.contains("all")) {
+					preTreat = preTreat + "'')";
+				} else {
+					Iterator<String> iterator = preTreatList.iterator();
+					while (iterator.hasNext()) {
+						preTreat = preTreat + "'" + iterator.next() + "',";
+					}
+					preTreat = preTreat.substring(0, preTreat.length()-1);
+					preTreat = preTreat + ")";
+				}
+				log.debug("R concat for forbehandling vector is " + preTreat);
+				rconn.voidEval("forbehandling=" + preTreat);
+			} catch (Exception e) {
+				log.debug("Parameter preTreat is not defined: " + e.getMessage());
+			}
+
+
+			
+			
+			
 			
 			Integer orgUnitSelection;
 			try {
