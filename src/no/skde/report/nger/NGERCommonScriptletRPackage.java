@@ -52,7 +52,7 @@ public class NGERCommonScriptletRPackage extends JRDefaultScriptlet {
 	// report actions
 	private void generateReport() {
 		try {
-			log.info("Start generating R report using " + NGERCommonScriptlet.class.getName());
+			log.info("Start generating R report using " + NGERCommonScriptletRPackage.class.getName());
 			
 			//TODO
 			// Make log entry if class is built as a snapshot. SET MANUALLY!
@@ -79,7 +79,6 @@ public class NGERCommonScriptletRPackage extends JRDefaultScriptlet {
 				loggedInUserFullName = (String) ((JRFillParameter) parametersMap.get("LoggedInUserFullName")).getValue();
 				loggedInUserAVD_RESH = (String) ((JRFillParameter) parametersMap.get("LoggedInUserAVD_RESH")).getValue();
 				reportName = (String) ((JRFillParameter) parametersMap.get("reportName")).getValue();
-				rScriptName = (String) ((JRFillParameter) parametersMap.get("rScriptName")).getValue();
 				rFunctionCallString = (String) ((JRFillParameter) parametersMap.get("rFunctionCallString")).getValue();
 				log.info("Report to be run: " + reportName);
 				log.info("Report requested by JRS user " + loggedInUserFullName + ", AVD_RESH " + loggedInUserAVD_RESH);
@@ -323,7 +322,7 @@ public class NGERCommonScriptletRPackage extends JRDefaultScriptlet {
 			}
 			
 			// Now, removed loading of data through this scriptlet
-			log.info("RegData is no longer provided by Norgast scriptlets");
+			log.info("RegData is no longer provided by NGER scriptlets");
 
 
 			log.debug("Creating dummy R dataframe to ensure compatibility with existing R scripts");
