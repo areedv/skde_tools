@@ -255,7 +255,7 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 			List<String> preTreatList = new ArrayList<String>();
 			String preTreat;
 			try {
-				preTreatList = (ArrayList<String>) ((JRFillParameter) parametersMap.get("preTreat")).getValue();
+				preTreatList = (List<String>) ((JRFillParameter) parametersMap.get("preTreat")).getValue();
 				preTreat = "c(";
 				if (preTreatList.contains("all")) {
 					preTreat = preTreat + "'')";
@@ -289,7 +289,7 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 			List<String> selectDeptsList = new ArrayList<String>();
 			String selectDepts;
 			try {
-				selectDeptsList = (ArrayList<String>) ((JRFillParameter) parametersMap.get("selectDepts")).getValue();
+				selectDeptsList = (List<String>) ((JRFillParameter) parametersMap.get("selectDepts")).getValue();
 				selectDepts = "c(";
 				if (selectDeptsList.contains("all")) {
 					selectDepts = selectDepts + "'')";
