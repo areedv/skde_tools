@@ -291,7 +291,7 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 			try {
 				selectDeptsList = (List<String>) ((JRFillParameter) parametersMap.get("selectDepts")).getValue();
 				selectDepts = "c(";
-				if (selectDeptsList.contains("all")) {
+				if (selectDeptsList.isEmpty()) {
 					selectDepts = selectDepts + "'')";
 				} else {
 					Iterator<String> iterator = selectDeptsList.iterator();
@@ -305,8 +305,7 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 				rconn.voidEval("valgtShus=" + selectDepts);
 			} catch (Exception e) {
 				log.debug("Parameter selectDepts is not defined: " + e.getMessage());
-			}
-			
+			}			
 			
 			
 			Integer orgUnitSelection;
