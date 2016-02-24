@@ -274,7 +274,38 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 			}
 
 
-			
+			Integer elektiv;
+			try {
+				elektiv = (Integer) ((JRFillParameter) parametersMap.get("elektiv")).getValue();
+				if (elektiv == null) {
+					elektiv = 99;
+				}
+				rconn.voidEval("elektiv=" + elektiv.toString());
+			} catch (Exception e) {
+				log.debug("Parameter elektiv is not defined: " + e.getMessage());
+			}
+
+			// selectDepts; multi select list of values
+			List<String> selectDeptsList = new ArrayList<String>();
+			String selectDepts;
+			try {
+				selectDeptsList = (ArrayList<String>) ((JRFillParameter) parametersMap.get("selectDepts")).getValue();
+				selectDepts = "c(";
+				if (selectDeptsList.contains("all")) {
+					selectDepts = selectDepts + "'')";
+				} else {
+					Iterator<String> iterator = selectDeptsList.iterator();
+					while (iterator.hasNext()) {
+						selectDepts = selectDepts + "'" + iterator.next() + "',";
+					}
+					selectDepts = selectDepts.substring(0, selectDepts.length()-1);
+					selectDepts = selectDepts + ")";
+				}
+				log.debug("R concat for valgtShus vector is " + selectDepts);
+				rconn.voidEval("valgtShus=" + selectDepts);
+			} catch (Exception e) {
+				log.debug("Parameter selectDepts is not defined: " + e.getMessage());
+			}
 			
 			
 			
