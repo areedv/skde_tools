@@ -257,7 +257,7 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 			try {
 				preTreatList = (List<String>) ((JRFillParameter) parametersMap.get("preTreat")).getValue();
 				preTreat = "c(";
-				if (preTreatList.contains("all")) {
+				if (preTreatList.isEmpty()) {
 					preTreat = preTreat + "'')";
 				} else {
 					Iterator<String> iterator = preTreatList.iterator();
