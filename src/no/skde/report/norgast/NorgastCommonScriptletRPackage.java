@@ -54,7 +54,7 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 	@SuppressWarnings("unchecked")
 	private void generateReport() {
 		try {
-			log.info("Start generating R report using " + NorgastCommonScriptlet.class.getName());
+			log.info("Start generating R report using " + NorgastCommonScriptletRPackage.class.getName());
 			
 			// Create the connection
 			log.debug("Getting connection to R instance...");
