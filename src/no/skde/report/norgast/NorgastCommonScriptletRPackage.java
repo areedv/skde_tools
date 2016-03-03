@@ -54,7 +54,7 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 	@SuppressWarnings("unchecked")
 	private void generateReport() {
 		try {
-			log.info("Start generating R report using " + NorgastCommonScriptlet.class.getName());
+			log.info("Start generating R report using " + NorgastCommonScriptletRPackage.class.getName());
 			
 			// Create the connection
 			log.debug("Getting connection to R instance...");
@@ -255,9 +255,9 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 			List<String> preTreatList = new ArrayList<String>();
 			String preTreat;
 			try {
-				preTreatList = (ArrayList<String>) ((JRFillParameter) parametersMap.get("preTreat")).getValue();
+				preTreatList = (List<String>) ((JRFillParameter) parametersMap.get("preTreat")).getValue();
 				preTreat = "c(";
-				if (preTreatList.contains("all")) {
+				if (preTreatList.isEmpty()) {
 					preTreat = preTreat + "'')";
 				} else {
 					Iterator<String> iterator = preTreatList.iterator();
@@ -274,8 +274,38 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 			}
 
 
-			
-			
+			Integer elektiv;
+			try {
+				elektiv = (Integer) ((JRFillParameter) parametersMap.get("elektiv")).getValue();
+				if (elektiv == null) {
+					elektiv = 99;
+				}
+				rconn.voidEval("elektiv=" + elektiv.toString());
+			} catch (Exception e) {
+				log.debug("Parameter elektiv is not defined: " + e.getMessage());
+			}
+
+			// selectDepts; multi select list of values
+			List<String> selectDeptsList = new ArrayList<String>();
+			String selectDepts;
+			try {
+				selectDeptsList = (List<String>) ((JRFillParameter) parametersMap.get("selectDepts")).getValue();
+				selectDepts = "c(";
+				if (selectDeptsList.isEmpty()) {
+					selectDepts = selectDepts + "'')";
+				} else {
+					Iterator<String> iterator = selectDeptsList.iterator();
+					while (iterator.hasNext()) {
+						selectDepts = selectDepts + "'" + iterator.next() + "',";
+					}
+					selectDepts = selectDepts.substring(0, selectDepts.length()-1);
+					selectDepts = selectDepts + ")";
+				}
+				log.debug("R concat for valgtShus vector is " + selectDepts);
+				rconn.voidEval("valgtShus=" + selectDepts);
+			} catch (Exception e) {
+				log.debug("Parameter selectDepts is not defined: " + e.getMessage());
+			}			
 			
 			
 			Integer orgUnitSelection;
