@@ -355,6 +355,31 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 				log.debug("Parameter tilgang is not defined: " + e.getMessage());
 			}
 			
+			
+			Double minPRS;
+			try {
+				minPRS = (Double) ((JRFillParameter) parametersMap.get("minPRS")).getValue();
+				if (minPRS == null) {
+					minPRS = 0.0;
+				}
+				rconn.voidEval("minPRS=" + minPRS.toString());
+			} catch (Exception e) {
+				log.debug("Parameter minPRS is not defined: " + e.getMessage());
+			}
+
+
+
+			Double maxPRS;
+			try {
+				maxPRS = (Double) ((JRFillParameter) parametersMap.get("maxPRS")).getValue();
+				if (maxPRS == null) {
+					maxPRS = 2.0;
+				}
+				rconn.voidEval("maxPRS=" + maxPRS.toString());
+			} catch (Exception e) {
+				log.debug("Parameter maxPRS is not defined: " + e.getMessage());
+			}
+			
 			// ---
 			
 			Integer orgUnitSelection;
