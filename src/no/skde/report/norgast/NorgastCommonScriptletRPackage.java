@@ -307,6 +307,65 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 				log.debug("Parameter selectDepts is not defined: " + e.getMessage());
 			}			
 			
+			// ---
+			
+			// asa; multi select list of values
+			List<String> asaList = new ArrayList<String>();
+			String asa;
+			try {
+				asaList = (List<String>) ((JRFillParameter) parametersMap.get("asa")).getValue();
+				asa = "c(";
+				if (asaList.isEmpty()) {
+					asa = asa + "'')";
+				} else {
+					Iterator<String> iterator = asaList.iterator();
+					while (iterator.hasNext()) {
+						asa = asa + "'" + iterator.next() + "',";
+					}
+					asa = asa.substring(0, asa.length()-1);
+					asa = asa + ")";
+				}
+				log.debug("R concat for ASA vector is " + asa);
+				rconn.voidEval("ASA=" + asa);
+			} catch (Exception e) {
+				log.debug("Parameter asa is not defined: " + e.getMessage());
+			}                                            
+
+			// whoEcog; multi select list of values
+			List<String> whoEcogList = new ArrayList<String>();
+			String whoEcog;
+			try {
+				whoEcogList = (List<String>) ((JRFillParameter) parametersMap.get("whoEcog")).getValue();
+				whoEcog = "c(";
+				if (whoEcogList.isEmpty()) {
+					whoEcog = whoEcog + "'')";
+				} else {
+					Iterator<String> iterator = whoEcogList.iterator();
+					while (iterator.hasNext()) {
+						whoEcog = whoEcog + "'" + iterator.next() + "',";
+					}
+					whoEcog = whoEcog.substring(0, whoEcog.length()-1);
+					whoEcog = whoEcog + ")";
+				}
+				log.debug("R concat for whoEcog vector is " + whoEcog);
+				rconn.voidEval("whoEcog=" + whoEcog);
+			} catch (Exception e) {
+				log.debug("Parameter whoEcog is not defined: " + e.getMessage());
+			}
+
+
+			Integer tilgang;
+			try {
+				tilgang = (Integer) ((JRFillParameter) parametersMap.get("tilgang")).getValue();
+				if (tilgang == null) {
+					tilgang = 99;
+				}
+				rconn.voidEval("tilgang=" + tilgang.toString());
+			} catch (Exception e) {
+				log.debug("Parameter tilgang is not defined: " + e.getMessage());
+			}
+			
+			// ---
 			
 			Integer orgUnitSelection;
 			try {
