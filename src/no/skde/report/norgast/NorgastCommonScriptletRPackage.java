@@ -252,28 +252,18 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 			}
 
 			// preTreat; multi select list of values
-			List<String> preTreatList = new ArrayList<String>();
-			String preTreat;
+			Integer preTreat;
 			try {
-				preTreatList = (List<String>) ((JRFillParameter) parametersMap.get("preTreat")).getValue();
-				preTreat = "c(";
-				if (preTreatList.isEmpty()) {
-					preTreat = preTreat + "'')";
-				} else {
-					Iterator<String> iterator = preTreatList.iterator();
-					while (iterator.hasNext()) {
-						preTreat = preTreat + "'" + iterator.next() + "',";
-					}
-					preTreat = preTreat.substring(0, preTreat.length()-1);
-					preTreat = preTreat + ")";
+				preTreat = (Integer) ((JRFillParameter) parametersMap.get("preTreat")).getValue();
+				if (preTreat == null) {
+					preTreat = 99;
 				}
-				log.debug("R concat for forbehandling vector is " + preTreat);
-				rconn.voidEval("forbehandling=" + preTreat);
+				rconn.voidEval("forbehandling=" + preTreat.toString());
 			} catch (Exception e) {
 				log.debug("Parameter preTreat is not defined: " + e.getMessage());
 			}
 
-
+			
 			Integer elektiv;
 			try {
 				elektiv = (Integer) ((JRFillParameter) parametersMap.get("elektiv")).getValue();
