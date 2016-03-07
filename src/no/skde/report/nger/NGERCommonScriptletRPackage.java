@@ -20,8 +20,11 @@ import org.apache.log4j.Logger;
 import org.rosuda.REngine.REXP;
 import org.rosuda.REngine.REXPString;
 import org.rosuda.REngine.RList;
-//import org.rosuda.REngine.*;
 import org.rosuda.REngine.Rserve.*;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class NGERCommonScriptletRPackage extends JRDefaultScriptlet {
 
@@ -48,7 +51,9 @@ public class NGERCommonScriptletRPackage extends JRDefaultScriptlet {
 		super.afterReportInit();
 	}
 	
-	
+	// Probably because List array of type string cannot know what will be returned by the JRFillParameter
+	@SuppressWarnings("unchecked")
+
 	// report actions
 	private void generateReport() {
 		try {
@@ -56,7 +61,7 @@ public class NGERCommonScriptletRPackage extends JRDefaultScriptlet {
 			
 			//TODO
 			// Make log entry if class is built as a snapshot. SET MANUALLY!
-			boolean classIsSnapshot = false;
+			boolean classIsSnapshot = true;
 			if (classIsSnapshot) {
 				log.warn(NGERCommonScriptlet.class.getName() + " is a snapshot. Not to be used in production environment");
 			}
@@ -318,6 +323,29 @@ public class NGERCommonScriptletRPackage extends JRDefaultScriptlet {
 			} catch (Exception e) {
 				log.debug("Parameter MCEType is not defined: " + e.getMessage());
 			}
+			
+			// AlvorlighetKompl; multi select list of values
+			List<String> AlvorlighetKomplList = new ArrayList<String>();
+			String AlvorlighetKompl;
+			try {
+				AlvorlighetKomplList = (List<String>) ((JRFillParameter) parametersMap.get("AlvorlighetKompl")).getValue();
+				AlvorlighetKompl = "c(";
+				if (AlvorlighetKomplList.isEmpty()) {
+					AlvorlighetKompl = AlvorlighetKompl + "'')";
+				} else {
+					Iterator<String> iterator = AlvorlighetKomplList.iterator();
+					while (iterator.hasNext()) {
+						AlvorlighetKompl = AlvorlighetKompl + "'" + iterator.next() + "',";
+					}
+					AlvorlighetKompl = AlvorlighetKompl.substring(0, AlvorlighetKompl.length()-1);
+					AlvorlighetKompl = AlvorlighetKompl + ")";
+				}
+				log.debug("R concat for AlvorlighetKompl vector is " + AlvorlighetKompl);
+				rconn.voidEval("AlvorlighetKompl=" + AlvorlighetKompl);
+			} catch (Exception e) {
+				log.debug("Parameter AlvorlighetKompl is not defined: " + e.getMessage());
+			}
+
 			
 			// Now, removed loading of data through this scriptlet
 			log.info("RegData is no longer provided by NGER scriptlets");
