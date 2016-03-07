@@ -252,28 +252,18 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 			}
 
 			// preTreat; multi select list of values
-			List<String> preTreatList = new ArrayList<String>();
-			String preTreat;
+			Integer preTreat;
 			try {
-				preTreatList = (List<String>) ((JRFillParameter) parametersMap.get("preTreat")).getValue();
-				preTreat = "c(";
-				if (preTreatList.isEmpty()) {
-					preTreat = preTreat + "'')";
-				} else {
-					Iterator<String> iterator = preTreatList.iterator();
-					while (iterator.hasNext()) {
-						preTreat = preTreat + "'" + iterator.next() + "',";
-					}
-					preTreat = preTreat.substring(0, preTreat.length()-1);
-					preTreat = preTreat + ")";
+				preTreat = (Integer) ((JRFillParameter) parametersMap.get("preTreat")).getValue();
+				if (preTreat == null) {
+					preTreat = 99;
 				}
-				log.debug("R concat for forbehandling vector is " + preTreat);
-				rconn.voidEval("forbehandling=" + preTreat);
+				rconn.voidEval("forbehandling=" + preTreat.toString());
 			} catch (Exception e) {
 				log.debug("Parameter preTreat is not defined: " + e.getMessage());
 			}
 
-
+			
 			Integer elektiv;
 			try {
 				elektiv = (Integer) ((JRFillParameter) parametersMap.get("elektiv")).getValue();
@@ -307,6 +297,90 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 				log.debug("Parameter selectDepts is not defined: " + e.getMessage());
 			}			
 			
+			// ---
+			
+			// asa; multi select list of values
+			List<String> asaList = new ArrayList<String>();
+			String asa;
+			try {
+				asaList = (List<String>) ((JRFillParameter) parametersMap.get("asa")).getValue();
+				asa = "c(";
+				if (asaList.isEmpty()) {
+					asa = asa + "'')";
+				} else {
+					Iterator<String> iterator = asaList.iterator();
+					while (iterator.hasNext()) {
+						asa = asa + "'" + iterator.next() + "',";
+					}
+					asa = asa.substring(0, asa.length()-1);
+					asa = asa + ")";
+				}
+				log.debug("R concat for ASA vector is " + asa);
+				rconn.voidEval("ASA=" + asa);
+			} catch (Exception e) {
+				log.debug("Parameter asa is not defined: " + e.getMessage());
+			}                                            
+
+			// whoEcog; multi select list of values
+			List<String> whoEcogList = new ArrayList<String>();
+			String whoEcog;
+			try {
+				whoEcogList = (List<String>) ((JRFillParameter) parametersMap.get("whoEcog")).getValue();
+				whoEcog = "c(";
+				if (whoEcogList.isEmpty()) {
+					whoEcog = whoEcog + "'')";
+				} else {
+					Iterator<String> iterator = whoEcogList.iterator();
+					while (iterator.hasNext()) {
+						whoEcog = whoEcog + "'" + iterator.next() + "',";
+					}
+					whoEcog = whoEcog.substring(0, whoEcog.length()-1);
+					whoEcog = whoEcog + ")";
+				}
+				log.debug("R concat for whoEcog vector is " + whoEcog);
+				rconn.voidEval("whoEcog=" + whoEcog);
+			} catch (Exception e) {
+				log.debug("Parameter whoEcog is not defined: " + e.getMessage());
+			}
+
+
+			Integer tilgang;
+			try {
+				tilgang = (Integer) ((JRFillParameter) parametersMap.get("tilgang")).getValue();
+				if (tilgang == null) {
+					tilgang = 99;
+				}
+				rconn.voidEval("tilgang=" + tilgang.toString());
+			} catch (Exception e) {
+				log.debug("Parameter tilgang is not defined: " + e.getMessage());
+			}
+			
+			
+			Double minPRS;
+			try {
+				minPRS = (Double) ((JRFillParameter) parametersMap.get("minPRS")).getValue();
+				if (minPRS == null) {
+					minPRS = 0.0;
+				}
+				rconn.voidEval("minPRS=" + minPRS.toString());
+			} catch (Exception e) {
+				log.debug("Parameter minPRS is not defined: " + e.getMessage());
+			}
+
+
+
+			Double maxPRS;
+			try {
+				maxPRS = (Double) ((JRFillParameter) parametersMap.get("maxPRS")).getValue();
+				if (maxPRS == null) {
+					maxPRS = 2.0;
+				}
+				rconn.voidEval("maxPRS=" + maxPRS.toString());
+			} catch (Exception e) {
+				log.debug("Parameter maxPRS is not defined: " + e.getMessage());
+			}
+			
+			// ---
 			
 			Integer orgUnitSelection;
 			try {
