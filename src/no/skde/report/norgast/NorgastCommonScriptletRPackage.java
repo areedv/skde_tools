@@ -14,6 +14,7 @@ import java.util.Date;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.fill.*;
+import no.skde.report.nger.NGERCommonScriptlet;
 
 import org.apache.log4j.Logger;
 import org.rosuda.REngine.*;
@@ -55,6 +56,13 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 	private void generateReport() {
 		try {
 			log.info("Start generating R report using " + NorgastCommonScriptletRPackage.class.getName());
+			
+			//TODO
+			// Make log entry if class is built as a snapshot. SET MANUALLY!
+			boolean classIsSnapshot = false;
+			if (classIsSnapshot) {
+				log.warn(NorgastCommonScriptletRPackage.class.getName() + " is a snapshot. Not to be used in production environment");
+			}
 			
 			// Create the connection
 			log.debug("Getting connection to R instance...");
