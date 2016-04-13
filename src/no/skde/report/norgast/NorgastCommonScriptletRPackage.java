@@ -14,6 +14,7 @@ import java.util.Date;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.fill.*;
+//import no.skde.report.nger.NGERCommonScriptlet;
 
 import org.apache.log4j.Logger;
 import org.rosuda.REngine.*;
@@ -55,6 +56,13 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 	private void generateReport() {
 		try {
 			log.info("Start generating R report using " + NorgastCommonScriptletRPackage.class.getName());
+			
+			//TODO
+			// Make log entry if class is built as a snapshot. SET MANUALLY!
+			boolean classIsSnapshot = false;
+			if (classIsSnapshot) {
+				log.warn(NorgastCommonScriptletRPackage.class.getName() + " is a snapshot. Not to be used in production environment");
+			}
 			
 			// Create the connection
 			log.debug("Getting connection to R instance...");
@@ -354,7 +362,29 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 			} catch (Exception e) {
 				log.debug("Parameter tilgang is not defined: " + e.getMessage());
 			}
-			
+
+			Integer inkl_konf;
+			try {
+				inkl_konf = (Integer) ((JRFillParameter) parametersMap.get("inkl_konf")).getValue();
+				if (inkl_konf == null) {
+					inkl_konf = 99;
+				}
+				rconn.voidEval("inkl_konf=" + inkl_konf.toString());
+			} catch (Exception e) {
+				log.debug("Parameter inkl_konf is not defined: " + e.getMessage());
+			}
+
+			String tidsenhet;
+			try {
+				log.debug("Getting parameter values");
+				tidsenhet = (String) ((JRFillParameter) parametersMap.get("tidsenhet")).getValue();
+				if (tidsenhet == null) {
+					tidsenhet = "Aar";
+				}
+				rconn.voidEval("tidsenhet=" + "'" + tidsenhet + "'");
+			} catch (Exception e) {
+				log.debug("Parameter tidsenhet is not defined: " + e.getMessage());
+			}
 			
 			Double minPRS;
 			try {
