@@ -346,6 +346,28 @@ public class NGERCommonScriptletRPackage extends JRDefaultScriptlet {
 				log.debug("Parameter AlvorlighetKompl is not defined: " + e.getMessage());
 			}
 
+			//Hastegrad; multi select list of values
+			List<String> HastegradList = new ArrayList<String>();
+			String Hastegrad;
+			try {
+				HastegradList = (List<String>) ((JRFillParameter) parametersMap.get("Hastegrad")).getValue();
+				Hastegrad = "c(";
+				// if (HastegradList.contains("all")) {
+				if (HastegradList.isEmpty()) {
+					Hastegrad = Hastegrad + "'')";
+				} else {
+					Iterator<String> iterator = HastegradList.iterator();
+					while (iterator.hasNext()) {
+						Hastegrad = Hastegrad + "'" + iterator.next() + "',";
+					}
+					Hastegrad = Hastegrad.substring(0, Hastegrad.length()-1);
+					Hastegrad = Hastegrad + ")";
+				}
+				log.debug("R concat for Hastegrad vector is " + Hastegrad);
+				rconn.voidEval("Hastegrad=" + Hastegrad);
+			} catch (Exception e) {
+				log.debug("Parameter Hastegrad is not defined: " + e.getMessage());
+			}
 			
 			// Now, removed loading of data through this scriptlet
 			log.info("RegData is no longer provided by NGER scriptlets");
