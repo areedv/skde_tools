@@ -12,8 +12,10 @@ package no.skde.report.hjerneslag;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.fill.*;
+
 import org.apache.log4j.Logger;
 import org.rosuda.REngine.*;
 import org.rosuda.REngine.Rserve.*;
@@ -79,6 +81,20 @@ public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
 			}
 			
 			// the rest of parameters are optional, but must match whatever needed by R
+			String rPackageName;
+			try {
+				rPackageName = (String) ((JRFillParameter) parametersMap.get("rPackageName")).getValue();
+				if (rPackageName == null || rPackageName == "") {
+					rPackageName = "";
+					log.warn("Parameter rPackageName is empty. No R package will be loaded");
+				} else {
+					log.info("Package to be loaded in the R session: " + rPackageName);
+					rconn.voidEval("require(" + rPackageName + ")");
+				}
+			} catch (Exception e) {
+				log.warn("No package loaded in R session: " + e.getMessage());
+			}
+			
 			String varName;
 			try {
 				log.debug("Getting parameter values");
