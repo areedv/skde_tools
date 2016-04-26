@@ -237,19 +237,15 @@ public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
 				log.debug("Parameter orgUnitSelection is not defined: " + e.getMessage());
 			}
 			
-			// set path to library, to be removed since Rapporteket uses same directory for all R files (noweb, libs and report funs)
-			String libkat = "'/opt/jasper/r/'";
-			rconn.voidEval("libkat=" + libkat);
-			
-			log.info("This scriptlet does NOT carry any report data");
-
-			
-			log.debug("Creating dummy R dataframe to ensure compatibility");
+			log.debug("Creating dummy R dataframe to ensure compatibility with existing R scripts");
 
 			RList l = new RList();
+
+			// anything goes...
 			l.put("Rapportnavn", new REXPString(reportName));
+
 			REXP df = REXP.createDataFrame(l);
-			log.debug("Assigning dummy data frame to R instance");
+			log.debug("Assigning data frame to R instance");
 			rconn.assign("RegData", df);
 
 			
