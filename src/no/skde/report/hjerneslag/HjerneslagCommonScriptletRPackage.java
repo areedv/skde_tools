@@ -272,7 +272,6 @@ public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
 			String rcmd = rFunctionCallString;
 			
 			// Source the function
-			rconn.assign("source_file", "/opt/jasper/r/" + rScriptName);
 			log.debug("In R instance: sourcing R code...");
 			rconn.voidEval("source(source_file)");
 
