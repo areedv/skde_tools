@@ -69,17 +69,14 @@ public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
 			String loggedInUserFullName = "";
 			String loggedInUserAVD_RESH = "";
 			String reportName = "";
-			String rScriptName = "";
 			String rFunctionCallString = "";
 			try {
 				loggedInUserFullName = (String) ((JRFillParameter) parametersMap.get("LoggedInUserFullName")).getValue();
 				loggedInUserAVD_RESH = (String) ((JRFillParameter) parametersMap.get("LoggedInUserAVD_RESH")).getValue();
 				reportName = (String) ((JRFillParameter) parametersMap.get("reportName")).getValue();
-				rScriptName = (String) ((JRFillParameter) parametersMap.get("rScriptName")).getValue();
 				rFunctionCallString = (String) ((JRFillParameter) parametersMap.get("rFunctionCallString")).getValue();
 				log.info("Report to be run: " + reportName);
 				log.info("Report requested by JRS user " + loggedInUserFullName + ", AVD_RESH " + loggedInUserAVD_RESH);
-				log.debug("R script to be called: " + rScriptName);
 				log.debug("R function call string: " + rFunctionCallString);
 				
 				rconn.voidEval("reshID=" + loggedInUserAVD_RESH);
