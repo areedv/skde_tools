@@ -277,7 +277,16 @@ public class NRACommonScriptlet extends JRDefaultScriptlet {
 				log.debug("Parameter tidsenhet is not defined: " + e.getMessage());
 			}
 			
-			
+			Integer sammenlign;
+			try {
+				sammenlign = (Integer) ((JRFillParameter) parametersMap.get("sammenlign")).getValue();
+				if (sammenlign == null) {
+					sammenlign = 1;
+				}
+				rconn.voidEval("sammenlign=" + sammenlign.toString());
+			} catch (Exception e) {
+				log.debug("Parameter sammenlign is not defined: " + e.getMessage());
+			}
 			// ---
 			
 			Integer orgUnitSelection;
