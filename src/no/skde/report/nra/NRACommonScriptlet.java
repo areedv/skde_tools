@@ -1,13 +1,12 @@
 /**
- * no.skde.report.hjerneslag
- * HjerneslagCommonScriptletRPackage.java Apr 26 2016 Are Edvardsen
+ * no.skde.report.nra
+ * nraCommonScriptletRPackage.java Jan 26 2016 Are Edvardsen
  * 
- * R resources provided as R-package
  * 
- *  Copyleft 2016, SKDE
+ *  Copyleft 2016 SKDE
  */
 
-package no.skde.report.hjerneslag;
+package no.skde.report.nra;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -20,7 +19,11 @@ import org.apache.log4j.Logger;
 import org.rosuda.REngine.*;
 import org.rosuda.REngine.Rserve.*;
 
-public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class NRACommonScriptlet extends JRDefaultScriptlet {
 
 	protected RConnection rconn;
 	private String fileName;
@@ -47,15 +50,17 @@ public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
 	
 	
 	// report actions
+	// Probably because List array of type string cannot know what will be returned by the JRFillParameter
+	@SuppressWarnings("unchecked")
 	private void generateReport() {
 		try {
-			log.info("Start generating R report using " + HjerneslagCommonScriptletRPackage.class.getName());
+			log.info("Start generating R report using " + NRACommonScriptlet.class.getName());
 			
 			//TODO
 			// Make log entry if class is built as a snapshot. SET MANUALLY!
 			boolean classIsSnapshot = false;
 			if (classIsSnapshot) {
-				log.warn(HjerneslagCommonScriptletRPackage.class.getName() + " is a snapshot. Not to be used in production environment");
+				log.warn(NRACommonScriptlet.class.getName() + " is a snapshot. Not to be used in production environment");
 			}
 			
 			// Create the connection
@@ -78,7 +83,6 @@ public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
 				log.info("Report to be run: " + reportName);
 				log.info("Report requested by JRS user " + loggedInUserFullName + ", AVD_RESH " + loggedInUserAVD_RESH);
 				log.debug("R function call string: " + rFunctionCallString);
-				
 				rconn.voidEval("reshID=" + loggedInUserAVD_RESH);
 			} catch (Exception e) {
 				log.error("Mandatory parameters in the report definition calling this scriptlet were not defined: " + e.getMessage());
@@ -99,16 +103,16 @@ public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
 				log.warn("No package loaded in R session: " + e.getMessage());
 			}
 			
-			String varName;
+			String valgtVar;
 			try {
 				log.debug("Getting parameter values");
-				varName = (String) ((JRFillParameter) parametersMap.get("varName")).getValue();
-				if (varName == null) {
-					varName = "nada";
+				valgtVar = (String) ((JRFillParameter) parametersMap.get("valgtVar")).getValue();
+				if (valgtVar == null) {
+					valgtVar = "nada";
 				}
-				rconn.voidEval("valgtVar=" + "'" + varName + "'");
+				rconn.voidEval("valgtVar=" + "'" + valgtVar + "'");
 			} catch (Exception e) {
-				log.debug("Parameter varName is not defined: " + e.getMessage());
+				log.debug("Parameter valgtVar is not defined: " + e.getMessage());
 			}
 			
 			String statMeasureMethod;
@@ -154,10 +158,10 @@ public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
 				if (beginDate == null) {
 					beginDate = new SimpleDateFormat("yyyy-MM-dd").parse("2010-01-01");
 				}
-				StringBuilder startDateString = new StringBuilder(rFormat.format(beginDate));
-				rconn.voidEval("datoFra=" + "'" + startDateString + "'");
+				StringBuilder beginDateString = new StringBuilder(rFormat.format(beginDate));
+				rconn.voidEval("datoFra=" + "'" + beginDateString + "'");
 			} catch (Exception e) {
-				log.debug("Parameter startDate is not defined: " + e.getMessage());
+				log.debug("Parameter beginDate is not defined: " + e.getMessage());
 			}
 
 			Date endDate;
@@ -170,8 +174,7 @@ public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
 				rconn.voidEval("datoTil=" + "'" + endDateString + "'");
 			} catch (Exception e) {
 				log.debug("Parameter endDate is not defined: " + e.getMessage());
-			}
-			
+			}			
 			
 			Integer erMann;
 			try {
@@ -183,52 +186,108 @@ public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
 			} catch (Exception e) {
 				log.debug("Parameter erMann is not defined: " + e.getMessage());
 			}
-			
-			String diagnose;
+
+
+			// valgtShus; multi select list of values
+			List<String> valgtShusList = new ArrayList<String>();
+			String valgtShus;
 			try {
-				diagnose = (String) ((JRFillParameter) parametersMap.get("diagnose")).getValue();
-				if (diagnose == "") {
-					diagnose = "99";
+				valgtShusList = (List<String>) ((JRFillParameter) parametersMap.get("valgtShus")).getValue();
+				valgtShus = "c(";
+				if (valgtShusList.isEmpty()) {
+					valgtShus = valgtShus + "'')";
+				} else {
+					Iterator<String> iterator = valgtShusList.iterator();
+					while (iterator.hasNext()) {
+						valgtShus = valgtShus + "'" + iterator.next() + "',";
+					}
+					valgtShus = valgtShus.substring(0, valgtShus.length()-1);
+					valgtShus = valgtShus + ")";
 				}
-				rconn.voidEval("diagnose=" + diagnose);
+				log.debug("R concat for valgtShus vector is " + valgtShus);
+				rconn.voidEval("valgtShus=" + valgtShus);
 			} catch (Exception e) {
-				log.debug("Parameter diagnose is not defined: " + e.getMessage());
+				log.debug("Parameter valgtShus is not defined: " + e.getMessage());
 			}
 			
-			String innl4t;
+			// forlopstype1; multi select list of values
+			List<String> forlopstype1List = new ArrayList<String>();
+			String forlopstype1;
 			try {
-				innl4t = (String) ((JRFillParameter) parametersMap.get("innl4t")).getValue();
-				if (innl4t == "") {
-					innl4t = "9";
+				forlopstype1List = (List<String>) ((JRFillParameter) parametersMap.get("forlopstype1")).getValue();
+				forlopstype1 = "c(";
+				if (forlopstype1List.isEmpty()) {
+					forlopstype1 = forlopstype1 + "'')";
+				} else {
+					Iterator<String> iterator = forlopstype1List.iterator();
+					while (iterator.hasNext()) {
+						forlopstype1 = forlopstype1 + "'" + iterator.next() + "',";
+					}
+					forlopstype1 = forlopstype1.substring(0, forlopstype1.length()-1);
+					forlopstype1 = forlopstype1 + ")";
 				}
-				rconn.voidEval("innl4t=" + innl4t);
+				log.debug("R concat for forlopstype1 vector is " + forlopstype1);
+				rconn.voidEval("forlopstype1=" + forlopstype1);
 			} catch (Exception e) {
-				log.debug("Parameter innl4t is not defined: " + e.getMessage());
+				log.debug("Parameter forlopstype1 is not defined: " + e.getMessage());
 			}
 			
-			String NIHSSinn;
+			// forlopstype2; multi select list of values
+			List<String> forlopstype2List = new ArrayList<String>();
+			String forlopstype2;
 			try {
-				NIHSSinn = (String) ((JRFillParameter) parametersMap.get("NIHSSinn")).getValue();
-				if (NIHSSinn == "") {
-					NIHSSinn = "99";
+				forlopstype2List = (List<String>) ((JRFillParameter) parametersMap.get("forlopstype2")).getValue();
+				forlopstype2 = "c(";
+				if (forlopstype2List.isEmpty()) {
+					forlopstype2 = forlopstype2 + "'')";
+				} else {
+					Iterator<String> iterator = forlopstype2List.iterator();
+					while (iterator.hasNext()) {
+						forlopstype2 = forlopstype2 + "'" + iterator.next() + "',";
+					}
+					forlopstype2 = forlopstype2.substring(0, forlopstype2.length()-1);
+					forlopstype2 = forlopstype2 + ")";
 				}
-				rconn.voidEval("NIHSSinn=" + NIHSSinn);
+				log.debug("R concat for forlopstype2 vector is " + forlopstype2);
+				rconn.voidEval("forlopstype2=" + forlopstype2);
 			} catch (Exception e) {
-				log.debug("Parameter NIHSSinn is not defined: " + e.getMessage());
+				log.debug("Parameter forlopstype2 is not defined: " + e.getMessage());
+			}
+
+			Integer inkl_konf;
+			try {
+				inkl_konf = (Integer) ((JRFillParameter) parametersMap.get("inkl_konf")).getValue();
+				if (inkl_konf == null) {
+					inkl_konf = 99;
+				}
+				rconn.voidEval("inkl_konf=" + inkl_konf.toString());
+			} catch (Exception e) {
+				log.debug("Parameter inkl_konf is not defined: " + e.getMessage());
+			}
+
+			String tidsenhet;
+			try {
+				log.debug("Getting parameter values");
+				tidsenhet = (String) ((JRFillParameter) parametersMap.get("tidsenhet")).getValue();
+				if (tidsenhet == null) {
+					tidsenhet = "Aar";
+				}
+				rconn.voidEval("tidsenhet=" + "'" + tidsenhet + "'");
+			} catch (Exception e) {
+				log.debug("Parameter tidsenhet is not defined: " + e.getMessage());
 			}
 			
-			// Deprecated, use orgUnitSelection
-			Integer myDept;
+			Integer sammenlign;
 			try {
-				myDept = (Integer) ((JRFillParameter) parametersMap.get("myDept")).getValue();
-				if (myDept == null) {
-					myDept = 1;
+				sammenlign = (Integer) ((JRFillParameter) parametersMap.get("sammenlign")).getValue();
+				if (sammenlign == null) {
+					sammenlign = 1;
 				}
-				log.warn("Parameter 'myDept' is deprecated and may be removed in future versions. Replaced by 'orgUnitSelection'");
-				rconn.voidEval("egenavd=" + myDept.toString());
+				rconn.voidEval("sammenlign=" + sammenlign.toString());
 			} catch (Exception e) {
-				log.debug("Parameter myDept is not defined: " + e.getMessage());
+				log.debug("Parameter sammenlign is not defined: " + e.getMessage());
 			}
+			// ---
 			
 			Integer orgUnitSelection;
 			try {
@@ -241,17 +300,21 @@ public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
 				log.debug("Parameter orgUnitSelection is not defined: " + e.getMessage());
 			}
 			
+			
+			// Now, removed loading of data through this scriptlet
+			log.info("RegData is no longer provided by nra scriptlets");
+
+
 			log.debug("Creating dummy R dataframe to ensure compatibility with existing R scripts");
 
 			RList l = new RList();
 
 			// anything goes...
 			l.put("Rapportnavn", new REXPString(reportName));
-
+			
 			REXP df = REXP.createDataFrame(l);
 			log.debug("Assigning data frame to R instance");
 			rconn.assign("RegData", df);
-
 			
 			
 			// Set up the tmp directory, file names and reportUserInfo
@@ -260,7 +323,7 @@ public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
 			log.debug("Setting report image filepath and name");
 			tmpdir = "/opt/jasper/img/";
 			File dirFile = new File(tmpdir);
-			String fileBaseName = "hjerneslag_" + reportName + "-";
+			String fileBaseName = "nra_" + reportName + "-";
 			String file = (File.createTempFile(fileBaseName, ".png", dirFile)).getName();
 			p_filename = tmpdir + file;
 			log.debug("In R instance: image to be stored as: " + p_filename);
@@ -270,10 +333,6 @@ public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
 			rconn.assign("outfile", p_filename);
 			
 			String rcmd = rFunctionCallString;
-			
-			// Source the function
-			log.debug("In R instance: sourcing R code...");
-			rconn.voidEval("source(source_file)");
 
 			// Call the function to generate the report
 			log.debug("In R instance: calling function");
