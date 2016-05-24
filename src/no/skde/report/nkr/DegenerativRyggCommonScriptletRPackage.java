@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 import org.rosuda.REngine.*;
 import org.rosuda.REngine.Rserve.*;
 
-public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
+public class DegenerativRyggCommonScriptletRPackage extends JRDefaultScriptlet {
 	
 	protected RConnection rconn;
 	private String fileName;
@@ -50,7 +50,7 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 	private void generateReport() {
 		
 		try {
-			log.info("Start generating R report using " + DegenerativRyggCommonScriptlet.class.getName());
+			log.info("Start generating R report using " + DegenerativRyggCommonScriptletRPackage.class.getName());
 			
 			// Create the connection
 			log.debug("Getting connection to R instance...");
@@ -63,25 +63,35 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			String loggedInUserFullName = "";
 			String loggedInUserAVD_RESH = "";
 			String reportName = "";
-			String rScriptName = "";
 			String rFunctionCallString = "";
 			try {
 				loggedInUserFullName = (String) ((JRFillParameter) parametersMap.get("LoggedInUserFullName")).getValue();
 				loggedInUserAVD_RESH = (String) ((JRFillParameter) parametersMap.get("LoggedInUserAVD_RESH")).getValue();
 				reportName = (String) ((JRFillParameter) parametersMap.get("reportName")).getValue();
-				rScriptName = (String) ((JRFillParameter) parametersMap.get("rScriptName")).getValue();
 				rFunctionCallString = (String) ((JRFillParameter) parametersMap.get("rFunctionCallString")).getValue();
 				log.info("Report to be run: " + reportName);
 				log.info("Report requested by JRS user " + loggedInUserFullName + ", AVD_RESH " + loggedInUserAVD_RESH);
-				log.debug("R script to be called: " + rScriptName);
 				log.debug("R function call string: " + rFunctionCallString);
-				
 				rconn.voidEval("reshID=" + loggedInUserAVD_RESH);
 			} catch (Exception e) {
 				log.error("Mandatory parameters in the report definition calling this scriptlet were not defined: " + e.getMessage());
 			}
 			
 			// the rest of parameters are optional, but must match whatever needed by R
+			String rPackageName;
+			try {
+				rPackageName = (String) ((JRFillParameter) parametersMap.get("rPackageName")).getValue();
+				if (rPackageName == null || rPackageName == "") {
+					rPackageName = "";
+					log.warn("Parameter rPackageName is empty. No R package will be loaded");
+				} else {
+					log.info("Package to be loaded in the R session: " + rPackageName);
+					rconn.voidEval("require(" + rPackageName + ")");
+				}
+			} catch (Exception e) {
+				log.warn("No package loaded in R session: " + e.getMessage());
+			}
+			
 			try {
 				String varName = (String) ((JRFillParameter) parametersMap.get("varName")).getValue();
 				if (varName == "") {
@@ -95,19 +105,18 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			} catch (Exception e) {
 				log.debug("Parameter 'varName' is not provided: " + e.getMessage());
 			}
-			
-			// Deprecated. Should be removed
+
+			// replicate above but different parameter name
+			String valgtVar;
 			try {
-				Integer gender = (Integer) ((JRFillParameter) parametersMap.get("gender"))
-						.getValue();
-				if (gender == null) {
-					gender = 0;
+				log.debug("Getting parameter values");
+				valgtVar = (String) ((JRFillParameter) parametersMap.get("valgtVar")).getValue();
+				if (valgtVar == null) {
+					valgtVar = "nada";
 				}
-				log.debug("Parameter 'gender' mapped to value: " + gender.toString());
-				log.warn("Use of parameter 'gender' is deprecated. Please use 'erMann'");
-				rconn.voidEval("kjonn=" + gender.toString());
+				rconn.voidEval("valgtVar=" + "'" + valgtVar + "'");
 			} catch (Exception e) {
-				log.debug("Parameter 'gender' is not provided: " + e.getMessage());
+				log.debug("Parameter valgtVar is not defined: " + e.getMessage());
 			}
 			
 			Integer erMann;
@@ -119,20 +128,6 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 				rconn.voidEval("erMann=" + erMann.toString());
 			} catch (Exception e) {
 				log.debug("Parameter erMann is not defined: " + e.getMessage());
-			}
-			
-			// Deprecated. Should be removed
-			try {
-				Integer myDept = (Integer) ((JRFillParameter) parametersMap.get("myDept"))
-						.getValue();
-				if (myDept == null) {
-					myDept = 1;
-				}
-				log.debug("Parameter 'myDept' mapped to value: " + myDept.toString());
-				log.warn("Use of parameter 'myDept' is deprecated. Please use 'orgUnitSelection'");
-				rconn.voidEval("egenavd=" + myDept.toString());
-			} catch (Exception e) {
-				log.debug("Parameter 'mydept' is not provided: " + e.getMessage());
 			}
 			
 			Integer orgUnitSelection;
@@ -218,16 +213,16 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 				log.debug("Parameter endDate is not defined: " + e.getMessage());
 			}
 			
-			 try {
-				 Integer dispNumberInfo = (Integer) ((JRFillParameter) parametersMap.get("dispNumberInfo")).getValue();
-				 if (dispNumberInfo == null) {
-					 dispNumberInfo = 0;
-				 }
-				 log.debug("Parameter 'dispNumberInfo mapped to value: " + dispNumberInfo.toString());
-				 rconn.voidEval("medTall=" + dispNumberInfo.toString());
-			 } catch (Exception e) {
-				 log.debug("Parameter 'dispNumberInfo' is not provided: " + e.getMessage());
-			 }
+			try {
+				Integer dispNumberInfo = (Integer) ((JRFillParameter) parametersMap.get("dispNumberInfo")).getValue();
+				if (dispNumberInfo == null) {
+					dispNumberInfo = 0;
+				}
+				log.debug("Parameter 'dispNumberInfo mapped to value: " + dispNumberInfo.toString());
+				rconn.voidEval("medTall=" + dispNumberInfo.toString());
+			} catch (Exception e) {
+				log.debug("Parameter 'dispNumberInfo' is not provided: " + e.getMessage());
+			}
 			 
 			try {
 				Integer surgHistory = (Integer) ((JRFillParameter) parametersMap.get("surgHistory")).getValue();
@@ -321,11 +316,6 @@ public class DegenerativRyggCommonScriptlet extends JRDefaultScriptlet {
 			
 			String rcmd = rFunctionCallString;
 			
-			// Source the function
-			rconn.assign("source_file", "/opt/jasper/r/" + rScriptName);
-			log.debug("In R instance: sourcing R code...");
-			rconn.voidEval("source(source_file)");
-
 			// Call the function to generate the report
 			log.debug("In R instance: calling function");
 			rconn.voidEval(rcmd);
