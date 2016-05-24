@@ -15,7 +15,6 @@ import java.util.Date;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.fill.*;
-import no.skde.report.nakke.Nakke;
 
 import org.apache.log4j.Logger;
 import org.rosuda.REngine.*;
