@@ -1,9 +1,9 @@
 /**
  * no.skde.report.nkr
- * DegenerativRyggCommonScriptlet.java Dec 19 2013 Are Edvardsen
+ * DegenerativRyggCommonScriptletRPackage.java May 22 2016 Are Edvardsen
  * 
  * 
- *  Copyleft 2013, 2014, 2016 SKDE
+ *  Copyleft 2016 SKDE
  */
 
 
@@ -280,6 +280,18 @@ public class DegenerativRyggCommonScriptletRPackage extends JRDefaultScriptlet {
 				rconn.voidEval("valgtMaal=" + "'" + statMeasureMethod.toString() + "'");
 			} catch (Exception e) {
 				log.debug("Parameter statMeasureMethod is not defined: " + e.getMessage());
+			}
+			
+			String grVar;
+			try {
+				grVar = (String) ((JRFillParameter) parametersMap.get("grVar")).getValue();
+				if (grVar == null) {
+					grVar = "";
+				}
+				log.debug("'GrVar' set to: " + grVar);
+				rconn.voidEval("grVar=" + "'" + grVar.toString() + "'");
+			} catch (Exception e) {
+				log.debug("Parameter grVar is not defined: " + e.getMessage());
 			}
 			
 			// Now, removed loading of data through this scriptlet
