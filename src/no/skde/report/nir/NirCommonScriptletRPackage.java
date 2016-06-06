@@ -197,7 +197,20 @@ public class NirCommonScriptletRPackage extends JRDefaultScriptlet
 				rconn.voidEval("ShType=" + "'" + hospitalsLevel.toString() + "'");
 			} catch (Exception e) {
 				log.debug("Parameter hospitalsLevel is not defined: " + e.getMessage());
-			}			
+			}
+			
+			// the above might be deprecated, new one below
+			Integer grType;
+			try {
+				grType = (Integer) ((JRFillParameter) parametersMap.get("grType")).getValue();
+				if (grType == null) {
+					grType = 99;
+				}
+				log.debug("'grType' set to: " + grType.toString());
+				rconn.voidEval("grType=" + grType.toString());
+			} catch (Exception e) {
+				log.debug("Parameter grType is not defined: " + e.getMessage());
+			}
 			
 			Integer inFromSituation;
 			try {
@@ -246,6 +259,7 @@ public class NirCommonScriptletRPackage extends JRDefaultScriptlet
 			} catch (Exception e) {
 				log.debug("Parameter orgUnitSelection is not defined: " + e.getMessage());
 			}
+			
 			
 			log.debug("Creating dummy R dataframe to ensure compatibility with existing R scripts");
 
