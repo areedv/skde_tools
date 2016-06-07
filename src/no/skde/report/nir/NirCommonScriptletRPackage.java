@@ -161,13 +161,13 @@ public class NirCommonScriptletRPackage extends JRDefaultScriptlet
 			// convert dates to something that can be understood by R
 			SimpleDateFormat rFormat = new SimpleDateFormat("yyyy-MM-dd");
 			
-			Date startDate;
+			Date beginDate;
 			try {
-				startDate = (Date) ((JRFillParameter) parametersMap.get("startDate")).getValue();
-				if (startDate == null) {
-					startDate = new SimpleDateFormat("yyyy-MM-dd").parse("2010-01-01");
+				beginDate = (Date) ((JRFillParameter) parametersMap.get("startDate")).getValue();
+				if (beginDate == null) {
+					beginDate = new SimpleDateFormat("yyyy-MM-dd").parse("2010-01-01");
 				}
-				StringBuilder startDateString = new StringBuilder(rFormat.format(startDate));
+				StringBuilder startDateString = new StringBuilder(rFormat.format(beginDate));
 				log.debug("'datoFra' set to: " + startDateString);
 				rconn.voidEval("datoFra=" + "'" + startDateString + "'");
 			} catch (Exception e) {
