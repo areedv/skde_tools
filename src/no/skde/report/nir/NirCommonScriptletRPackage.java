@@ -163,13 +163,13 @@ public class NirCommonScriptletRPackage extends JRDefaultScriptlet
 			
 			Date beginDate;
 			try {
-				beginDate = (Date) ((JRFillParameter) parametersMap.get("startDate")).getValue();
+				beginDate = (Date) ((JRFillParameter) parametersMap.get("beginDate")).getValue();
 				if (beginDate == null) {
 					beginDate = new SimpleDateFormat("yyyy-MM-dd").parse("2010-01-01");
 				}
-				StringBuilder startDateString = new StringBuilder(rFormat.format(beginDate));
-				log.debug("'datoFra' set to: " + startDateString);
-				rconn.voidEval("datoFra=" + "'" + startDateString + "'");
+				StringBuilder beginDateString = new StringBuilder(rFormat.format(beginDate));
+				log.debug("'datoFra' set to: " + beginDateString);
+				rconn.voidEval("datoFra=" + "'" + beginDateString + "'");
 			} catch (Exception e) {
 				log.debug("Parameter startDate is not defined: " + e.getMessage());
 			}
