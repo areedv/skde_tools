@@ -270,10 +270,6 @@ public class HjerneslagCommonScriptletRPackage extends JRDefaultScriptlet {
 			rconn.assign("outfile", p_filename);
 			
 			String rcmd = rFunctionCallString;
-			
-			// Source the function
-			log.debug("In R instance: sourcing R code...");
-			rconn.voidEval("source(source_file)");
 
 			// Call the function to generate the report
 			log.debug("In R instance: calling function");
