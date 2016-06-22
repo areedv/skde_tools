@@ -190,8 +190,8 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 				log.debug("Path and name of noweb file: " + packageNowebFile.asString());
 				rconn.assign("workfile", packageNowebFile.asString());
 				if (knitr) {
-					log.debug("Continue processing using Knitr...");
-					rconn.voidEval("knitr::knit(workfile)");
+					log.debug("Continue processing using Knitr, forcing utf8 encoding...");
+					rconn.voidEval("knitr::knit(workfile, encoding='UTF-8')");
 				}
 				else {
 					log.debug("Continue processing using Sweave. If this is not what you want, edit jrxml report definition accordingly");
