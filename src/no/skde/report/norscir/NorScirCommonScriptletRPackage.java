@@ -116,6 +116,19 @@ public class NorScirCommonScriptletRPackage extends JRDefaultScriptlet {
 				log.debug("Parameter varName is not defined: " + e.getMessage());
 			}
 			
+			// replicate above but different parameter name
+			String valgtVar;
+			try {
+				log.debug("Getting parameter values");
+				valgtVar = (String) ((JRFillParameter) parametersMap.get("valgtVar")).getValue();
+				if (valgtVar == null) {
+					valgtVar = "nada";
+				}
+				rconn.voidEval("valgtVar=" + "'" + valgtVar + "'");
+			} catch (Exception e) {
+				log.debug("Parameter valgtVar is not defined: " + e.getMessage());
+			}
+			
 			String statMeasureMethod;
 			try {
 				statMeasureMethod = (String) ((JRFillParameter) parametersMap.get("statMeasureMethod")).getValue();
