@@ -14,6 +14,7 @@ import java.util.Date;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.fill.*;
+import no.skde.report.nkr.DegenerativRyggCommonScriptletRPackage;
 
 import org.apache.log4j.Logger;
 
@@ -56,6 +57,13 @@ public class NorScirCommonScriptletRPackage extends JRDefaultScriptlet {
 		try {
 			log.info("Start generating R report using " + NorScirCommonScriptletRPackage.class.getName());
 			
+			//TODO
+			// Make log entry if class is built as a snapshot. SET MANUALLY!
+			boolean classIsSnapshot = false;
+			if (classIsSnapshot) {
+				log.warn(NorScirCommonScriptletRPackage.class.getName() + " is a snapshot. Not to be used in production environment");
+			}
+			
 			// Create the connection
 			log.debug("Getting connection to R instance...");
 			rconn = new RConnection();
@@ -76,6 +84,7 @@ public class NorScirCommonScriptletRPackage extends JRDefaultScriptlet {
 				log.info("Report to be run: " + reportName);
 				log.info("Report requested by JRS user " + loggedInUserFullName + ", AVD_RESH " + loggedInUserAVD_RESH);
 				log.debug("R function call string: " + rFunctionCallString);
+				rconn.voidEval("reshID=" + loggedInUserAVD_RESH);
 			} catch (Exception e) {
 				log.error("Mandatory parameters in the report definition calling this scriptlet were not defined: " + e.getMessage());
 			}
@@ -105,6 +114,19 @@ public class NorScirCommonScriptletRPackage extends JRDefaultScriptlet {
 				rconn.voidEval("valgtVar=" + "'" + varName + "'");
 			} catch (Exception e) {
 				log.debug("Parameter varName is not defined: " + e.getMessage());
+			}
+			
+			// replicate above but different parameter name
+			String valgtVar;
+			try {
+				log.debug("Getting parameter values");
+				valgtVar = (String) ((JRFillParameter) parametersMap.get("valgtVar")).getValue();
+				if (valgtVar == null) {
+					valgtVar = "nada";
+				}
+				rconn.voidEval("valgtVar=" + "'" + valgtVar + "'");
+			} catch (Exception e) {
+				log.debug("Parameter valgtVar is not defined: " + e.getMessage());
 			}
 			
 			String statMeasureMethod;
@@ -154,6 +176,19 @@ public class NorScirCommonScriptletRPackage extends JRDefaultScriptlet {
 				rconn.voidEval("datoFra=" + "'" + startDateString + "'");
 			} catch (Exception e) {
 				log.debug("Parameter startDate is not defined: " + e.getMessage());
+			}
+			
+			// replicate above but different parameter name
+			Date beginDate;
+			try {
+				beginDate = (Date) ((JRFillParameter) parametersMap.get("beginDate")).getValue();
+				if (beginDate == null) {
+					beginDate = new SimpleDateFormat("yyyy-MM-dd").parse("2010-01-01");
+				}
+				StringBuilder beginDateString = new StringBuilder(rFormat.format(beginDate));
+				rconn.voidEval("datoFra=" + "'" + beginDateString + "'");
+			} catch (Exception e) {
+				log.debug("Parameter beginDate is not defined: " + e.getMessage());
 			}
 
 			Date endDate;
