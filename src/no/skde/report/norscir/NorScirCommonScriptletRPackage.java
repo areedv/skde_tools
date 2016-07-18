@@ -177,6 +177,19 @@ public class NorScirCommonScriptletRPackage extends JRDefaultScriptlet {
 			} catch (Exception e) {
 				log.debug("Parameter startDate is not defined: " + e.getMessage());
 			}
+			
+			// replicate above but different parameter name
+			Date beginDate;
+			try {
+				beginDate = (Date) ((JRFillParameter) parametersMap.get("beginDate")).getValue();
+				if (beginDate == null) {
+					beginDate = new SimpleDateFormat("yyyy-MM-dd").parse("2010-01-01");
+				}
+				StringBuilder beginDateString = new StringBuilder(rFormat.format(beginDate));
+				rconn.voidEval("datoFra=" + "'" + beginDateString + "'");
+			} catch (Exception e) {
+				log.debug("Parameter beginDate is not defined: " + e.getMessage());
+			}
 
 			Date endDate;
 			try {
