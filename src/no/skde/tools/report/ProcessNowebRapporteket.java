@@ -9,7 +9,12 @@
 package no.skde.tools.report;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.fill.*;
@@ -66,6 +71,8 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 	
 	
 	// report actions
+	// Probably because List array of type string cannot know what will be returned by the JRFillParameter
+	@SuppressWarnings("unchecked")
 	private void generateReport() {
 		try {
 			
@@ -171,6 +178,57 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 				log.debug("Prameter 'reportYear' set to " + reportYear.toString());
 			} catch (Exception e) {
 				log.debug("Parameter 'reportYear' is not defined: " + e.getMessage());
+			}
+			
+			// convert dates to something that can be understood by R
+			SimpleDateFormat rFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+			Date beginDate;
+			try {
+				beginDate = (Date) ((JRFillParameter) parametersMap.get("beginDate")).getValue();
+				if (beginDate == null) {
+					beginDate = new SimpleDateFormat("yyyy-MM-dd").parse("2010-01-01");
+				}
+				StringBuilder beginDateString = new StringBuilder(rFormat.format(beginDate));
+				rconn.voidEval("datoFra=" + "'" + beginDateString + "'");
+				log.debug("Parameter 'beginDate' set to " + beginDateString);
+			} catch (Exception e) {
+				log.debug("Parameter beginDate is not defined: " + e.getMessage());
+			}
+
+			Date endDate;
+			try {
+				endDate = (Date) ((JRFillParameter) parametersMap.get("endDate")).getValue();
+				if (endDate == null) {
+					endDate = new Date();
+				}
+				StringBuilder endDateString = new StringBuilder(rFormat.format(endDate));
+				rconn.voidEval("datoTil=" + "'" + endDateString + "'");
+				log.debug("Parameter 'endDate' set to " + endDateString);
+			} catch (Exception e) {
+				log.debug("Parameter endDate is not defined: " + e.getMessage());
+			}
+
+			// generic multi select list of values
+			List<String> flervalgslisteList = new ArrayList<String>();
+			String flervalgsliste;
+			try {
+				flervalgslisteList = (List<String>) ((JRFillParameter) parametersMap.get("flervalgsliste")).getValue();
+				flervalgsliste = "c(";
+				if (flervalgslisteList.isEmpty()) {
+					flervalgsliste = flervalgsliste + "'')";
+				} else {
+					Iterator<String> iterator = flervalgslisteList.iterator();
+					while (iterator.hasNext()) {
+						flervalgsliste = flervalgsliste + "'" + iterator.next() + "',";
+					}
+					flervalgsliste = flervalgsliste.substring(0, flervalgsliste.length()-1);
+					flervalgsliste = flervalgsliste + ")";
+				}
+				log.debug("R concat for flervalgsliste vector is " + flervalgsliste);
+				rconn.voidEval("flervalgsliste=" + flervalgsliste);
+			} catch (Exception e) {
+				log.debug("Parameter 'flervalgsliste' is not defined: " + e.getMessage());
 			}
 					
 			
