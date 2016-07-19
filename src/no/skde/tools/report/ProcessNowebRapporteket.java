@@ -9,7 +9,10 @@
 package no.skde.tools.report;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.fill.*;
@@ -66,6 +69,8 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 	
 	
 	// report actions
+	// Probably because List array of type string cannot know what will be returned by the JRFillParameter
+	@SuppressWarnings("unchecked")
 	private void generateReport() {
 		try {
 			
@@ -171,6 +176,28 @@ public class ProcessNowebRapporteket extends JRDefaultScriptlet {
 				log.debug("Prameter 'reportYear' set to " + reportYear.toString());
 			} catch (Exception e) {
 				log.debug("Parameter 'reportYear' is not defined: " + e.getMessage());
+			}
+
+			// generic multi select list of values
+			List<String> flervalgslisteList = new ArrayList<String>();
+			String flervalgsliste;
+			try {
+				flervalgslisteList = (List<String>) ((JRFillParameter) parametersMap.get("flervalgsliste")).getValue();
+				flervalgsliste = "c(";
+				if (flervalgslisteList.isEmpty()) {
+					flervalgsliste = flervalgsliste + "'')";
+				} else {
+					Iterator<String> iterator = flervalgslisteList.iterator();
+					while (iterator.hasNext()) {
+						flervalgsliste = flervalgsliste + "'" + iterator.next() + "',";
+					}
+					flervalgsliste = flervalgsliste.substring(0, flervalgsliste.length()-1);
+					flervalgsliste = flervalgsliste + ")";
+				}
+				log.debug("R concat for flervalgsliste vector is " + flervalgsliste);
+				rconn.voidEval("flervalgsliste=" + flervalgsliste);
+			} catch (Exception e) {
+				log.debug("Parameter 'flervalgsliste' is not defined: " + e.getMessage());
 			}
 					
 			
