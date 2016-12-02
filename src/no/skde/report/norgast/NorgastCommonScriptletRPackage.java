@@ -423,6 +423,17 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 				log.debug("Parameter orgUnitSelection is not defined: " + e.getMessage());
 			}
 			
+			Integer malign;
+			try {
+				malign = (Integer) ((JRFillParameter) parametersMap.get("malign")).getValue();
+				if (malign == null) {
+					malign = 99;
+				}
+				rconn.voidEval("malign=" + malign.toString());
+			} catch (Exception e) {
+				log.debug("Parameter malign is not defined: " + e.getMessage());
+			}
+			
 			
 			// Now, removed loading of data through this scriptlet
 			log.info("RegData is no longer provided by Norgast scriptlets");
