@@ -430,6 +430,7 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 					malign = 99;
 				}
 				rconn.voidEval("malign=" + malign.toString());
+				log.debug("Prameter malign is set to " + malign.toString());
 			} catch (Exception e) {
 				log.debug("Parameter malign is not defined: " + e.getMessage());
 			}
