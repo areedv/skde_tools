@@ -59,7 +59,7 @@ public class Hisreg extends JRDefaultScriptlet {
 			
 			//TODO
 			// Make log entry if class is built as a snapshot. SET MANUALLY!
-			boolean classIsSnapshot = false;
+			boolean classIsSnapshot = true;
 			if (classIsSnapshot) {
 				log.warn(Hisreg.class.getName() + " is a snapshot. Not to be used in production environment");
 			}
