@@ -1,9 +1,9 @@
 /**
- * no.skde.report.norgast
- * NorgastCommonScriptletRPackage.java Jan 26 2016 Are Edvardsen
+ * no.skde.report.hisreg
+ * NorgastCommonScriptletRPackage.java Feb 06 2017 Are Edvardsen
  * 
  * 
- *  Copyleft 2016 SKDE
+ *  Copyleft 2017 SKDE
  */
 
 package no.skde.report.hisreg;
@@ -14,7 +14,6 @@ import java.util.Date;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.fill.*;
-//import no.skde.report.nger.NGERCommonScriptlet;
 
 import org.apache.log4j.Logger;
 import org.rosuda.REngine.*;
@@ -188,17 +187,7 @@ public class Hisreg extends JRDefaultScriptlet {
 				log.debug("Parameter erMann is not defined: " + e.getMessage());
 			}
 			
-			Integer myDept;
-			try {
-				myDept = (Integer) ((JRFillParameter) parametersMap.get("myDept")).getValue();
-				if (myDept == null) {
-					myDept = 1;
-				}
-				rconn.voidEval("egenavd=" + myDept.toString());
-			} catch (Exception e) {
-				log.debug("Parameter myDept is not defined: " + e.getMessage());
-			}
-			
+
 			Integer opGroup;
 			try {
 				opGroup = (Integer) ((JRFillParameter) parametersMap.get("opGroup")).getValue();
@@ -208,32 +197,7 @@ public class Hisreg extends JRDefaultScriptlet {
 				rconn.voidEval("op_gruppe=" + opGroup.toString());
 			} catch (Exception e) {
 				log.debug("Parameter opGroup is not defined: " + e.getMessage());
-			}
-			
-			String stack;
-			try {
-				stack = (String) ((JRFillParameter) parametersMap.get("stack")).getValue();
-				if (stack == "") {
-					stack = "T";
-				}
-				rconn.voidEval("stabel=" + stack);
-			} catch (Exception e) {
-				log.debug("Parameter stack is not defined: " + e.getMessage());
-			}
-			
-			String ratio;
-			try {
-				ratio = (String) ((JRFillParameter) parametersMap.get("ratio")).getValue();
-				if (ratio == "") {
-					ratio = "F";
-				}
-				rconn.voidEval("andel=" + ratio);
-			} catch (Exception e) {
-				log.debug("Parameter ratio is not defined: " + e.getMessage());
-			}
-			
-			
-			
+			}		
 
 
 			// bmi; multi select list of values
@@ -259,30 +223,6 @@ public class Hisreg extends JRDefaultScriptlet {
 				log.debug("Parameter bmi is not defined: " + e.getMessage());
 			}
 
-			// preTreat; multi select list of values
-			Integer preTreat;
-			try {
-				preTreat = (Integer) ((JRFillParameter) parametersMap.get("preTreat")).getValue();
-				if (preTreat == null) {
-					preTreat = 99;
-				}
-				rconn.voidEval("forbehandling=" + preTreat.toString());
-			} catch (Exception e) {
-				log.debug("Parameter preTreat is not defined: " + e.getMessage());
-			}
-
-			
-			Integer elektiv;
-			try {
-				elektiv = (Integer) ((JRFillParameter) parametersMap.get("elektiv")).getValue();
-				if (elektiv == null) {
-					elektiv = 99;
-				}
-				rconn.voidEval("elektiv=" + elektiv.toString());
-			} catch (Exception e) {
-				log.debug("Parameter elektiv is not defined: " + e.getMessage());
-			}
-
 			// selectDepts; multi select list of values
 			List<String> selectDeptsList = new ArrayList<String>();
 			String selectDepts;
@@ -306,62 +246,6 @@ public class Hisreg extends JRDefaultScriptlet {
 			}			
 			
 			// ---
-			
-			// asa; multi select list of values
-			List<String> asaList = new ArrayList<String>();
-			String asa;
-			try {
-				asaList = (List<String>) ((JRFillParameter) parametersMap.get("asa")).getValue();
-				asa = "c(";
-				if (asaList.isEmpty()) {
-					asa = asa + "'')";
-				} else {
-					Iterator<String> iterator = asaList.iterator();
-					while (iterator.hasNext()) {
-						asa = asa + "'" + iterator.next() + "',";
-					}
-					asa = asa.substring(0, asa.length()-1);
-					asa = asa + ")";
-				}
-				log.debug("R concat for ASA vector is " + asa);
-				rconn.voidEval("ASA=" + asa);
-			} catch (Exception e) {
-				log.debug("Parameter asa is not defined: " + e.getMessage());
-			}                                            
-
-			// whoEcog; multi select list of values
-			List<String> whoEcogList = new ArrayList<String>();
-			String whoEcog;
-			try {
-				whoEcogList = (List<String>) ((JRFillParameter) parametersMap.get("whoEcog")).getValue();
-				whoEcog = "c(";
-				if (whoEcogList.isEmpty()) {
-					whoEcog = whoEcog + "'')";
-				} else {
-					Iterator<String> iterator = whoEcogList.iterator();
-					while (iterator.hasNext()) {
-						whoEcog = whoEcog + "'" + iterator.next() + "',";
-					}
-					whoEcog = whoEcog.substring(0, whoEcog.length()-1);
-					whoEcog = whoEcog + ")";
-				}
-				log.debug("R concat for whoEcog vector is " + whoEcog);
-				rconn.voidEval("whoEcog=" + whoEcog);
-			} catch (Exception e) {
-				log.debug("Parameter whoEcog is not defined: " + e.getMessage());
-			}
-
-
-			Integer tilgang;
-			try {
-				tilgang = (Integer) ((JRFillParameter) parametersMap.get("tilgang")).getValue();
-				if (tilgang == null) {
-					tilgang = 99;
-				}
-				rconn.voidEval("tilgang=" + tilgang.toString());
-			} catch (Exception e) {
-				log.debug("Parameter tilgang is not defined: " + e.getMessage());
-			}
 
 			Integer inkl_konf;
 			try {
@@ -385,31 +269,7 @@ public class Hisreg extends JRDefaultScriptlet {
 			} catch (Exception e) {
 				log.debug("Parameter tidsenhet is not defined: " + e.getMessage());
 			}
-			
-			Double minPRS;
-			try {
-				minPRS = (Double) ((JRFillParameter) parametersMap.get("minPRS")).getValue();
-				if (minPRS == null) {
-					minPRS = 0.0;
-				}
-				rconn.voidEval("minPRS=" + minPRS.toString());
-			} catch (Exception e) {
-				log.debug("Parameter minPRS is not defined: " + e.getMessage());
-			}
-
-
-
-			Double maxPRS;
-			try {
-				maxPRS = (Double) ((JRFillParameter) parametersMap.get("maxPRS")).getValue();
-				if (maxPRS == null) {
-					maxPRS = 2.0;
-				}
-				rconn.voidEval("maxPRS=" + maxPRS.toString());
-			} catch (Exception e) {
-				log.debug("Parameter maxPRS is not defined: " + e.getMessage());
-			}
-			
+					
 			// ---
 			
 			Integer orgUnitSelection;
@@ -422,20 +282,7 @@ public class Hisreg extends JRDefaultScriptlet {
 			} catch (Exception e) {
 				log.debug("Parameter orgUnitSelection is not defined: " + e.getMessage());
 			}
-			
-			Integer malign;
-			try {
-				malign = (Integer) ((JRFillParameter) parametersMap.get("malign")).getValue();
-				if (malign == null) {
-					malign = 99;
-				}
-				rconn.voidEval("malign=" + malign.toString());
-				log.debug("Prameter malign is set to " + malign.toString());
-			} catch (Exception e) {
-				log.debug("Parameter malign is not defined: " + e.getMessage());
-			}
-			
-			
+				
 			// Now, removed loading of data through this scriptlet
 			log.info("RegData is no longer provided by Norgast scriptlets");
 
