@@ -107,14 +107,14 @@ public class NorSpisCommonScriptlet extends JRDefaultScriptlet {
 				log.warn("No package loaded in R session: " + e.getMessage());
 			}
 			
-			String varName;
+			String valgVar;
 			try {
 				log.debug("Getting parameter values");
-				varName = (String) ((JRFillParameter) parametersMap.get("varName")).getValue();
-				if (varName == null) {
-					varName = "nada";
+				valgVar = (String) ((JRFillParameter) parametersMap.get("varName")).getValue();
+				if (valgVar == null) {
+					valgVar = "nada";
 				}
-				rconn.voidEval("valgtVar=" + "'" + varName + "'");
+				rconn.voidEval("valgtVar=" + "'" + valgVar + "'");
 			} catch (Exception e) {
 				log.debug("Parameter varName is not defined: " + e.getMessage());
 			}
