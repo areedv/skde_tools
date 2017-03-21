@@ -436,6 +436,40 @@ public class NorgastCommonScriptletRPackage extends JRDefaultScriptlet {
 			}
 			
 			
+			String reseksjonsGr;
+			try {
+				log.debug("Getting parameter values");
+				reseksjonsGr = (String) ((JRFillParameter) parametersMap.get("reseksjonsGr")).getValue();
+				if (reseksjonsGr == null) {
+					reseksjonsGr = "";
+				}
+				rconn.voidEval("reseksjonsGr=" + "'" + reseksjonsGr + "'");
+			} catch (Exception e) {
+				log.debug("Parameter reseksjonsGr is not defined: " + e.getMessage());
+			}
+
+
+			List<String> ncspList = new ArrayList<String>();
+			String ncsp;
+			try {
+				ncspList = (List<String>) ((JRFillParameter) parametersMap.get("ncsp")).getValue();
+				ncsp = "c(";
+				if (ncspList.isEmpty()) {
+					ncsp = ncsp + "'')";
+				} else {
+					Iterator<String> iterator = ncspList.iterator();
+					while (iterator.hasNext()) {
+						ncsp = ncsp + "'" + iterator.next() + "',";
+					}
+					ncsp = ncsp.substring(0, ncsp.length()-1);
+					ncsp = ncsp + ")";
+				}
+				log.debug("R concat for ncsp vector is " + ncsp);
+				rconn.voidEval("ncsp=" + ncsp);
+			} catch (Exception e) {
+				log.debug("Parameter ncsp is not defined: " + e.getMessage());
+			}    
+			
 			// Now, removed loading of data through this scriptlet
 			log.info("RegData is no longer provided by Norgast scriptlets");
 
