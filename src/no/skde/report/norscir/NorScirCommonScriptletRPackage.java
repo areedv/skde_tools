@@ -58,7 +58,7 @@ public class NorScirCommonScriptletRPackage extends JRDefaultScriptlet {
 			
 			//TODO
 			// Make log entry if class is built as a snapshot. SET MANUALLY!
-			boolean classIsSnapshot = false;
+			boolean classIsSnapshot = true;
 			if (classIsSnapshot) {
 				log.warn(NorScirCommonScriptletRPackage.class.getName() + " is a snapshot. Not to be used in production environment");
 			}
@@ -294,6 +294,29 @@ public class NorScirCommonScriptletRPackage extends JRDefaultScriptlet {
 				log.debug("Parameter ais is not defined: " + e.getMessage());
 			}
 			
+			
+			// paratetra; multi select list of values
+			List<String> paratetraList = new ArrayList<String>();
+			String paratetra;
+			try {
+				paratetraList = (ArrayList<String>) ((JRFillParameter) parametersMap.get("paratetra")).getValue();
+				paratetra = "c(";
+				if (paratetraList.contains("all")) {
+					paratetra = paratetra + "'')";
+				} else {
+					Iterator<String> iterator = paratetraList.iterator();
+					while (iterator.hasNext()) {
+						paratetra = paratetra + "'" + iterator.next() + "',";
+					}
+					paratetra = paratetra.substring(0, paratetra.length()-1);
+					paratetra = paratetra + ")";
+				}
+				log.debug("R concat for paratetra vector is " + paratetra);
+				rconn.voidEval("paratetra=" + paratetra);
+			} catch (Exception e) {
+				log.debug("Parameter ais is not defined: " + e.getMessage());
+			}
+
 			
 			// Now, removed loading of data through this scriptlet
 			log.info("RegData is no longer provided by NorScir scriptlets");
