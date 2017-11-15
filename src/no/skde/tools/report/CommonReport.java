@@ -106,12 +106,181 @@ public class CommonReport extends JRDefaultScriptlet {
 			
 			
 			// START specific, common report user controls
+			Integer minAge;
+			try {
+				minAge = (Integer) ((JRFillParameter) parametersMap.get("minAge")).getValue();
+				if (minAge == null) {
+					minAge = 0;
+				}
+				rconn.voidEval("minald=" + minAge.toString());
+			} catch (Exception e) {
+				log.debug("Parameter minAge is not defined: " + e.getMessage());
+			}
+
+			Integer maxAge;
+			try {
+				maxAge = (Integer) ((JRFillParameter) parametersMap.get("maxAge")).getValue();
+				if (maxAge == null) {
+					maxAge = 130;
+				}
+				rconn.voidEval("maxald=" + maxAge.toString());
+			} catch (Exception e) {
+				log.debug("Parameter maxAge is not defined: " + e.getMessage());
+			}
+
 			
+			// convert dates to something that can be understood by R
+			SimpleDateFormat rFormat = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Date beginDate;
+			try {
+				beginDate = (Date) ((JRFillParameter) parametersMap.get("beginDate")).getValue();
+				if (beginDate == null) {
+					beginDate = new SimpleDateFormat("yyyy-MM-dd").parse("2010-01-01");
+				}
+				StringBuilder beginDateString = new StringBuilder(rFormat.format(beginDate));
+				rconn.voidEval("datoFra=" + "'" + beginDateString + "'");
+			} catch (Exception e) {
+				log.debug("Parameter beginDate is not defined: " + e.getMessage());
+			}
+
+			Date endDate;
+			try {
+				endDate = (Date) ((JRFillParameter) parametersMap.get("endDate")).getValue();
+				if (endDate == null) {
+					endDate = new Date();
+				}
+				StringBuilder endDateString = new StringBuilder(rFormat.format(endDate));
+				rconn.voidEval("datoTil=" + "'" + endDateString + "'");
+			} catch (Exception e) {
+				log.debug("Parameter endDate is not defined: " + e.getMessage());
+			}			
+			
+			Integer erMann;
+			try {
+				erMann = (Integer) ((JRFillParameter) parametersMap.get("erMann")).getValue();
+				if (erMann == null) {
+					erMann = 99;
+				}
+				rconn.voidEval("erMann=" + erMann.toString());
+			} catch (Exception e) {
+				log.debug("Parameter erMann is not defined: " + e.getMessage());
+			}
+
+			String statMeasureMethod;
+			try {
+				statMeasureMethod = (String) ((JRFillParameter) parametersMap.get("statMeasureMethod")).getValue();
+				if (statMeasureMethod == null) {
+					statMeasureMethod = "Gjsn";
+				}
+				rconn.voidEval("valgtMaal=" + "'" + statMeasureMethod.toString() + "'");
+			} catch (Exception e) {
+				log.debug("Parameter statMeasureMethod is not defined: " + e.getMessage());
+			}
+			
+			Integer orgUnitSelection;
+			try {
+				orgUnitSelection =  (Integer) ((JRFillParameter) parametersMap.get("orgUnitSelection")).getValue();
+				if (orgUnitSelection == null) {
+					orgUnitSelection = 1;
+				}
+				rconn.voidEval("enhetsUtvalg=" + orgUnitSelection.toString());
+			} catch (Exception e) {
+				log.debug("Parameter orgUnitSelection is not defined: " + e.getMessage());
+			}
+			
+			String valgtVar;
+			try {
+				log.debug("Getting parameter values");
+				valgtVar = (String) ((JRFillParameter) parametersMap.get("valgtVar")).getValue();
+				if (valgtVar == null) {
+					valgtVar = "nada";
+				}
+				rconn.voidEval("valgtVar=" + "'" + valgtVar + "'");
+			} catch (Exception e) {
+				log.debug("Parameter valgtVar is not defined: " + e.getMessage());
+			}
 			// END common report user controls
 			
 			
 			// START generic, common report user controls
-			
+			List<String> multiValgList = new ArrayList<String>();
+			String multiValg_1;
+			try {
+				multiValgList = (List<String>) ((JRFillParameter) parametersMap.get("multiValg_1")).getValue();
+				multiValg_1 = "c(";
+				if (multiValgList.isEmpty()) {
+					multiValg_1 = multiValg_1 + "'')";
+				} else {
+					Iterator<String> iterator = multiValgList.iterator();
+					while (iterator.hasNext()) {
+						multiValg_1 = multiValg_1 + "'" + iterator.next() + "',";
+					}
+					multiValg_1 = multiValg_1.substring(0, multiValg_1.length()-1);
+					multiValg_1 = multiValg_1 + ")";
+				}
+				log.debug("R concat for multiValg_1 vector is " + multiValg_1);
+				rconn.voidEval("multiValg_1=" + multiValg_1);
+			} catch (Exception e) {
+				log.debug("Parameter multiValg_1 is not defined: " + e.getMessage());
+			}
+
+			Integer enkeltValgInteger_1;
+			try {
+				enkeltValgInteger_1 = (Integer) ((JRFillParameter) parametersMap.get("enkeltValgInteger_1")).getValue();
+				if (enkeltValgInteger_1 == null) {
+					enkeltValgInteger_1 = 99;
+				}
+				rconn.voidEval("enkeltValgInteger_1=" + enkeltValgInteger_1.toString());
+			} catch (Exception e) {
+				log.debug("Parameter enkeltValgInteger_1 is not defined: " + e.getMessage());
+			}
+
+			String enkeltValgStreng_1;
+			try {
+				log.debug("Getting parameter values");
+				enkeltValgStreng_1 = (String) ((JRFillParameter) parametersMap.get("enkeltValgStreng_1")).getValue();
+				if (enkeltValgStreng_1 == null) {
+					enkeltValgStreng_1 = "nada";
+				}
+				rconn.voidEval("enkeltValgStreng_1=" + "'" + enkeltValgStreng_1 + "'");
+			} catch (Exception e) {
+				log.debug("Parameter enkeltValgStreng_1 is not defined: " + e.getMessage());
+			}
+
+			Integer heltall_1;
+			try {
+				heltall_1 = (Integer) ((JRFillParameter) parametersMap.get("heltall_1")).getValue();
+				if (heltall_1 == null) {
+					heltall_1 = 0;
+				}
+				rconn.voidEval("heltall_1=" + heltall_1.toString());
+			} catch (Exception e) {
+				log.debug("Parameter heltall_1 is not defined: " + e.getMessage());
+			}
+
+			Double desimaltall_1;
+			try {
+				desimaltall_1 = (Double) ((JRFillParameter) parametersMap.get("desimaltall_1")).getValue();
+				if (desimaltall_1 == null) {
+					desimaltall_1 = 0.0;
+				}
+				rconn.voidEval("desimaltall_1=" + desimaltall_1.toString());
+			} catch (Exception e) {
+				log.debug("Parameter desimaltall_1 is not defined: " + e.getMessage());
+			}
+
+			Date dato_1;
+			try {
+				dato_1 = (Date) ((JRFillParameter) parametersMap.get("dato_1")).getValue();
+				if (dato_1 == null) {
+					dato_1 = new Date();
+				}
+				StringBuilder datoString = new StringBuilder(rFormat.format(dato_1));
+				rconn.voidEval("dato_1=" + "'" + datoString + "'");
+			} catch (Exception e) {
+				log.debug("Parameter dato_1 is not defined: " + e.getMessage());
+			}
 			// END generic, common report user controls
 			
 			
