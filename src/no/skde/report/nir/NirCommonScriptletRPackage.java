@@ -187,6 +187,18 @@ public class NirCommonScriptletRPackage extends JRDefaultScriptlet
 				log.debug("Parameter endDate is not defined: " + e.getMessage());
 			}
 			
+			String tidsenhet;
+			try {
+				log.debug("Getting parameter values");
+				tidsenhet = (String) ((JRFillParameter) parametersMap.get("tidsenhet")).getValue();
+				if (tidsenhet == null) {
+					tidsenhet = "Aar";
+				}
+				rconn.voidEval("tidsenhet=" + "'" + tidsenhet + "'");
+			} catch (Exception e) {
+				log.debug("Parameter tidsenhet is not defined: " + e.getMessage());
+			}
+			
 			String hospitalsLevel;
 			try {
 				hospitalsLevel = (String) ((JRFillParameter) parametersMap.get("hospitalsLevel")).getValue();
