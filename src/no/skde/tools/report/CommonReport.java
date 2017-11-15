@@ -74,37 +74,27 @@ public class CommonReport extends JRDefaultScriptlet {
 			// these must always be provided when this scriptlet class is used
 			String loggedInUserFullName = "";
 			String loggedInUserAVD_RESH = "";
+			String rPackageName = "";
 			String reportName = "";
 			String rFunctionCallString = "";
 			try {
 				loggedInUserFullName = (String) ((JRFillParameter) parametersMap.get("LoggedInUserFullName")).getValue();
 				loggedInUserAVD_RESH = (String) ((JRFillParameter) parametersMap.get("LoggedInUserAVD_RESH")).getValue();
+				rPackageName = (String) ((JRFillParameter) parametersMap.get("rPackageName")).getValue();
 				reportName = (String) ((JRFillParameter) parametersMap.get("reportName")).getValue();
 				rFunctionCallString = (String) ((JRFillParameter) parametersMap.get("rFunctionCallString")).getValue();
-				log.info("Report to be run: " + reportName);
 				log.info("Report requested by JRS user " + loggedInUserFullName + ", AVD_RESH " + loggedInUserAVD_RESH);
+				log.info("R package to be loaded in this R session: " + rPackageName);
+				log.info("Report to be run: " + reportName);
 				log.debug("R function call string: " + rFunctionCallString);
+				rconn.voidEval("require(" + rPackageName + ")");
 				rconn.voidEval("reshID=" + loggedInUserAVD_RESH);
 			} catch (Exception e) {
 				log.error("Mandatory parameters in the report definition calling this scriptlet were not defined: " + e.getMessage());
 			}
 			
 			// the rest of parameters are optional, but must match whatever needed by R
-			String rPackageName;
-			try {
-				rPackageName = (String) ((JRFillParameter) parametersMap.get("rPackageName")).getValue();
-				if (rPackageName == null || rPackageName == "") {
-					rPackageName = "";
-					log.warn("Parameter rPackageName is empty. No R package will be loaded");
-				} else {
-					log.info("Package to be loaded in the R session: " + rPackageName);
-					rconn.voidEval("require(" + rPackageName + ")");
-				}
-			} catch (Exception e) {
-				log.warn("No package loaded in R session: " + e.getMessage());
-			}
-			
-			
+						
 			// START specific, common report user controls
 			Integer minAge;
 			try {
@@ -290,7 +280,7 @@ public class CommonReport extends JRDefaultScriptlet {
 			log.debug("Setting report image filepath and name");
 			tmpdir = "/opt/jasper/img/";
 			File dirFile = new File(tmpdir);
-			String fileBaseName = "noRGast_" + reportName + "-";
+			String fileBaseName = rPackageName + reportName + "-";
 			String file = (File.createTempFile(fileBaseName, ".png", dirFile)).getName();
 			p_filename = tmpdir + file;
 			log.debug("In R instance: image to be stored as: " + p_filename);
