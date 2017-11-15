@@ -284,22 +284,6 @@ public class CommonReport extends JRDefaultScriptlet {
 			// END generic, common report user controls
 			  
 			
-			// Now, removed loading of data through this scriptlet
-			log.info("RegData is no longer provided by Norgast scriptlets");
-
-
-			log.debug("Creating dummy R dataframe to ensure compatibility with existing R scripts");
-
-			RList l = new RList();
-
-			// anything goes...
-			l.put("Rapportnavn", new REXPString(reportName));
-			
-			REXP df = REXP.createDataFrame(l);
-			log.debug("Assigning data frame to R instance");
-			rconn.assign("RegData", df);
-			
-			
 			// Set up the tmp directory, file names and reportUserInfo
 			String tmpdir = "";
 			String p_filename = "";
