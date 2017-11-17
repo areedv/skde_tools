@@ -348,6 +348,18 @@ public class Nakke extends JRDefaultScriptlet {
 				log.debug("Parameter MCEType is not defined: " + e.getMessage());
 			}
 			
+			Integer myelopati;
+			try {
+				myelopati = (Integer) ((JRFillParameter) parametersMap.get("myelopati")).getValue();
+				if (myelopati == null) {
+					myelopati = 99;
+				}
+				log.debug("Parameter myelopati, value to be set in R session: " + myelopati.toString());
+				rconn.voidEval("myelopati=" + myelopati.toString());
+			} catch (Exception e) {
+				log.debug("Parameter myelopati is not defined: " + e.getMessage());
+			}
+			
 			// AlvorlighetKompl; multi select list of values
 			List<String> AlvorlighetKomplList = new ArrayList<String>();
 			String AlvorlighetKompl;
