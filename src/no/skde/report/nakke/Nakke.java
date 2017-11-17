@@ -360,6 +360,19 @@ public class Nakke extends JRDefaultScriptlet {
 				log.debug("Parameter myelopati is not defined: " + e.getMessage());
 			}
 			
+			Integer fremBak;
+			try {
+				fremBak = (Integer) ((JRFillParameter) parametersMap.get("fremBak")).getValue();
+				if (fremBak == null) {
+					fremBak = 0;
+				}
+				log.debug("Parameter fremBak, value to be set in R session: " + fremBak.toString());
+				rconn.voidEval("fremBak=" + fremBak.toString());
+			} catch (Exception e) {
+				log.debug("Parameter fremBak is not defined: " + e.getMessage());
+			}
+			
+			
 			// AlvorlighetKompl; multi select list of values
 			List<String> AlvorlighetKomplList = new ArrayList<String>();
 			String AlvorlighetKompl;
