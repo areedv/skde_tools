@@ -251,8 +251,8 @@ public class CommonReport extends JRDefaultScriptlet {
 					multiValg_3 = multiValg_3.substring(0, multiValg_3.length()-1);
 					multiValg_3 = multiValg_3 + ")";
 				}
-				log.debug("R concat for multiValg_1 vector is " + multiValg_3);
-				rconn.voidEval("multiValg_1=" + multiValg_3);
+				log.debug("R concat for multiValg_3 vector is " + multiValg_3);
+				rconn.voidEval("multiValg_3=" + multiValg_3);
 			} catch (Exception e) {
 				log.debug("Parameter multiValg_3 is not defined: " + e.getMessage());
 			}
