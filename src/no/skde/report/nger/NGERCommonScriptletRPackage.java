@@ -336,6 +336,40 @@ public class NGERCommonScriptletRPackage extends JRDefaultScriptlet {
 				log.debug("Parameter MCEType is not defined: " + e.getMessage());
 			}
 			
+			Integer velgDiag;
+			try {
+				velgDiag = (Integer) ((JRFillParameter) parametersMap.get("velgDiag")).getValue();
+				if (velgDiag == null) {
+					velgDiag = 0;
+				}
+				log.debug("Parameter velgDiag, value to be set in R session: " + velgDiag.toString());
+				rconn.voidEval("velgDiag=" + velgDiag.toString());
+			} catch (Exception e) {
+				log.debug("Parameter velgDiag is not defined: " + e.getMessage());
+			}
+			
+			// velgAvd; multi select list of values
+			List<String> velgAvdList = new ArrayList<String>();
+			String velgAvd;
+			try {
+				velgAvdList = (List<String>) ((JRFillParameter) parametersMap.get("velgAvd")).getValue();
+				velgAvd = "c(";
+				if (velgAvdList.isEmpty()) {
+					velgAvd = velgAvd + "'')";
+				} else {
+					Iterator<String> iterator = velgAvdList.iterator();
+					while (iterator.hasNext()) {
+						velgAvd = velgAvd + "'" + iterator.next() + "',";
+					}
+					velgAvd = velgAvd.substring(0, velgAvd.length()-1);
+					velgAvd = velgAvd + ")";
+				}
+				log.debug("R concat for velgAvd vector is " + velgAvd);
+				rconn.voidEval("velgAvd=" + velgAvd);
+			} catch (Exception e) {
+				log.debug("Parameter velgAvd is not defined: " + e.getMessage());
+			}
+			
 			// AlvorlighetKompl; multi select list of values
 			List<String> AlvorlighetKomplList = new ArrayList<String>();
 			String AlvorlighetKompl;
