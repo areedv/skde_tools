@@ -355,6 +355,61 @@ public class CommonReport extends JRDefaultScriptlet {
 				log.debug("Parameter integer_5 is not defined: " + e.getMessage());
 			}
 			
+			Integer integer_6;
+			try {
+				integer_6 = (Integer) ((JRFillParameter) parametersMap.get("integer_6")).getValue();
+				if (integer_6 == null) {
+					integer_6 = 99;
+				}
+				rconn.voidEval("integer_6=" + integer_6.toString());
+			} catch (Exception e) {
+				log.debug("Parameter integer_6 is not defined: " + e.getMessage());
+			}
+			
+			Integer integer_7;
+			try {
+				integer_7 = (Integer) ((JRFillParameter) parametersMap.get("integer_7")).getValue();
+				if (integer_7 == null) {
+					integer_7 = 99;
+				}
+				rconn.voidEval("integer_7=" + integer_7.toString());
+			} catch (Exception e) {
+				log.debug("Parameter integer_7 is not defined: " + e.getMessage());
+			}
+			
+			Integer integer_8;
+			try {
+				integer_8 = (Integer) ((JRFillParameter) parametersMap.get("integer_8")).getValue();
+				if (integer_8 == null) {
+					integer_8 = 99;
+				}
+				rconn.voidEval("integer_8=" + integer_8.toString());
+			} catch (Exception e) {
+				log.debug("Parameter integer_8 is not defined: " + e.getMessage());
+			}
+			
+			Integer integer_9;
+			try {
+				integer_9 = (Integer) ((JRFillParameter) parametersMap.get("integer_9")).getValue();
+				if (integer_9 == null) {
+					integer_9 = 99;
+				}
+				rconn.voidEval("integer_9=" + integer_9.toString());
+			} catch (Exception e) {
+				log.debug("Parameter integer_9 is not defined: " + e.getMessage());
+			}
+			
+			Integer integer_10;
+			try {
+				integer_10 = (Integer) ((JRFillParameter) parametersMap.get("integer_10")).getValue();
+				if (integer_10 == null) {
+					integer_10 = 99;
+				}
+				rconn.voidEval("integer_10=" + integer_10.toString());
+			} catch (Exception e) {
+				log.debug("Parameter integer_10 is not defined: " + e.getMessage());
+			}
+			
 			String streng_1;
 			try {
 				log.debug("Getting parameter values");
