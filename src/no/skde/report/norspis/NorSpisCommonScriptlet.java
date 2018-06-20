@@ -107,6 +107,17 @@ public class NorSpisCommonScriptlet extends JRDefaultScriptlet {
 				log.warn("No package loaded in R session: " + e.getMessage());
 			}
 			
+			Integer regType;
+			try {
+				regType = (Integer) ((JRFillParameter) parametersMap.get("regType")).getValue();
+				if (regType == null) {
+					regType = 0;
+				}
+				rconn.voidEval("regType=" + regType.toString());
+			} catch (Exception e) {
+				log.debug("Parameter regType is not defined: " + e.getMessage());
+			}
+			
 			String valgVar;
 			try {
 				log.debug("Getting parameter values");
