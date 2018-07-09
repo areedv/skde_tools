@@ -107,17 +107,6 @@ public class NorSpisCommonScriptlet extends JRDefaultScriptlet {
 				log.warn("No package loaded in R session: " + e.getMessage());
 			}
 			
-			Integer regType;
-			try {
-				regType = (Integer) ((JRFillParameter) parametersMap.get("regType")).getValue();
-				if (regType == null) {
-					regType = 0;
-				}
-				rconn.voidEval("regType=" + regType.toString());
-			} catch (Exception e) {
-				log.debug("Parameter regType is not defined: " + e.getMessage());
-			}
-			
 			String valgVar;
 			try {
 				log.debug("Getting parameter values");
@@ -275,7 +264,29 @@ public class NorSpisCommonScriptlet extends JRDefaultScriptlet {
 			}
 
 
+			// regType; multi select list of values
+			List<String> regTypeList = new ArrayList<String>();
+			String regType;
+			try {
+				regTypeList = (List<String>) ((JRFillParameter) parametersMap.get("regType")).getValue();
+				regType = "c(";
+				if (regTypeList.isEmpty()) {
+					regType = regType + "'')";
+				} else {
+					Iterator<String> iterator = regTypeList.iterator();
+					while (iterator.hasNext()) {
+						regType = regType + "'" + iterator.next() + "',";
+					}
+					regType = regType.substring(0, regType.length()-1);
+					regType = regType + ")";
+				}
+				log.debug("R concat for regType vector is " + regType);
+				rconn.voidEval("regType=" + regType);
+			} catch (Exception e) {
+				log.debug("Parameter regType is not defined: " + e.getMessage());
+			}
 
+						
 			log.debug("Creating dummy R dataframe to ensure compatibility with existing R scripts");
 
 			RList l = new RList();
