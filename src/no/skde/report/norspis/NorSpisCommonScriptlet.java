@@ -294,7 +294,7 @@ public class NorSpisCommonScriptlet extends JRDefaultScriptlet {
 			log.debug("Setting report image filepath and name");
 			tmpdir = "/opt/jasper/img/";
 			File dirFile = new File(tmpdir);
-			String fileBaseName = "NGER_" + reportName + "-";
+			String fileBaseName = "NorSpis_" + reportName + "-";
 			String file = (File.createTempFile(fileBaseName, ".png", dirFile)).getName();
 			p_filename = tmpdir + file;
 			log.debug("In R instance: image to be stored as: " + p_filename);
